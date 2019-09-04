@@ -3,6 +3,7 @@
 
 CMakeFiles/mainServer.dir/main.cpp.o
  /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/FeedManager.cpp
+ /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/GPU/GpuManager.cpp
  /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/main.cpp
  /usr/local/include/opencv4/opencv2/calib3d.hpp
  /usr/local/include/opencv4/opencv2/core.hpp

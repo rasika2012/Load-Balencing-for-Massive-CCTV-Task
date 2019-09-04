@@ -26,6 +26,12 @@ vector
 opencv2/opencv.hpp
 -
 
+/home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/GPU/GpuManager.cpp
+iostream
+-
+string
+-
+
 /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/main.cpp
 iostream
 -
@@ -33,6 +39,8 @@ string
 -
 FeedManager.cpp
 /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/FeedManager.cpp
+GPU/GpuManager.cpp
+/home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/GPU/GpuManager.cpp
 
 /usr/local/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp
