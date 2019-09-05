@@ -8,3 +8,7 @@ project( mainServer )
 find_package( OpenCV REQUIRED )
 add_executable( mainServer main.cpp )
 target_link_libraries( mainServer ${OpenCV_LIBS} )
+
+SET(CMAKE_THREAD_LIBS_INIT "${CMAKE_THREAD_LIBS_INIT} -std=c++11 -pthread")
+
+target_link_libraries( mainServer ${CMAKE_THREAD_LIBS_INIT}) 

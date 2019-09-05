@@ -1,3 +1,7 @@
+/**
+ * 2019/09/04
+ * chathuranga 
+ **/
 #include <iostream> 
 #include <string> 
 class GpuManager
@@ -5,6 +9,9 @@ class GpuManager
 private:
     /* data */
 public:
+/**
+ *  run terminal command and take autputs  
+ **/
     string GetStdoutFromCommand(string cmd) {
 
         string data;
