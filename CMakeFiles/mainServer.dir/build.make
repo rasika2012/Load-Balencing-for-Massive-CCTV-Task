@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task
+CMAKE_SOURCE_DIR = "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task
+CMAKE_BINARY_DIR = "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/mainServer.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/mainServer.dir/flags.make
 
 CMakeFiles/mainServer.dir/main.cpp.o: CMakeFiles/mainServer.dir/flags.make
 CMakeFiles/mainServer.dir/main.cpp.o: main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/mainServer.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/mainServer.dir/main.cpp.o -c /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/mainServer.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/mainServer.dir/main.cpp.o -c "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/main.cpp"
 
 CMakeFiles/mainServer.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mainServer.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/main.cpp > CMakeFiles/mainServer.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/main.cpp" > CMakeFiles/mainServer.dir/main.cpp.i
 
 CMakeFiles/mainServer.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mainServer.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/main.cpp -o CMakeFiles/mainServer.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/main.cpp" -o CMakeFiles/mainServer.dir/main.cpp.s
 
 # Object files for target mainServer
 mainServer_OBJECTS = \
@@ -85,16 +85,11 @@ mainServer: /usr/local/lib/libopencv_aruco.so.4.1.1
 mainServer: /usr/local/lib/libopencv_bgsegm.so.4.1.1
 mainServer: /usr/local/lib/libopencv_bioinspired.so.4.1.1
 mainServer: /usr/local/lib/libopencv_ccalib.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudabgsegm.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudafeatures2d.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudaobjdetect.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudastereo.so.4.1.1
 mainServer: /usr/local/lib/libopencv_dnn_objdetect.so.4.1.1
 mainServer: /usr/local/lib/libopencv_dpm.so.4.1.1
 mainServer: /usr/local/lib/libopencv_face.so.4.1.1
 mainServer: /usr/local/lib/libopencv_freetype.so.4.1.1
 mainServer: /usr/local/lib/libopencv_fuzzy.so.4.1.1
-mainServer: /usr/local/lib/libopencv_hdf.so.4.1.1
 mainServer: /usr/local/lib/libopencv_hfs.so.4.1.1
 mainServer: /usr/local/lib/libopencv_img_hash.so.4.1.1
 mainServer: /usr/local/lib/libopencv_line_descriptor.so.4.1.1
@@ -102,7 +97,6 @@ mainServer: /usr/local/lib/libopencv_quality.so.4.1.1
 mainServer: /usr/local/lib/libopencv_reg.so.4.1.1
 mainServer: /usr/local/lib/libopencv_rgbd.so.4.1.1
 mainServer: /usr/local/lib/libopencv_saliency.so.4.1.1
-mainServer: /usr/local/lib/libopencv_sfm.so.4.1.1
 mainServer: /usr/local/lib/libopencv_stereo.so.4.1.1
 mainServer: /usr/local/lib/libopencv_structured_light.so.4.1.1
 mainServer: /usr/local/lib/libopencv_superres.so.4.1.1
@@ -112,36 +106,28 @@ mainServer: /usr/local/lib/libopencv_videostab.so.4.1.1
 mainServer: /usr/local/lib/libopencv_xfeatures2d.so.4.1.1
 mainServer: /usr/local/lib/libopencv_xobjdetect.so.4.1.1
 mainServer: /usr/local/lib/libopencv_xphoto.so.4.1.1
-mainServer: /usr/local/lib/libopencv_highgui.so.4.1.1
 mainServer: /usr/local/lib/libopencv_shape.so.4.1.1
+mainServer: /usr/local/lib/libopencv_highgui.so.4.1.1
 mainServer: /usr/local/lib/libopencv_datasets.so.4.1.1
 mainServer: /usr/local/lib/libopencv_plot.so.4.1.1
 mainServer: /usr/local/lib/libopencv_text.so.4.1.1
 mainServer: /usr/local/lib/libopencv_dnn.so.4.1.1
 mainServer: /usr/local/lib/libopencv_ml.so.4.1.1
 mainServer: /usr/local/lib/libopencv_phase_unwrapping.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudacodec.so.4.1.1
-mainServer: /usr/local/lib/libopencv_videoio.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudaoptflow.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudalegacy.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudawarping.so.4.1.1
 mainServer: /usr/local/lib/libopencv_optflow.so.4.1.1
-mainServer: /usr/local/lib/libopencv_video.so.4.1.1
 mainServer: /usr/local/lib/libopencv_ximgproc.so.4.1.1
+mainServer: /usr/local/lib/libopencv_video.so.4.1.1
+mainServer: /usr/local/lib/libopencv_videoio.so.4.1.1
 mainServer: /usr/local/lib/libopencv_imgcodecs.so.4.1.1
 mainServer: /usr/local/lib/libopencv_objdetect.so.4.1.1
 mainServer: /usr/local/lib/libopencv_calib3d.so.4.1.1
 mainServer: /usr/local/lib/libopencv_features2d.so.4.1.1
 mainServer: /usr/local/lib/libopencv_flann.so.4.1.1
 mainServer: /usr/local/lib/libopencv_photo.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudaimgproc.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudafilters.so.4.1.1
 mainServer: /usr/local/lib/libopencv_imgproc.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudaarithm.so.4.1.1
 mainServer: /usr/local/lib/libopencv_core.so.4.1.1
-mainServer: /usr/local/lib/libopencv_cudev.so.4.1.1
 mainServer: CMakeFiles/mainServer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable mainServer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable mainServer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mainServer.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -154,6 +140,6 @@ CMakeFiles/mainServer.dir/clean:
 .PHONY : CMakeFiles/mainServer.dir/clean
 
 CMakeFiles/mainServer.dir/depend:
-	cd /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles/mainServer.dir/DependInfo.cmake --color=$(COLOR)
+	cd "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task" "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task" "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task" "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task" "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles/mainServer.dir/DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/mainServer.dir/depend
 

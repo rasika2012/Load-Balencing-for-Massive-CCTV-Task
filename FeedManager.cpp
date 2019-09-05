@@ -97,7 +97,7 @@ public:
         int bbytee;
         cout << "before open the cam" << endl;
 
-        VideoCapture cap(0);
+        VideoCapture cap("/media/rasika/Other/Dodama/Sequence 03.avi");
 
         if(!cap.isOpened()) {
             cout<< "Could not open the camera" <<  endl;

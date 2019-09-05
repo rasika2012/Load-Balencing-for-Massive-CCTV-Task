@@ -1,6 +1,7 @@
 #include <iostream> 
 #include <string> 
 #include "FeedManager.cpp"
+#include <pthread.h>
 using namespace std; 
 
 string GetStdoutFromCommand(string cmd) {
@@ -21,14 +22,46 @@ string GetStdoutFromCommand(string cmd) {
     return data;
 }
 
-int main(int argc, char const *argv[])
-{
-    int a = 0;
+void *t1(void *display_id) {
+    cout<<"SERVER STARTED\n";
+    
     FeedManager feedManager;
     // Thread 1
     feedManager.server();
-    // Thread 2
+}
+
+void *t2(void *display_id) {
+    cout<<"CLIENT STARTED\n";
+    sleep(1);
+    FeedManager feedManager;
     feedManager.client();
+}
+
+int main(int argc, char const *argv[])
+{
+    int a = 0;
+    
+    // Thread 2
+    
+
+    pthread_t threads[2];
+    int rc;
+    int i = 0;
+
+    rc = pthread_create(&threads[0], NULL, t1, (void *)i);
+        
+    if (rc) {
+        cout << "Error:unable to create thread," << rc << endl;
+            exit(-1);
+    }
+    rc = pthread_create(&threads[1], NULL, t2, (void *)i);
+    if (rc) {
+        cout << "Error:unable to create thread," << rc << endl;
+            exit(-1);
+    }
+
+    pthread_exit(NULL);
+    
     a = stoi(GetStdoutFromCommand("nproc"));
     printf("%d\n",a);
 

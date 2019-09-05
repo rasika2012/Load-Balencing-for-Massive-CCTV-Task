@@ -1,4 +1,4 @@
-# Install script for directory: /home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task
+# Install script for directory: /home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

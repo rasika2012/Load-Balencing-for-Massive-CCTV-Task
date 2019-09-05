@@ -35,16 +35,6 @@ CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/core/ty
 CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/core/utility.hpp
 CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/core/version.hpp
 CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/core/vsx_utils.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudaarithm.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudabgsegm.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudacodec.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudafeatures2d.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudafilters.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudaimgproc.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudaobjdetect.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudaoptflow.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudastereo.hpp
-CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/cudawarping.hpp
 CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/dnn.hpp
 CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/dnn/dict.hpp
 CMakeFiles/mainServer.dir/main.cpp.o: /usr/local/include/opencv4/opencv2/dnn/dnn.hpp

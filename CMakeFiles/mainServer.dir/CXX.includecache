@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/FeedManager.cpp
+/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/FeedManager.cpp
 unistd.h
 -
 arpa/inet.h
@@ -26,13 +26,15 @@ vector
 opencv2/opencv.hpp
 -
 
-/home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/main.cpp
+/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/main.cpp
 iostream
 -
 string
 -
 FeedManager.cpp
-/home/chathuranga/Public/project/Load-Balencing-for-Massive-CCTV-Task/FeedManager.cpp
+/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/FeedManager.cpp
+pthread.h
+-
 
 /usr/local/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp
@@ -237,13 +239,15 @@ type_traits
 /usr/local/include/opencv4/opencv2/core/fast_math.hpp
 opencv2/core/cvdef.h
 /usr/local/include/opencv4/opencv2/core/opencv2/core/cvdef.h
-emmintrin.h
--
 cmath
 -
 fastmath.h
 -
 math.h
+-
+emmintrin.h
+-
+altivec.h
 -
 
 /usr/local/include/opencv4/opencv2/core/hal/interface.h
@@ -353,62 +357,6 @@ opencv2/core/cvdef.h
 /usr/local/include/opencv4/opencv2/core/opencv2/core/cvdef.h
 assert.h
 -
-
-/usr/local/include/opencv4/opencv2/cudaarithm.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-
-/usr/local/include/opencv4/opencv2/cudabgsegm.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-opencv2/video/background_segm.hpp
-/usr/local/include/opencv4/opencv2/opencv2/video/background_segm.hpp
-
-/usr/local/include/opencv4/opencv2/cudacodec.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-
-/usr/local/include/opencv4/opencv2/cudafeatures2d.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-opencv2/features2d.hpp
-/usr/local/include/opencv4/opencv2/opencv2/features2d.hpp
-opencv2/cudafilters.hpp
-/usr/local/include/opencv4/opencv2/opencv2/cudafilters.hpp
-
-/usr/local/include/opencv4/opencv2/cudafilters.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-opencv2/imgproc.hpp
-/usr/local/include/opencv4/opencv2/opencv2/imgproc.hpp
-
-/usr/local/include/opencv4/opencv2/cudaimgproc.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-opencv2/imgproc.hpp
-/usr/local/include/opencv4/opencv2/opencv2/imgproc.hpp
-
-/usr/local/include/opencv4/opencv2/cudaobjdetect.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-opencv2/objdetect.hpp
-/usr/local/include/opencv4/opencv2/opencv2/objdetect.hpp
-
-/usr/local/include/opencv4/opencv2/cudaoptflow.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-
-/usr/local/include/opencv4/opencv2/cudastereo.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-opencv2/calib3d.hpp
-/usr/local/include/opencv4/opencv2/opencv2/calib3d.hpp
-
-/usr/local/include/opencv4/opencv2/cudawarping.hpp
-opencv2/core/cuda.hpp
-/usr/local/include/opencv4/opencv2/opencv2/core/cuda.hpp
-opencv2/imgproc.hpp
-/usr/local/include/opencv4/opencv2/opencv2/imgproc.hpp
 
 /usr/local/include/opencv4/opencv2/dnn.hpp
 opencv2/dnn/dnn.hpp
