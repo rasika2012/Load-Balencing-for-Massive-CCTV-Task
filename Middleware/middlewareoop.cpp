@@ -33,30 +33,30 @@ struct BufferPSNR                                     // Optimized CUDA versions
 
     cuda::GpuMat buf;
 };
- double getPSNR_CUDA_optimized(const Mat& I1, const Mat& I2, BufferPSNR& b)
-{
-    printf("cuda optimitation\n");
-
-    b.gI1.upload(I1);
-    b.gI2.upload(I2);
-
-    b.gI1.convertTo(b.t1, CV_32F);
-    b.gI2.convertTo(b.t2, CV_32F);
-
-    cuda::absdiff(b.t1.reshape(1), b.t2.reshape(1), b.gs);
-    cuda::multiply(b.gs, b.gs, b.gs);
-    // imshow( "privius", b.gs );
-    double sse = cuda::sum(b.gs, b.buf)[0];
-
-    if( sse <= 1e-10) // for small values return zero
-        return 0;
-    else
-    {
-        double mse = sse /(double)(I1.channels() * I1.total());
-        double psnr = 10.0*log10((255*255)/mse);
-        return psnr;
-    }
-}
+// double getPSNR_CUDA_optimized(const Mat& I1, const Mat& I2, BufferPSNR& b)
+//{
+//    printf("cuda optimitation\n");
+//
+//    b.gI1.upload(I1);
+//    b.gI2.upload(I2);
+//
+//    b.gI1.convertTo(b.t1, CV_32F);
+//    b.gI2.convertTo(b.t2, CV_32F);
+//
+//    cuda::absdiff(b.t1.reshape(1), b.t2.reshape(1), b.gs);
+//    cuda::multiply(b.gs, b.gs, b.gs);
+//    // imshow( "privius", b.gs );
+//    double sse = cuda::sum(b.gs, b.buf)[0];
+//
+//    if( sse <= 1e-10) // for small values return zero
+//        return 0;
+//    else
+//    {
+//        double mse = sse /(double)(I1.channels() * I1.total());
+//        double psnr = 10.0*log10((255*255)/mse);
+//        return psnr;
+//    }
+//}
 void clean_q_r(){
     if(resived_data.size() > 150 )
     while (resived_data.size() > 100 ){
@@ -205,7 +205,7 @@ void * algorithm(void * prt){
 
         printf("197\n");
 
-        result = getPSNR_CUDA_optimized(img2, img1, bufferPSNR);
+        result = 100;//getPSNR_CUDA_optimized(img2, img1, bufferPSNR);
         printf("pass cuda\n");
 
         result = (round(result*5))/20;

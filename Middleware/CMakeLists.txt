@@ -10,6 +10,6 @@ find_package( OpenCV REQUIRED )
 add_executable(middleware middlewareoop.cpp )
 # add_executable( middleware server.cpp )
 target_link_libraries( middleware ${OpenCV_LIBS})
-SET(CMAKE_THREAD_LIBS_INIT "${CMAKE_THREAD_LIBS_INIT} -std=c++11 -pthread")
+SET(CMAKE_THREAD_LIBS_INIT "${CMAKE_THREAD_LIBS_INIT}-std=c++11 -pthread")
 
 target_link_libraries( middleware ${CMAKE_THREAD_LIBS_INIT})
