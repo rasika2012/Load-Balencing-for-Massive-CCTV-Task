@@ -12,12 +12,13 @@
 #include <iostream>
 #include <sstream>
 #include <unistd.h>
-#include <queue> 
+#include <queue>
 
 void *display(void *);
 char **args;
 using namespace std;
 using namespace cv;
+
 queue <Mat> resived_data;
 queue <Mat> to_send_data;
 
@@ -26,17 +27,52 @@ queue <Mat> to_send_data;
     int rmport,srvport;
 //
 
-void clean_q(){
-    while (resived_data.size() > 100 ){
-        resived_data.pop();
-        cout<<"cleaned\n";
-    }
+struct BufferPSNR                                     // Optimized CUDA versions
+{   // Data allocations are very expensive on CUDA. Use a buffer to solve: allocate once reuse later.
+    cuda::GpuMat gI1, gI2, gs, t1,t2;
 
-    while (to_send_data.size() > 100 ){
-        to_send_data.pop();
-        cout<<"cleaned\n";
+    cuda::GpuMat buf;
+};
+ double getPSNR_CUDA_optimized(const Mat& I1, const Mat& I2, BufferPSNR& b)
+{
+    printf("cuda optimitation\n");
+
+    b.gI1.upload(I1);
+    b.gI2.upload(I2);
+
+    b.gI1.convertTo(b.t1, CV_32F);
+    b.gI2.convertTo(b.t2, CV_32F);
+
+    cuda::absdiff(b.t1.reshape(1), b.t2.reshape(1), b.gs);
+    cuda::multiply(b.gs, b.gs, b.gs);
+    // imshow( "privius", b.gs );
+    double sse = cuda::sum(b.gs, b.buf)[0];
+
+    if( sse <= 1e-10) // for small values return zero
+        return 0;
+    else
+    {
+        double mse = sse /(double)(I1.channels() * I1.total());
+        double psnr = 10.0*log10((255*255)/mse);
+        return psnr;
     }
 }
+void clean_q_r(){
+    if(resived_data.size() > 150 )
+    while (resived_data.size() > 100 ){
+        resived_data.pop();
+        cout<<"cleaned rsd\n";
+    }
+
+}
+void clea_q_s(){
+    if(resived_data.size() > 150 )
+    while (to_send_data.size() > 100 ){
+        to_send_data.pop();
+        cout<<"cleaned send\n";
+
+    }
+ }
 
 
 
@@ -75,6 +111,7 @@ void * connectCamera(void * inp){
         if ((bytes = recv(sokt, iptr, imgSize , MSG_WAITALL)) == -1) {
             std::cerr << "recv failed, received bytes = " << bytes << std::endl;
         }
+        //for(int i =0 ; i<10;i++)
         resived_data.push(img.clone());
         // tmp add
        
@@ -85,7 +122,7 @@ void * connectCamera(void * inp){
 
         // to_send_data.push(resived_data.front());
         // resived_data.pop();
-        clean_q();
+        clean_q_r();
         if (key = cv::waitKey(10) >= 0) break;
     }   
 
@@ -96,8 +133,8 @@ void * connectCamera(void * inp){
 void * connectDisplay(void * ptr){
     int socket = *(int *)ptr;
     Mat img;
-    img = Mat::zeros(480 , 640, CV_8UC3);   
-
+    img = Mat::zeros(480 , 640, CV_8UC3);
+    clea_q_s();
     if (!img.isContinuous()) {
         img = img.clone();
     }
@@ -119,7 +156,7 @@ void * connectDisplay(void * ptr){
                 if (to_send_data.size()>0){
                     img = to_send_data.front();
                     to_send_data.pop();
-                }
+
                     
                 cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
                 
@@ -129,7 +166,10 @@ void * connectDisplay(void * ptr){
                 if ((bytes = send(socket, img.data, imgSize, 0)) < 0){
                      std::cerr << "bytes = " << bytes << std::endl;
                      break;
-                } 
+                }
+                } else{
+                   // sleep(0.1);
+                }
 
    
     }
@@ -137,26 +177,56 @@ void * connectDisplay(void * ptr){
 }
 
 void * algorithm(void * prt){
-    while (1)
+    double result, temp = 0;
+    BufferPSNR bufferPSNR;
 
+    while (1)
     {
-         clean_q();
-         cout<<resived_data.size()<<"recieved \n";
-         cout<<to_send_data.size()<<" tosend\n";
+         //clean_q();
+//         cout<<resived_data.size()<<"recieved \n";
+//         cout<<to_send_data.size()<<" tosend\n";
         /* code */
     
-    
+    printf("183\nrececed data %d\n",resived_data.size());
    
-    if(resived_data.size() >0){
-        Mat img = resived_data.front();
+    if(resived_data.size() >3){
+        printf("184\n");
+
+        Mat img1 = resived_data.front();
         resived_data.pop();
+        if (img1.empty())
+            break;
+        printf("192\n");
 
+        Mat img2 = resived_data.front();
+        if (img2.empty()){
+            break;
+        }
 
+        printf("197\n");
 
+        result = getPSNR_CUDA_optimized(img2, img1, bufferPSNR);
+        printf("pass cuda\n");
 
-        putText(img, "Text", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
+        result = (round(result*5))/20;
+        if(temp != result)
+        {
+            putText(img2, "Detected", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
+            printf("Detected\n");
+            to_send_data.push(img2);
+        }else
+        {
+            putText(img2, "Ignored", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
+            printf("Ignore\n");
+            to_send_data.push(img2);
+            //sleep(0.3);
+        }
+        temp = result;
+        printf("211\n");
+
+        //
         
-        to_send_data.push(img);
+       //to_send_data.push(img1);
         // to_send_data.push(resived_data.front());
         // resived_data.pop();
        
@@ -194,7 +264,7 @@ void * serverUp(void * prt){
 
     
     while(1){
-   
+//        clean_q();
         remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);  
     
         if (remoteSocket < 0) {

@@ -17,7 +17,7 @@ using namespace cv;
 
 void *display(void *);
 
-int capDev = 2;
+int capDev = 0;
 
     VideoCapture cap(capDev); // open the default camera
     
