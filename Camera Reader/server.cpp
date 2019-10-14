@@ -18,28 +18,23 @@ using namespace cv;
 void *display(void *);
 
 int capDev = 0;
+VideoCapture cap(capDev); // open the default camera
 
-    VideoCapture cap(capDev); // open the default camera
-    
-
-int main(int argc, char** argv)
-{   
+int main(int argc, char** argv){
 
     //--------------------------------------------------------
     //networking stuff: socket, bind, listen
     //--------------------------------------------------------
-    int                 localSocket,
-                        remoteSocket,
-                        port = 4097;                               
+    int localSocket,
+        remoteSocket,
+        port = 4097;
 
     struct  sockaddr_in localAddr,
                         remoteAddr;
     pthread_t thread_id;
-    
-           
+
     int addrLen = sizeof(struct sockaddr_in);
 
-       
     if ( (argc > 1) && (strcmp(argv[1],"-h") == 0) ) {
           std::cerr << "usage: ./cv_video_srv [port] [capture device]\n" <<
                        "port           : socket port (4097 default)\n" <<
@@ -48,7 +43,8 @@ int main(int argc, char** argv)
           exit(1);
     }
 
-    if (argc == 2) port = atoi(argv[1]);
+    if (argc == 2)
+        port = atoi(argv[1]);
 
     localSocket = socket(AF_INET , SOCK_STREAM , 0);
     if (localSocket == -1){
@@ -77,16 +73,16 @@ int main(int argc, char** argv)
     //    exit(1);
     //}
        
-     remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);  
-      //std::cout << remoteSocket<< "32"<< std::endl;
-    if (remoteSocket < 0) {
-        perror("accept failed!");
-        exit(1);
-    } 
-    std::cout << "Connection accepted" << std::endl;
-    pthread_create(&thread_id,NULL,display,&remoteSocket);
+        remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);
+          //std::cout << remoteSocket<< "32"<< std::endl;
+        if (remoteSocket < 0) {
+            perror("accept failed!");
+            exit(1);
+        }
+        std::cout << "Connection accepted" << std::endl;
+        pthread_create(&thread_id,NULL,display,&remoteSocket);
 
-     //pthread_join(thread_id,NULL);
+         //pthread_join(thread_id,NULL);
 
     }
     //pthread_join(thread_id,NULL);
@@ -113,25 +109,23 @@ void *display(void *ptr){
     
 
     //make img continuos
-    if ( ! img.isContinuous() ) { 
+    if (! img.isContinuous() ) {
           img = img.clone();
           imgGray = img.clone();
     }
         
     std::cout << "Image Size:" << imgSize << std::endl;
     while(1) {
-                
-            /* get a frame from camera */
-                cap >> img;
-                cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
-                
-                //do video processing here 
-                //cvtColor(img, imgGray, CV_BGR2GRAY);
-                //send processed image
-                if ((bytes = send(socket, img.data, imgSize, 0)) < 0){
-                     std::cerr << "bytes = " << bytes << std::endl;
-                     break;
-                } 
-    }
+    /* get a frame from camera */
+        cap >> img;
+        cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
 
+        //do video processing here
+        //cvtColor(img, imgGray, CV_BGR2GRAY);
+        //send processed image
+        if ((bytes = send(socket, img.data, imgSize, 0)) < 0){
+             std::cerr << "bytes = " << bytes << std::endl;
+             break;
+        }
+    }
 }
