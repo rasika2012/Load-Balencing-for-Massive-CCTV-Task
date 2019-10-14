@@ -33,19 +33,17 @@ struct BufferPSNR                                     // Optimized CUDA versions
 
     cuda::GpuMat buf;
 };
- double getPSNR_CUDA_optimized(const Mat& I1, const Mat& I2, BufferPSNR& b)
+int getPSNR_CUDA_optimized(const Mat& I1, const Mat& I2, BufferPSNR& b)
 {
-    printf("cuda optimitation\n");
-
     b.gI1.upload(I1);
     b.gI2.upload(I2);
-
+    int val = 0;
     b.gI1.convertTo(b.t1, CV_32F);
     b.gI2.convertTo(b.t2, CV_32F);
 
     cuda::absdiff(b.t1.reshape(1), b.t2.reshape(1), b.gs);
     cuda::multiply(b.gs, b.gs, b.gs);
-    // imshow( "privius", b.gs );
+    // imshow( "privius", I1 );
     double sse = cuda::sum(b.gs, b.buf)[0];
 
     if( sse <= 1e-10) // for small values return zero
@@ -53,15 +51,17 @@ struct BufferPSNR                                     // Optimized CUDA versions
     else
     {
         double mse = sse /(double)(I1.channels() * I1.total());
-        double psnr = 10.0*log10((255*255)/mse);
-        return psnr;
+        double psnr = log10((255*255)/mse);
+        val = round(psnr);
+        // printf("%d\n",val);
+        return val;
     }
 }
 void clean_q_r(){
     if(resived_data.size() > 150 )
     while (resived_data.size() > 100 ){
         resived_data.pop();
-        cout<<"cleaned rsd\n";
+//        cout<<"cleaned rsd\n";
     }
 
 }
@@ -69,7 +69,7 @@ void clea_q_s(){
     if(resived_data.size() > 150 )
     while (to_send_data.size() > 100 ){
         to_send_data.pop();
-        cout<<"cleaned send\n";
+//        cout<<"cleaned send\n";
 
     }
  }
@@ -157,8 +157,10 @@ void * connectDisplay(void * ptr){
                     img = to_send_data.front();
                     to_send_data.pop();
 
-                    
-                cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
+                    if(!img.empty()){
+                        cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
+
+                    }
                 
                 //do video processing here 
                 //cvtColor(img, imgGray, CV_BGR2GRAY);
@@ -177,7 +179,7 @@ void * connectDisplay(void * ptr){
 }
 
 void * algorithm(void * prt){
-    double result, temp = 0;
+    int result, temp = 0;
     BufferPSNR bufferPSNR;
 
     while (1)
@@ -187,42 +189,41 @@ void * algorithm(void * prt){
 //         cout<<to_send_data.size()<<" tosend\n";
         /* code */
     
-    printf("183\nrececed data %d\n",resived_data.size());
+//    printf("183\nrececed data %d\n",resived_data.size());
    
     if(resived_data.size() >3){
-        printf("184\n");
+//        printf("184\n");
 
         Mat img1 = resived_data.front();
         resived_data.pop();
         if (img1.empty())
             break;
-        printf("192\n");
+        // printf(" data %d\n",resived_data.size());
 
         Mat img2 = resived_data.front();
         if (img2.empty()){
             break;
         }
 
-        printf("197\n");
+//        printf("197\n");
 
         result = getPSNR_CUDA_optimized(img2, img1, bufferPSNR);
-        printf("pass cuda\n");
+//        printf("pass cuda\n");
 
-        result = (round(result*5))/20;
         if(temp != result)
         {
-            putText(img2, "Detected", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
+            // putText(img2, "Detected", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
             printf("Detected\n");
             to_send_data.push(img2);
         }else
         {
-            putText(img2, "Ignored", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
+            // putText(img2, "Ignored", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
             printf("Ignore\n");
-            to_send_data.push(img2);
+            // to_send_data.push(img2);
             //sleep(0.3);
         }
         temp = result;
-        printf("211\n");
+//        printf("211\n");
 
         //
         
@@ -302,11 +303,13 @@ int main(int argc, char** argv){
         pthread_t t;
         pthread_t p;
         pthread_t alg;
+       // pthread_t alg2;
 
-        cout<<"\nQ Size:"<<resived_data.size()<<"\n>";
+//        cout<<"\nQ Size:"<<resived_data.size()<<"\n>";
         pthread_create(&t,NULL,connectCamera,&t);
         pthread_create(&p,NULL,serverUp,&p);
         pthread_create(&alg,NULL,algorithm,&alg);
+         //pthread_create(&alg2,NULL,algorithm,&alg2);
 
         cin >> command;
     
