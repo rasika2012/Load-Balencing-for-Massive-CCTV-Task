@@ -22,7 +22,7 @@ using namespace cv;
 
 queue <Mat> resived_data;
 queue <Mat> to_send_data;
-
+//BufferPSNR bufferPsnr;
 ///gloal variables
     char * IP;
     int rmport,srvport;
@@ -157,62 +157,118 @@ void * connectDisplay(void * ptr){
 }
 
 void * algorithm(void * prt){
+    BufferPSNR bufferPsnr;
+    GPU_CAL cal = GPU_CAL();
     int result, temp = 0;
-    BufferPSNR bufferPSNR;
+//    int TIMES = 10;
+    double time_cpu, time_cuda = 0.0;
 
     while (1)
     {
-         //clean_q();
-//         cout<<resived_data.size()<<"recieved \n";
-//         cout<<to_send_data.size()<<" tosend\n";
-        /* code */
-    
-//    printf("183\nrececed data %d\n",resived_data.size());
+
    
     if(resived_data.size() >3){
-//        printf("184\n");
 
         Mat img1 = resived_data.front();
         resived_data.pop();
         if (img1.empty())
             break;
-        // printf(" data %d\n",resived_data.size());
 
         Mat img2 = resived_data.front();
         if (img2.empty()){
             break;
         }
 
-//        printf("197\n");
 
-        result = getPSNR_CUDA_optimized(img2, img1, bufferPSNR);
+        time_cuda = (double)getTickCount();
+        result = cal.getPSNR_CUDA(img2, img1, bufferPsnr);
+        time_cuda = 1000*((double)getTickCount() - time_cuda)/getTickFrequency();
+//        cout << "CUDA : " << time_cuda << endl;
+        time_cpu = (double)getTickCount();
+        result = cal.getPSNR_CPU(img2, img1);
+        time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
+//        cout << "CPU : " << time_cpu << endl;
 //        printf("pass cuda\n");
 
         if(temp != result)
         {
-            // putText(img2, "Detected", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
-            printf("Detected\n");
+//            printf("Detected\n");
+            cout <<  time_cpu <<","<< time_cuda<< "," << "Detected" << endl;
+
+//            printf("%lu\t%lu\tDetected\n", time_cpu, time_cuda);
             to_send_data.push(img2);
         }else
         {
-            // putText(img2, "Ignored", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
-            printf("Ignore\n");
-            // to_send_data.push(img2);
-            //sleep(0.3);
+//            printf("Ignore\n");
+//            printf("%lu\t%lu\tIgnore\n", time_cpu, time_cuda);
+            cout <<  time_cpu <<","<< time_cuda<< "," << "Ignore" << endl;
+
         }
         temp = result;
-//        printf("211\n");
 
-        //
-        
-       //to_send_data.push(img1);
-        // to_send_data.push(resived_data.front());
-        // resived_data.pop();
        
    }
    }
         
 }
+
+
+void * algorithm2(void * prt){
+    BufferPSNR bufferPsnr;
+    GPU_CAL cal = GPU_CAL();
+    int result, temp = 0;
+//    int TIMES = 10;
+    double time_cpu, time_cuda = 0.0;
+
+    while (1)
+    {
+
+
+        if(resived_data.size() >3){
+
+            Mat img1 = resived_data.front();
+            resived_data.pop();
+            if (img1.empty())
+                break;
+
+            Mat img2 = resived_data.front();
+            if (img2.empty()){
+                break;
+            }
+
+
+            time_cuda = (double)getTickCount();
+            result = cal.getPSNR_CUDA(img2, img1, bufferPsnr);
+            time_cuda = 1000*((double)getTickCount() - time_cuda)/getTickFrequency();
+//        cout << "CUDA : " << time_cuda << endl;
+            time_cpu = (double)getTickCount();
+            result = cal.getPSNR_CPU(img2, img1);
+            time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
+//        cout << "CPU : " << time_cpu << endl;
+//        printf("pass cuda\n");
+
+            if(temp != result)
+            {
+//            printf("Detected\n");
+                cout <<  time_cpu <<","<< time_cuda<< "," << "Detected" << endl;
+
+//            printf("%lu\t%lu\tDetected\n", time_cpu, time_cuda);
+                to_send_data.push(img2);
+            }else
+            {
+//            printf("Ignore\n");
+//            printf("%lu\t%lu\tIgnore\n", time_cpu, time_cuda);
+                cout <<  time_cpu <<","<< time_cuda<< "," << "Ignore" << endl;
+
+            }
+            temp = result;
+
+
+        }
+    }
+
+}
+
 
 void * serverUp(void * prt){
     int localSocket, remoteSocket;                               
@@ -257,7 +313,7 @@ void * serverUp(void * prt){
 
 
 
-int main(int argc, char** argv){   
+int main(int argc, char** argv){
     string command;
     if ( argc <4){
         perror("arguments not found");
@@ -281,13 +337,13 @@ int main(int argc, char** argv){
         pthread_t t;
         pthread_t p;
         pthread_t alg;
-       // pthread_t alg2;
+//        pthread_t alg2;
 
 //        cout<<"\nQ Size:"<<resived_data.size()<<"\n>";
         pthread_create(&t,NULL,connectCamera,&t);
         pthread_create(&p,NULL,serverUp,&p);
         pthread_create(&alg,NULL,algorithm,&alg);
-         //pthread_create(&alg2,NULL,algorithm,&alg2);
+//        pthread_create(&alg2,NULL,algorithm2,&alg2);
 
         cin >> command;
     
