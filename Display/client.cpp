@@ -10,10 +10,13 @@
 #include <unistd.h>
 //#include <opencv2/tracking.hpp>
 #include <opencv2/core/ocl.hpp>
+//#include "fun.h"
+#include "PeopleDetect.cpp"
 
 using namespace cv;
 
 int main(int argc, char** argv){
+   Test test = Test();
     //--------------------------------------------------------
     //networking stuff: socket , connect
     //--------------------------------------------------------
@@ -58,7 +61,7 @@ int main(int argc, char** argv){
     imgGray = Mat::zeros(480 , 640, CV_8UC1); 
     int imgSize = img.total() * img.elemSize();
     uchar *iptr = img.data;
-    int bytes = 0;
+    int byt
     int key;
 
     //make img continuos
@@ -68,7 +71,7 @@ int main(int argc, char** argv){
         
     std::cout << "Image Size:" << imgSize << std::endl;
     namedWindow("CV Video Client",1);
-  
+
     while (key != 'q') {
 
         if ((bytes = recv(sokt, iptr, imgSize , MSG_WAITALL)) == -1) {
@@ -77,14 +80,14 @@ int main(int argc, char** argv){
         cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
         GaussianBlur(imgGray, imgGray, Size(21, 21), 0);
         // absdiff(firstFrame, img, frameDelta);
-        //compute difference between first frame and current frame     
-        cv::imshow("CV Video Client", img); 
+        //compute difference between first frame and current frame
+        
+        img = test.matConvert(img)
+        cv::imshow("CV Video Client", img);
         firstFrame = img.clone();
         
         if (key = cv::waitKey(10) >= 0) break;
-    }   
-
+    }
     close(sokt);
-
     return 0;
 }	
