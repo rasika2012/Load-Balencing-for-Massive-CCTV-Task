@@ -22,6 +22,8 @@ using namespace cv;
 
 queue <Mat> resived_data;
 queue <Mat> to_send_data;
+static int weght = 20*40;
+static int hight = 20*30;
 //BufferPSNR bufferPsnr;
 ///gloal variables
     char * IP;
@@ -44,7 +46,7 @@ void clean_q_r(){
 
 }
 void clea_q_s(){
-    if(resived_data.size() > 150 )
+    if(to_send_data.size() > 150 )
     while (to_send_data.size() > 100 ){
         to_send_data.pop();
 //        cout<<"cleaned send\n";
@@ -58,7 +60,7 @@ void * connectCamera(void * inp){
     char * serverIP = IP;
     int serverPort = rmport;
 
-    int         sokt;
+    int sokt;
     struct  sockaddr_in serverAddr;
     socklen_t           addrLen = sizeof(struct sockaddr_in);
 
@@ -74,7 +76,7 @@ void * connectCamera(void * inp){
         std::cerr << "connect() failed!" << std::endl;
     }
     Mat img;
-    img = Mat::zeros(480 , 640, CV_8UC3);
+    img = Mat::zeros(hight , weght, CV_8UC3);
     int imgSize = img.total() * img.elemSize();
     uchar *iptr = img.data;
     int bytes = 0;
@@ -111,8 +113,8 @@ void * connectCamera(void * inp){
 void * connectDisplay(void * ptr){
     int socket = *(int *)ptr;
     Mat img;
-    img = Mat::zeros(480 , 640, CV_8UC3);
-    clea_q_s();
+    img = Mat::zeros(hight , weght, CV_8UC3);
+
     if (!img.isContinuous()) {
         img = img.clone();
     }
@@ -127,16 +129,17 @@ void * connectDisplay(void * ptr){
           img = img.clone();
     }
         
-    std::cout << "Image Size:" << imgSize << std::endl;
+//    std::cout << "Image Size:" << imgSize << std::endl;
     while(1) {
-                
+        clea_q_s();
+//        cout<<"Q size"<<to_send_data.size()<<" "<<resived_data.size()<<std::endl;
             /* get a frame from camera */
                 if (to_send_data.size()>0){
                     img = to_send_data.front();
                     to_send_data.pop();
 
                     if(!img.empty()){
-                        cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
+                        cv::resize(img, img, cv::Size(weght, hight),CV_8UC3);
 
                     }
                 
@@ -155,94 +158,43 @@ void * connectDisplay(void * ptr){
     }
 
 }
-
+BufferPSNR bufferPsnr;
+GPU_CAL cal = GPU_CAL();
+int result, temp = 0;
+Mat img1;
+Mat img2;
 void * algorithm(void * prt){
-    BufferPSNR bufferPsnr;
-    GPU_CAL cal = GPU_CAL();
-    int result, temp = 0;
+
+
 //    int TIMES = 10;
     double time_cpu, time_cuda = 0.0;
-
+    while (!(resived_data.size() >3)){
+        printf("waiting...\n");
+    }
+    img1 = resived_data.front();
+    bufferPsnr.gI1.upload(img1);
     while (1)
     {
-
-   
-    if(resived_data.size() >3){
-
-        Mat img1 = resived_data.front();
-        resived_data.pop();
-        if (img1.empty())
-            break;
-
-        Mat img2 = resived_data.front();
-        if (img2.empty()){
-            break;
-        }
-
-
-        time_cuda = (double)getTickCount();
-        result = cal.getPSNR_CUDA(img2, img1, bufferPsnr);
-        time_cuda = 1000*((double)getTickCount() - time_cuda)/getTickFrequency();
-//        cout << "CUDA : " << time_cuda << endl;
-        time_cpu = (double)getTickCount();
-        result = cal.getPSNR_CPU(img2, img1);
-        time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
-//        cout << "CPU : " << time_cpu << endl;
-//        printf("pass cuda\n");
-
-        if(temp != result)
-        {
-//            printf("Detected\n");
-            cout <<  time_cpu <<","<< time_cuda<< "," << "Detected" << endl;
-
-//            printf("%lu\t%lu\tDetected\n", time_cpu, time_cuda);
-            to_send_data.push(img2);
-        }else
-        {
-//            printf("Ignore\n");
-//            printf("%lu\t%lu\tIgnore\n", time_cpu, time_cuda);
-            cout <<  time_cpu <<","<< time_cuda<< "," << "Ignore" << endl;
-
-        }
-        temp = result;
-
-       
-   }
-   }
-        
-}
-
-
-void * algorithm2(void * prt){
-    BufferPSNR bufferPsnr;
-    GPU_CAL cal = GPU_CAL();
-    int result, temp = 0;
-//    int TIMES = 10;
-    double time_cpu, time_cuda = 0.0;
-
-    while (1)
-    {
-
-
         if(resived_data.size() >3){
 
             Mat img1 = resived_data.front();
             resived_data.pop();
+
             if (img1.empty())
                 break;
+            img2 = resived_data.front();
 
-            Mat img2 = resived_data.front();
             if (img2.empty()){
                 break;
             }
-
-
+            
             time_cuda = (double)getTickCount();
-            result = cal.getPSNR_CUDA(img2, img1, bufferPsnr);
+            bufferPsnr.gI2.upload(img2);
+            result = cal.getPSNR_CUDA(img2, bufferPsnr);
             time_cuda = 1000*((double)getTickCount() - time_cuda)/getTickFrequency();
-//        cout << "CUDA : " << time_cuda << endl;
+    //        cout << "CUDA : " << time_cuda << endl;
             time_cpu = (double)getTickCount();
-            result = cal.getPSNR_CPU(img2, img1);
+//            result = cal.getPSNR_CPU(img2, img1);
             time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
 //        cout << "CPU : " << time_cpu << endl;
 //        printf("pass cuda\n");
@@ -254,19 +206,22 @@ void * algorithm2(void * prt){
 
 //            printf("%lu\t%lu\tDetected\n", time_cpu, time_cuda);
                 to_send_data.push(img2);
+                bufferPsnr.gI1.upload(img1);
+
             }else
             {
 //            printf("Ignore\n");
 //            printf("%lu\t%lu\tIgnore\n", time_cpu, time_cuda);
+                to_send_data.push(img2);
+//                bufferPsnr.gI1.upload(img1);
                 cout <<  time_cpu <<","<< time_cuda<< "," << "Ignore" << endl;
 
             }
+            
             temp = result;
-
-
-        }
-    }
-
+       }
+   }
+        
 }
 
 

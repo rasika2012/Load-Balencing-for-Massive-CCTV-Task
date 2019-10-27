@@ -12,6 +12,7 @@
 #include <opencv2/videoio.hpp>
 #include <iostream>
 #include <iomanip>
+#include <opencv2/cudaobjdetect.hpp>
 
 using namespace cv;
 using namespace std;
@@ -19,13 +20,21 @@ using namespace std;
 class Detector
 {
     enum Mode { Default, Daimler } m;
+
     HOGDescriptor hog, hog_d;
+    cv::Ptr<cv::cuda::HOG> gpu_hog;
+
 public:
     Detector() : m(Default), hog(), hog_d(Size(48, 96), Size(16, 16), Size(8, 8), Size(8, 8), 9)
     {
+        gpu_hog = cv::cuda::HOG::create(Size(48, 96), Size(16, 16), Size(8, 8), Size(8, 8), 9);
+        Mat detector = gpu_hog->getDefaultPeopleDetector();
+        gpu_hog->setSVMDetector(detector);
+
         hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
         hog_d.setSVMDetector(HOGDescriptor::getDaimlerPeopleDetector());
     }
+
     void toggleMode() { m = (m == Default ? Daimler : Default); }
     string modeName() const { return (m == Default ? "Default" : "Daimler"); }
     vector<Rect> detect(InputArray img)
@@ -34,12 +43,30 @@ public:
         // (and more false alarms, respectively), decrease the hitThreshold and
         // groupThreshold (set groupThreshold to 0 to turn off the grouping completely).
         vector<Rect> found;
-        if (m == Default)
+        if (m == Default){
+
             hog.detectMultiScale(img, found, 0, Size(8,8), Size(32,32), 1.05, 2, false);
-        else if (m == Daimler)
+        }
+        else if (m == Daimler){
             hog_d.detectMultiScale(img, found, 0.5, Size(8,8), Size(32,32), 1.05, 2, true);
+        }
         return found;
     }
+
+    vector<Rect> detect_gpu(cuda::GpuMat gpu_img)
+    {
+
+        vector<Rect> found;
+        double time = 0.0;
+        gpu_hog->setNumLevels(150);
+        gpu_hog->setHitThreshold(1.4);
+        gpu_hog->setWinStride(Size(16, 16));
+        gpu_hog->setScaleFactor(1.05);
+        gpu_hog->setGroupThreshold(2);
+        gpu_hog->detectMultiScale(gpu_img, found);
+        return found;
+    }
+
     void adjustRect(Rect & r) const
     {
         // The HOG detector returns slightly larger rectangles than the real objects,
@@ -89,27 +116,36 @@ int main(int argc, char** argv)
     cout << "Press 'q' or <ESC> to quit." << endl;
     cout << "Press <space> to toggle between Default and Daimler detector" << endl;
     Detector detector;
-    Mat frame;
-    double time_cpu = 0.0;
+    Mat frame,img_aux;
+    cuda::GpuMat gpu_frame;
+
+    double time_cpu, time_gpu = 0.0;
     for (;;)
     {
         cap >> frame;
+        cvtColor(frame, img_aux, COLOR_BGR2BGRA);
+        gpu_frame.upload(img_aux);
+
         if (frame.empty())
         {
             cout << "Finished reading: empty frame" << endl;
             break;
         }
-        int64 t = getTickCount();
-        time_cpu = (double)getTickCount();
-        vector<Rect> found = detector.detect(frame);
-        time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
-        t = getTickCount() - t;
-        cout << time_cpu << endl;
+       time_cpu = (double)getTickCount();
+       vector<Rect> found1 = detector.detect(frame);
+       time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
+
+        // time_gpu = (double)getTickCount();
+        // vector<Rect> found = detector.detect_gpu(gpu_frame);
+        // time_gpu = 1000*((double)getTickCount() - time_gpu)/getTickFrequency();
+        
+        
+        cout << time_cpu <<","<< time_gpu << endl;
         // show the window
         {
             ostringstream buf;
             buf << "Mode: " << detector.modeName() << " ||| "
-                << "FPS: " << fixed << setprecision(1) << (getTickFrequency() / (double)t);
+                << "FPS: " << fixed << setprecision(1) << (getTickFrequency() / time_cpu);
             putText(frame, buf.str(), Point(10, 30), FONT_HERSHEY_PLAIN, 2.0, Scalar(0, 0, 255), 2, LINE_AA);
         }
         for (vector<Rect>::iterator i = found.begin(); i != found.end(); ++i)

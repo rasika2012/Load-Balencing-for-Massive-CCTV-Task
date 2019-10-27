@@ -1,258 +1,269 @@
-//
-// Created by chathuranga on 2019-10-17.
-//
-
-#include "opencv2/objdetect.hpp"
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgproc.hpp"
+#if defined _MSC_VER && _MSC_VER >= 1400
+#pragma warning(disable : 4100)
+#endif
 #include <iostream>
-
+#include <iomanip>
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/cudaobjdetect.hpp"
+#include "opencv2/cudaimgproc.hpp"
+#include "opencv2/cudawarping.hpp"
 using namespace std;
 using namespace cv;
-
+using namespace cv::cuda;
 static void help()
 {
-    cout << "\nThis program demonstrates the use of cv::CascadeClassifier class to detect objects (Face + eyes). You can use Haar or LBP features.\n"
-            "This classifier can recognize many kinds of rigid objects, once the appropriate classifier is trained.\n"
-            "It's most known use is for faces.\n"
-            "Usage:\n"
-            "./facedetect [--cascade=<cascade_path> this is the primary trained classifier such as frontal face]\n"
-            "   [--nested-cascade[=nested_cascade_path this an optional secondary classifier such as eyes]]\n"
-            "   [--scale=<image scale greater or equal to 1, try 1.3 for example>]\n"
-            "   [--try-flip]\n"
-            "   [filename|camera_index]\n\n"
-            "see facedetect.cmd for one call:\n"
-            "./facedetect --cascade=\"data/haarcascades/haarcascade_frontalface_alt.xml\" --nested-cascade=\"data/haarcascades/haarcascade_eye_tree_eyeglasses.xml\" --scale=1.3\n\n"
-            "During execution:\n\tHit any key to quit.\n"
-            "\tUsing OpenCV version " << CV_VERSION << "\n" << endl;
+    cout << "Usage: ./cascadeclassifier_gpu \n\t--cascade <cascade_file>\n\t(<image>|--video <video>|--camera <camera_id>)\n"
+            "Using OpenCV version " << CV_VERSION << endl << endl;
 }
-
-void detectAndDraw( Mat& img, CascadeClassifier& cascade,
-                    CascadeClassifier& nestedCascade,
-                    double scale, bool tryflip );
-
-string cascadeName;
-string nestedCascadeName;
-
-int main( int argc, const char** argv )
+static void convertAndResize(const Mat& src, Mat& gray, Mat& resized, double scale)
 {
-    VideoCapture capture;
-    Mat frame, image;
-    string inputName;
-    bool tryflip;
-    CascadeClassifier cascade, nestedCascade;
-    double scale;
-
-    cv::CommandLineParser parser(argc, argv,
-                                 "{help h||}"
-                                 "{cascade|data/haarcascades/haarcascade_frontalface_alt.xml|}"
-                                 "{nested-cascade|data/haarcascades/haarcascade_eye_tree_eyeglasses.xml|}"
-                                 "{scale|1|}{try-flip||}{@filename||}"
-    );
-    if (parser.has("help"))
+    if (src.channels() == 3)
     {
-        help();
-        return 0;
+        cv::cvtColor( src, gray, COLOR_BGR2GRAY );
     }
-    cascadeName = parser.get<string>("cascade");
-    nestedCascadeName = parser.get<string>("nested-cascade");
-    scale = parser.get<double>("scale");
-    if (scale < 1)
-        scale = 1;
-    tryflip = parser.has("try-flip");
-    inputName = parser.get<string>("@filename");
-    if (!parser.check())
+    else
     {
-        parser.printErrors();
-        return 0;
+        gray = src;
     }
-    if (!nestedCascade.load(samples::findFileOrKeep(nestedCascadeName)))
-        cerr << "WARNING: Could not load classifier cascade for nested objects" << endl;
-    if (!cascade.load(samples::findFile(cascadeName)))
+    Size sz(cvRound(gray.cols * scale), cvRound(gray.rows * scale));
+    if (scale != 1)
     {
-        cerr << "ERROR: Could not load classifier cascade" << endl;
+        cv::resize(gray, resized, sz);
+    }
+    else
+    {
+        resized = gray;
+    }
+}
+static void convertAndResize(const GpuMat& src, GpuMat& gray, GpuMat& resized, double scale)
+{
+    if (src.channels() == 3)
+    {
+        cv::cuda::cvtColor( src, gray, COLOR_BGR2GRAY );
+    }
+    else
+    {
+        gray = src;
+    }
+    Size sz(cvRound(gray.cols * scale), cvRound(gray.rows * scale));
+    if (scale != 1)
+    {
+        cv::cuda::resize(gray, resized, sz);
+    }
+    else
+    {
+        resized = gray;
+    }
+}
+static void matPrint(Mat &img, int lineOffsY, Scalar fontColor, const string &ss)
+{
+    int fontFace = FONT_HERSHEY_DUPLEX;
+    double fontScale = 0.8;
+    int fontThickness = 2;
+    Size fontSize = cv::getTextSize("T[]", fontFace, fontScale, fontThickness, 0);
+    Point org;
+    org.x = 1;
+    org.y = 3 * fontSize.height * (lineOffsY + 1) / 2;
+    putText(img, ss, org, fontFace, fontScale, Scalar(0,0,0), 5*fontThickness/2, 16);
+    putText(img, ss, org, fontFace, fontScale, fontColor, fontThickness, 16);
+}
+static void displayState(Mat &canvas, bool bHelp, bool bGpu, bool bLargestFace, bool bFilter, double fps)
+{
+    Scalar fontColorRed = Scalar(255,0,0);
+    Scalar fontColorNV  = Scalar(118,185,0);
+    ostringstream ss;
+    ss << "FPS = " << setprecision(1) << fixed << fps;
+    matPrint(canvas, 0, fontColorRed, ss.str());
+    ss.str("");
+    ss << "[" << canvas.cols << "x" << canvas.rows << "], " <<
+       (bGpu ? "GPU, " : "CPU, ") <<
+       (bLargestFace ? "OneFace, " : "MultiFace, ") <<
+       (bFilter ? "Filter:ON" : "Filter:OFF");
+    matPrint(canvas, 1, fontColorRed, ss.str());
+    // by Anatoly. MacOS fix. ostringstream(const string&) is a private
+    // matPrint(canvas, 2, fontColorNV, ostringstream("Space - switch GPU / CPU"));
+    if (bHelp)
+    {
+        matPrint(canvas, 2, fontColorNV, "Space - switch GPU / CPU");
+        matPrint(canvas, 3, fontColorNV, "M - switch OneFace / MultiFace");
+        matPrint(canvas, 4, fontColorNV, "F - toggle rectangles Filter");
+        matPrint(canvas, 5, fontColorNV, "H - toggle hotkeys help");
+        matPrint(canvas, 6, fontColorNV, "1/Q - increase/decrease scale");
+    }
+    else
+    {
+        matPrint(canvas, 2, fontColorNV, "H - toggle hotkeys help");
+    }
+}
+int main(int argc, const char *argv[])
+{
+    if (argc == 1)
+    {
         help();
         return -1;
     }
-    if( inputName.empty() || (isdigit(inputName[0]) && inputName.size() == 1) )
+    if (getCudaEnabledDeviceCount() == 0)
     {
-        int camera = inputName.empty() ? 0 : inputName[0] - '0';
-        if(!capture.open(camera))
-        {
-            cout << "Capture from camera #" <<  camera << " didn't work" << endl;
-            return 1;
-        }
+        return cerr << "No GPU found or the library is compiled without CUDA support" << endl, -1;
     }
-    else if (!inputName.empty())
+    cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
+    string cascadeName;
+    string inputName;
+    bool isInputImage = false;
+    bool isInputVideo = false;
+    bool isInputCamera = false;
+    for (int i = 1; i < argc; ++i)
     {
-        image = imread(samples::findFileOrKeep(inputName), IMREAD_COLOR);
-        if (image.empty())
+        if (string(argv[i]) == "--cascade")
+            cascadeName = argv[++i];
+        else if (string(argv[i]) == "--video")
         {
-            if (!capture.open(samples::findFileOrKeep(inputName)))
-            {
-                cout << "Could not read " << inputName << endl;
-                return 1;
-            }
+            inputName = argv[++i];
+            isInputVideo = true;
         }
-    }
-    else
-    {
-        image = imread(samples::findFile("lena.jpg"), IMREAD_COLOR);
-        if (image.empty())
+        else if (string(argv[i]) == "--camera")
         {
-            cout << "Couldn't read lena.jpg" << endl;
-            return 1;
+            inputName = argv[++i];
+            isInputCamera = true;
         }
-    }
-
-    if( capture.isOpened() )
-    {
-        cout << "Video capturing has been started ..." << endl;
-
-        for(;;)
+        else if (string(argv[i]) == "--help")
         {
-            capture >> frame;
-            if( frame.empty() )
-                break;
-
-            Mat frame1 = frame.clone();
-            detectAndDraw( frame1, cascade, nestedCascade, scale, tryflip );
-
-            char c = (char)waitKey(10);
-            if( c == 27 || c == 'q' || c == 'Q' )
-                break;
+            help();
+            return -1;
         }
-    }
-    else
-    {
-        cout << "Detecting face(s) in " << inputName << endl;
-        if( !image.empty() )
+        else if (!isInputImage)
         {
-            detectAndDraw( image, cascade, nestedCascade, scale, tryflip );
-            waitKey(0);
-        }
-        else if( !inputName.empty() )
-        {
-            /* assume it is a text file containing the
-            list of the image filenames to be processed - one per line */
-            FILE* f = fopen( inputName.c_str(), "rt" );
-            if( f )
-            {
-                char buf[1000+1];
-                while( fgets( buf, 1000, f ) )
-                {
-                    int len = (int)strlen(buf);
-                    while( len > 0 && isspace(buf[len-1]) )
-                        len--;
-                    buf[len] = '\0';
-                    cout << "file " << buf << endl;
-                    image = imread( buf, 1 );
-                    if( !image.empty() )
-                    {
-                        detectAndDraw( image, cascade, nestedCascade, scale, tryflip );
-                        char c = (char)waitKey(0);
-                        if( c == 27 || c == 'q' || c == 'Q' )
-                            break;
-                    }
-                    else
-                    {
-                        cerr << "Aw snap, couldn't read image " << buf << endl;
-                    }
-                }
-                fclose(f);
-            }
-        }
-    }
-
-    return 0;
-}
-
-void detectAndDraw( Mat& img, CascadeClassifier& cascade,
-                    CascadeClassifier& nestedCascade,
-                    double scale, bool tryflip )
-{
-    double t = 0;
-    vector<Rect> faces, faces2;
-    const static Scalar colors[] =
-            {
-                    Scalar(255,0,0),
-                    Scalar(255,128,0),
-                    Scalar(255,255,0),
-                    Scalar(0,255,0),
-                    Scalar(0,128,255),
-                    Scalar(0,255,255),
-                    Scalar(0,0,255),
-                    Scalar(255,0,255)
-            };
-    Mat gray, smallImg;
-
-    cvtColor( img, gray, COLOR_BGR2GRAY );
-    double fx = 1 / scale;
-    resize( gray, smallImg, Size(), fx, fx, INTER_LINEAR_EXACT );
-    equalizeHist( smallImg, smallImg );
-
-    t = (double)getTickCount();
-    cascade.detectMultiScale( smallImg, faces,
-                              1.1, 2, 0
-                                      //|CASCADE_FIND_BIGGEST_OBJECT
-                                      //|CASCADE_DO_ROUGH_SEARCH
-                                      |CASCADE_SCALE_IMAGE,
-                              Size(30, 30) );
-    if( tryflip )
-    {
-        flip(smallImg, smallImg, 1);
-        cascade.detectMultiScale( smallImg, faces2,
-                                  1.1, 2, 0
-                                          //|CASCADE_FIND_BIGGEST_OBJECT
-                                          //|CASCADE_DO_ROUGH_SEARCH
-                                          |CASCADE_SCALE_IMAGE,
-                                  Size(30, 30) );
-        for( vector<Rect>::const_iterator r = faces2.begin(); r != faces2.end(); ++r )
-        {
-            faces.push_back(Rect(smallImg.cols - r->x - r->width, r->y, r->width, r->height));
-        }
-    }
-    t = (double)getTickCount() - t;
-    printf( "detection time = %g ms\n", t*1000/getTickFrequency());
-    for ( size_t i = 0; i < faces.size(); i++ )
-    {
-        Rect r = faces[i];
-        Mat smallImgROI;
-        vector<Rect> nestedObjects;
-        Point center;
-        Scalar color = colors[i%8];
-        int radius;
-
-        double aspect_ratio = (double)r.width/r.height;
-        if( 0.75 < aspect_ratio && aspect_ratio < 1.3 )
-        {
-            center.x = cvRound((r.x + r.width*0.5)*scale);
-            center.y = cvRound((r.y + r.height*0.5)*scale);
-            radius = cvRound((r.width + r.height)*0.25*scale);
-            circle( img, center, radius, color, 3, 8, 0 );
+            inputName = argv[i];
+            isInputImage = true;
         }
         else
-            rectangle( img, Point(cvRound(r.x*scale), cvRound(r.y*scale)),
-                       Point(cvRound((r.x + r.width-1)*scale), cvRound((r.y + r.height-1)*scale)),
-                       color, 3, 8, 0);
-        if( nestedCascade.empty() )
-            continue;
-        smallImgROI = smallImg( r );
-        nestedCascade.detectMultiScale( smallImgROI, nestedObjects,
-                                        1.1, 2, 0
-                                                //|CASCADE_FIND_BIGGEST_OBJECT
-                                                //|CASCADE_DO_ROUGH_SEARCH
-                                                //|CASCADE_DO_CANNY_PRUNING
-                                                |CASCADE_SCALE_IMAGE,
-                                        Size(30, 30) );
-        for ( size_t j = 0; j < nestedObjects.size(); j++ )
         {
-            Rect nr = nestedObjects[j];
-            center.x = cvRound((r.x + nr.x + nr.width*0.5)*scale);
-            center.y = cvRound((r.y + nr.y + nr.height*0.5)*scale);
-            radius = cvRound((nr.width + nr.height)*0.25*scale);
-            circle( img, center, radius, color, 3, 8, 0 );
+            cout << "Unknown key: " << argv[i] << endl;
+            return -1;
         }
     }
-    imshow( "result", img );
+    Ptr<cuda::CascadeClassifier> cascade_gpu = cuda::CascadeClassifier::create(cascadeName);
+    cv::CascadeClassifier cascade_cpu;
+    if (!cascade_cpu.load(cascadeName))
+    {
+        return cerr << "ERROR: Could not load cascade classifier \"" << cascadeName << "\"" << endl, help(), -1;
+    }
+    VideoCapture capture;
+    Mat image;
+    if (isInputImage)
+    {
+        image = imread(inputName);
+        CV_Assert(!image.empty());
+    }
+    else if (isInputVideo)
+    {
+        capture.open(inputName);
+        CV_Assert(capture.isOpened());
+    }
+    else
+    {
+        capture.open(atoi(inputName.c_str()));
+        CV_Assert(capture.isOpened());
+    }
+    namedWindow("result", 1);
+    Mat frame, frame_cpu, gray_cpu, resized_cpu, frameDisp;
+    vector<Rect> faces;
+    GpuMat frame_gpu, gray_gpu, resized_gpu, facesBuf_gpu;
+    /* parameters */
+    bool useGPU = true;
+    double scaleFactor = 1.0;
+    bool findLargestObject = false;
+    bool filterRects = true;
+    bool helpScreen = false;
+    for (;;)
+    {
+        if (isInputCamera || isInputVideo)
+        {
+            capture >> frame;
+            if (frame.empty())
+            {
+                break;
+            }
+        }
+        (image.empty() ? frame : image).copyTo(frame_cpu);
+        frame_gpu.upload(image.empty() ? frame : image);
+        convertAndResize(frame_gpu, gray_gpu, resized_gpu, scaleFactor);
+        convertAndResize(frame_cpu, gray_cpu, resized_cpu, scaleFactor);
+        TickMeter tm;
+        tm.start();
+        if (useGPU)
+        {
+            cascade_gpu->setFindLargestObject(findLargestObject);
+            cascade_gpu->setScaleFactor(1.2);
+            cascade_gpu->setMinNeighbors((filterRects || findLargestObject) ? 4 : 0);
+            cascade_gpu->detectMultiScale(resized_gpu, facesBuf_gpu);
+            cascade_gpu->convert(facesBuf_gpu, faces);
+        }
+        else
+        {
+            Size minSize = cascade_gpu->getClassifierSize();
+            cascade_cpu.detectMultiScale(resized_cpu, faces, 1.2,
+                                         (filterRects || findLargestObject) ? 4 : 0,
+                                         (findLargestObject ? CASCADE_FIND_BIGGEST_OBJECT : 0)
+                                         | CASCADE_SCALE_IMAGE,
+                                         minSize);
+        }
+        for (size_t i = 0; i < faces.size(); ++i)
+        {
+            rectangle(resized_cpu, faces[i], Scalar(255));
+        }
+        tm.stop();
+        double detectionTime = tm.getTimeMilli();
+        double fps = 1000 / detectionTime;
+        //print detections to console
+        cout << setfill(' ') << setprecision(2);
+        cout << setw(6) << fixed << fps << " FPS, " << faces.size() << " det";
+        if ((filterRects || findLargestObject) && !faces.empty())
+        {
+            for (size_t i = 0; i < faces.size(); ++i)
+            {
+                cout << ", [" << setw(4) << faces[i].x
+                     << ", " << setw(4) << faces[i].y
+                     << ", " << setw(4) << faces[i].width
+                     << ", " << setw(4) << faces[i].height << "]";
+            }
+        }
+        cout << endl;
+        cv::cvtColor(resized_cpu, frameDisp, COLOR_GRAY2BGR);
+        displayState(frameDisp, helpScreen, useGPU, findLargestObject, filterRects, fps);
+        imshow("result", frameDisp);
+        char key = (char)waitKey(5);
+        if (key == 27)
+        {
+            break;
+        }
+        switch (key)
+        {
+            case ' ':
+                useGPU = !useGPU;
+                break;
+            case 'm':
+            case 'M':
+                findLargestObject = !findLargestObject;
+                break;
+            case 'f':
+            case 'F':
+                filterRects = !filterRects;
+                break;
+            case '1':
+                scaleFactor *= 1.05;
+                break;
+            case 'q':
+            case 'Q':
+                scaleFactor /= 1.05;
+                break;
+            case 'h':
+            case 'H':
+                helpScreen = !helpScreen;
+                break;
+        }
+    }
+    return 0;
 }

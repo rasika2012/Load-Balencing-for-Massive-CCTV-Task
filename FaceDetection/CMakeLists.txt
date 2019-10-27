@@ -6,7 +6,7 @@ set(CMAKE_WITH_CUDA TRUE)
 
 project( faceDetect )
 find_package( OpenCV REQUIRED )
-add_executable( faceDetect human.cpp )
+add_executable( faceDetect faceDetect.cpp )
 target_link_libraries( faceDetect ${OpenCV_LIBS})
 SET(CMAKE_THREAD_LIBS_INIT "${CMAKE_THREAD_LIBS_INIT} -std=c++11 -pthread")
 

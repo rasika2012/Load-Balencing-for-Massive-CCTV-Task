@@ -14,14 +14,16 @@
 #include <string.h>
 
 using namespace cv;
-
+using namespace std;
+static int weght = 20*40;
+static int hight = 20*30;
 void *display(void *);
 
 int capDev = 0;
 
-    VideoCapture cap(capDev); // open the default camera
-    
+    VideoCapture cap("cctv1.webm"); // open the default camera
 
+//    VideoCapture cap(0);
    
 
 
@@ -104,7 +106,7 @@ void *display(void *ptr){
     //----------------------------------------------------------
 
     Mat img, imgGray;
-    img = Mat::zeros(480 , 640, CV_8UC3);   
+    img = Mat::zeros(hight, weght, CV_8UC3);
      //make it continuous
     if (!img.isContinuous()) {
         img = img.clone();
@@ -125,9 +127,15 @@ void *display(void *ptr){
     while(1) {
                 
             /* get a frame from camera */
+//        [1280 x 720]
+//        [640 x 480]
                 cap >> img;
-                cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
-                
+                if(img.empty()){
+                    cout << " clip end\n" << endl;
+                    break;
+                }
+                cv::resize(img, img, cv::Size(weght, hight),CV_8UC3);
+                cout << img.size() << endl;
                 //do video processing here 
                 //cvtColor(img, imgGray, CV_BGR2GRAY);
                 //send processed image
