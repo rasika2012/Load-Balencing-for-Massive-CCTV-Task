@@ -14,12 +14,13 @@
 #include <string.h>
 
 using namespace cv;
-
+static int weght = 20*40;
+static int hight = 20*30;
 void *display(void *);
 
 int capDev = 0;
 
-    VideoCapture cap(capDev); // open the default camera
+    VideoCapture cap("CCTV.mp4"); // open the default camera
     
 
    
@@ -104,7 +105,7 @@ void *display(void *ptr){
     //----------------------------------------------------------
 
     Mat img, imgGray;
-    img = Mat::zeros(480 , 640, CV_8UC3);   
+    img = Mat::zeros(hight , weght, CV_8UC3);
      //make it continuous
     if (!img.isContinuous()) {
         img = img.clone();
@@ -126,7 +127,7 @@ void *display(void *ptr){
                 
             /* get a frame from camera */
                 cap >> img;
-                cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
+                cv::resize(img, img, cv::Size(weght, hight),CV_8UC3);
                 
                 //do video processing here 
                 //cvtColor(img, imgGray, CV_BGR2GRAY);
