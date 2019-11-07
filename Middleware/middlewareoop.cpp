@@ -2,16 +2,17 @@
 #include "opencv2/opencv.hpp"
 #include <opencv2/core/ocl.hpp>
 #include <iostream>
-#include <sys/socket.h>
+#include <sys/socket.h> 
 #include <arpa/inet.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
-#include <unistd.h>
+#include <unistd.h> 
 #include <string.h>
 #include <string.h>
 #include <iostream>
 #include <sstream>
 #include <unistd.h>
+#include <queue>
 #include "ImgDiffCuda.cpp"
 
 void *display(void *);
@@ -21,13 +22,12 @@ using namespace cv;
 
 queue <Mat> resived_data;
 queue <Mat> to_send_data;
-
 static int weght = 20*40;
 static int hight = 20*30;
 //BufferPSNR bufferPsnr;
 ///gloal variables
-char * IP;
-int rmport,srvport;
+    char * IP;
+    int rmport,srvport;
 //
 
 // struct BufferPSNR                                     // Optimized CUDA versions
@@ -39,20 +39,20 @@ int rmport,srvport;
 
 void clean_q_r(){
     if(resived_data.size() > 150 )
-        while (resived_data.size() > 100 ){
-            resived_data.pop();
+    while (resived_data.size() > 100 ){
+        resived_data.pop();
 //        cout<<"cleaned rsd\n";
-        }
+    }
 
 }
 void clea_q_s(){
     if(to_send_data.size() > 150 )
-        while (to_send_data.size() > 100 ){
-            to_send_data.pop();
+    while (to_send_data.size() > 100 ){
+        to_send_data.pop();
 //        cout<<"cleaned send\n";
 
-        }
-}
+    }
+ }
 
 
 
@@ -81,9 +81,9 @@ void * connectCamera(void * inp){
     uchar *iptr = img.data;
     int bytes = 0;
     int key;
-    if ( ! img.isContinuous() ) {
-        img = img.clone();
-    }
+    if ( ! img.isContinuous() ) { 
+          img = img.clone();
+    }     
     std::cout << "Image Size:" << imgSize << std::endl;
 
     while (key != 'q') {
@@ -94,21 +94,20 @@ void * connectCamera(void * inp){
         //for(int i =0 ; i<10;i++)
         resived_data.push(img.clone());
         // tmp add
-
+       
 
         //putText(img, "Text", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
-
-
+        
+       
 
         // to_send_data.push(resived_data.front());
         // resived_data.pop();
         clean_q_r();
-        clea_q_s();
         if (key = cv::waitKey(10) >= 0) break;
-    }
+    }   
 
     close(sokt);
-
+        
 }
 
 void * connectDisplay(void * ptr){
@@ -123,40 +122,39 @@ void * connectDisplay(void * ptr){
     int imgSize = img.total() * img.elemSize();
     int bytes = 0;
     int key;
-
+    
 
     //make img continuos
-    if ( ! img.isContinuous() ) {
-        img = img.clone();
+    if ( ! img.isContinuous() ) { 
+          img = img.clone();
     }
-
+        
 //    std::cout << "Image Size:" << imgSize << std::endl;
     while(1) {
         clea_q_s();
-//        cout<<"Q size  "<<to_send_data.size()<<" "<<resived_data.size()<<std::endl;
-        /* get a frame from camera */
-        if (to_send_data.size()>0){
-            img = to_send_data.front();
-            to_send_data.pop();
+//        cout<<"Q size"<<to_send_data.size()<<" "<<resived_data.size()<<std::endl;
+            /* get a frame from camera */
+                if (to_send_data.size()>0){
+                    img = to_send_data.front();
+                    to_send_data.pop();
 
-            if(!img.empty()){
-                cv::resize(img, img, cv::Size(weght, hight),CV_8UC3);
+                    if(!img.empty()){
+                        cv::resize(img, img, cv::Size(weght, hight),CV_8UC3);
 
-            }
+                    }
+                
+                //do video processing here 
+                //cvtColor(img, imgGray, CV_BGR2GRAY);
+                //send processed image
+                if ((bytes = send(socket, img.data, imgSize, 0)) < 0){
+                     std::cerr << "bytes = " << bytes << std::endl;
+                     break;
+                }
+                } else{
+                   // sleep(0.1);
+                }
 
-            //do video processing here
-            //cvtColor(img, imgGray, CV_BGR2GRAY);
-            //send processed image
-            if ((bytes = send(socket, img.data, imgSize, 0)) < 0){
-                std::cerr << "bytes = " << bytes << std::endl;
-                break;
-            }
-
-        } else{
-            // sleep(0.1);
-        }
-
-
+   
     }
 
 }
@@ -179,7 +177,7 @@ void * algorithm(void * prt){
     {
         if(resived_data.size() >3){
 
-            img1 = resived_data.front();
+            Mat img1 = resived_data.front();
             resived_data.pop();
 
             if (img1.empty())
@@ -189,86 +187,84 @@ void * algorithm(void * prt){
             if (img2.empty()){
                 break;
             }
-            cout<<"Q size  "<<to_send_data.size()<<" "<<resived_data.size()<<std::endl;
-
+            
             time_cuda = (double)getTickCount();
             bufferPsnr.gI2.upload(img2);
             result = cal.getPSNR_CUDA(img2, bufferPsnr);
             time_cuda = 1000*((double)getTickCount() - time_cuda)/getTickFrequency();
-            //        cout << "CUDA : " << time_cuda << endl;
-//            time_cpu = (double)getTickCount();
+    //        cout << "CUDA : " << time_cuda << endl;
+            time_cpu = (double)getTickCount();
 //            result = cal.getPSNR_CPU(img2, img1);
-//            time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
+            time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
 //        cout << "CPU : " << time_cpu << endl;
 //        printf("pass cuda\n");
 
             if(temp != result)
             {
 //            printf("Detected\n");
-                cout << time_cuda<< ",     " << "         D" << endl;
+                cout <<  time_cpu <<","<< time_cuda<< "," << "Detected" << endl;
 
 //            printf("%lu\t%lu\tDetected\n", time_cpu, time_cuda);
                 to_send_data.push(img2);
-                bufferPsnr.gI1.upload(img2);
+                bufferPsnr.gI1.upload(img1);
 
             }else
             {
 //            printf("Ignore\n");
 //            printf("%lu\t%lu\tIgnore\n", time_cpu, time_cuda);
-//                to_send_data.push(img2);
+                to_send_data.push(img2);
 //                bufferPsnr.gI1.upload(img1);
-                cout <<"," << time_cuda<< ",     " << "      I" << endl;
+                cout <<  time_cpu <<","<< time_cuda<< "," << "Ignore" << endl;
 
             }
-
+            
             temp = result;
-        }
-    }
-
+       }
+   }
+        
 }
 
 
 void * serverUp(void * prt){
-    int localSocket, remoteSocket;
+    int localSocket, remoteSocket;                               
     struct  sockaddr_in localAddr, remoteAddr;
     pthread_t thread_id;
     int port = srvport;
-
+           
     int addrLen = sizeof(struct sockaddr_in);
 
     localSocket = socket(AF_INET , SOCK_STREAM , 0);
     if (localSocket == -1){
-        perror("socket() call failed!!");
-    }
+         perror("socket() call failed!!");
+    }    
 
     localAddr.sin_family = AF_INET;
     localAddr.sin_addr.s_addr = INADDR_ANY;
     localAddr.sin_port = htons( port );
     cout<<"server :"<<port;
     if( bind(localSocket,(struct sockaddr *)&localAddr , sizeof(localAddr)) < 0) {
-        perror("Can't bind() socket");
-        exit(1);
+         perror("Can't bind() socket");
+         exit(1);
     }
-
+    
 
     listen(localSocket , 3);
     std::cout <<  "Waiting for connections...\n"
               <<  "Server Port:" << port << std::endl;
 
-
+    
     while(1){
 //        clean_q();
-        remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);
-
+        remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);  
+    
         if (remoteSocket < 0) {
             perror("accept failed!");
             exit(1);
-        }
+        } 
         std::cout << "Connection accepted" << std::endl;
         pthread_create(&thread_id,NULL,connectDisplay,&remoteSocket);
-    }
+    }   
 }
-
 
 
 
@@ -279,7 +275,7 @@ int main(int argc, char** argv){
     }
 
     cout<<"Console Started\n";
-
+    
     char * IPl = "0.tcp.ngrok.io";
     IP = IPl;
     rmport = 13210;
@@ -287,27 +283,24 @@ int main(int argc, char** argv){
 
     rmport = atoi(argv[2]);
     srvport = atoi(argv[3]);
-    IP = argv[1];
+    IP = argv[1]; 
 
 
-
-    cin >> command;
-
-    pthread_t t;
-    pthread_t p;
-    pthread_t alg;
-
-
-    //        pthread_t alg2;
+ 
+     cin >> command;
+     
+        pthread_t t;
+        pthread_t p;
+        pthread_t alg;
+//        pthread_t alg2;
 
 //        cout<<"\nQ Size:"<<resived_data.size()<<"\n>";
-    pthread_create(&t,NULL,connectCamera,&t);
-    pthread_create(&p,NULL,serverUp,&p);
-    pthread_create(&alg,NULL,algorithm,&alg);
-
+        pthread_create(&t,NULL,connectCamera,&t);
+        pthread_create(&p,NULL,serverUp,&p);
+        pthread_create(&alg,NULL,algorithm,&alg);
 //        pthread_create(&alg2,NULL,algorithm2,&alg2);
 
-    cin >> command;
-
+        cin >> command;
+    
     return 0;
 }

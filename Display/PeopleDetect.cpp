@@ -20,7 +20,7 @@ public:
     Detector() : m(Default), hog(), hog_d(Size(48, 96), Size(16, 16), Size(8, 8), Size(8, 8), 9){
         hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
         hog_d.setSVMDetector(HOGDescriptor::getDaimlerPeopleDetector());
-
+    
 //        gpu_hog = cv::cuda::HOG::create(Size(48, 96), Size(16, 16), Size(8, 8), Size(8, 8), 9);
         gpu_hog = cv::cuda::HOG::create(Size(64, 128),Size(16, 16),Size(8, 8),Size(8, 8),9);
         Mat detector = gpu_hog->getDefaultPeopleDetector();
@@ -44,12 +44,12 @@ public:
 
         vector<Rect> found;
         double time = 0.0;
-        gpu_hog->setNumLevels(2);
-        //    gpu_hog->setHitThreshold(0.5);
-        //    gpu_hog->setWinStride(Size(16, 16));
-        gpu_hog->setScaleFactor(1.05);
-        //    gpu_hog->setMinObjectSize()
-        //    gpu_hog->setGroupThreshold(20);
+       gpu_hog->setNumLevels(2);
+    //    gpu_hog->setHitThreshold(0.5);
+    //    gpu_hog->setWinStride(Size(16, 16));
+       gpu_hog->setScaleFactor(1.05);
+    //    gpu_hog->setMinObjectSize()
+    //    gpu_hog->setGroupThreshold(20);
         // gpu_hog->setFindLargestObject(true);
         // gpu_hog->setScaleFactor(1.1);
         // gpu_hog->setMinNeighbors(4);
@@ -81,7 +81,7 @@ public:
     vector<Rect> found;
 
     Mat matConvert(Mat frame, char key) {
-        Detector detector ;
+        Detector detector;
 
 
         t = getTickCount();
@@ -93,33 +93,33 @@ public:
         if (key == 27 || key == 'q') // ESC
         {
             cout << "Exit requested" << endl;
-
+            
         }else if (key =='g')
         {
-            time_gpu = (double)getTickCount();
+        time_gpu = (double)getTickCount();
             cvtColor(frame, img_aux, COLOR_BGR2BGRA);
             gpu_frame.upload(img_aux);
-            found = detector.detect_gpu(gpu_frame);
-            time_gpu = 1000*((double)getTickCount() - time_gpu)/getTickFrequency();
+        found = detector.detect_gpu(gpu_frame);
+        time_gpu = 1000*((double)getTickCount() - time_gpu)/getTickFrequency();
 //        cout << "GPU Time : "<< time_gpu << endl;
         }else if (key =='c')
         {
-
-            time_cpu = (double)getTickCount();
-            found = detector.detect(frame);
-            time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
-            cout << "CPU Time : "<< time_cpu << endl;
+           
+        time_cpu = (double)getTickCount();
+        found = detector.detect(frame);
+        time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
+        cout << "CPU Time : "<< time_cpu << endl;
         }else
         {
-            time_gpu = (double)getTickCount();
+        time_gpu = (double)getTickCount();
             cvtColor(frame, img_aux, COLOR_BGR2BGRA);
             gpu_frame.upload(img_aux);
-            found = detector.detect_gpu(gpu_frame);
-            time_gpu = 1000*((double)getTickCount() - time_gpu)/getTickFrequency();
-            cout << "GPU Time : "<< time_gpu << endl;
+        found = detector.detect_gpu(gpu_frame);
+        time_gpu = 1000*((double)getTickCount() - time_gpu)/getTickFrequency();
+        cout << "GPU Time : "<< time_gpu << endl;
         }
-
-
+        
+        
 
         t = getTickCount() - t;
         // show the window
