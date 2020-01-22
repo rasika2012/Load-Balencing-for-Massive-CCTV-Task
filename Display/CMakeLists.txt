@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_WITH_CUDA TRUE)
 set(CMAKE_INSTALL_PREFIX /home/chathuranga/Public/Acadamic/FYP/CV/installation/OpenCV-3.4.4/)
-
+set(OpenCV_DIR /home/chathuranga/Public/Acadamic/FYP/CV/installation/OpenCV-3.4.4/)
 project( display )
 find_package( OpenCV REQUIRED )
 add_executable(display client.cpp )

@@ -88,7 +88,7 @@ int main(int argc, char** argv)
             std::cerr << "recv failed, received bytes = " << bytes << std::endl;
         }
         cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
-//        GaussianBlur(imgGray, imgGray, Size(21, 21), 0);
+        GaussianBlur(imgGray, imgGray, Size(21, 21), 0);
         // absdiff(firstFrame, img, frameDelta);
         //compute difference between first frame and current frame     
         cv::imshow("CV Video Client", img); 
