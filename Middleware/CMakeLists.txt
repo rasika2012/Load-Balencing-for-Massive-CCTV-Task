@@ -3,11 +3,10 @@ cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_WITH_CUDA TRUE)
-set(CMAKE_INSTALL_PREFIX /home/chathuranga/Public/Acadamic/FYP/CV/installation/OpenCV-3.4.4/)
-set(OpenCV_DIR /home/chathuranga/Public/Acadamic/FYP/CV/installation/OpenCV-3.4.4/)
+
 
 project( middleware )
-find_package( OpenCV REQUIRED )
+find_package( OpenCV REQUIRED PATHS "/home/chathuranga/Public/Acadamic/FYP/CV/installation/OpenCV-3.4.4")
 add_executable(middleware middlewareoop.cpp )
 # add_executable( middleware server.cpp )
 target_link_libraries( middleware ${OpenCV_LIBS})
