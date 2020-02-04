@@ -1,5 +1,6 @@
 from queue import Queue
 
+
 class FQueue:
     MaxDelay = 0
     MinDelay = 0
@@ -38,19 +39,31 @@ class GPUHandeler:
             self.gpu_list[gpu] = 0
 
     def get_gpu(self, task_ip):
-        if self.task_gpu.get(task_ip):
+        if self.task_gpu.get(task_ip) :
             return self.task_gpu[task_ip]
 
         gpu_min = ""
-        gpu_min_time = 100000000
+        gpu_min_time = 9223372036854775807
         for i  in self.gpu_list.keys():
             if self.gpu_list[i] == 0 or self.gpu_list[i] < gpu_min_time:
                 gpu_min = i 
                 gpu_min_time = self.gpu_list[i]
 
         self.task_gpu[task_ip] = gpu_min
+        print(gpu_min,self.gpu_list )
+        print(gpu_min)
         return gpu_min
 
     def update_gpu_time(self, task, new_time):
+        
         gpu = self.task_gpu[task] 
-        self.gpu_list[gpu] = (self.gpu_list[gpu]/2) + (new_time/2)
+        # if task != "CamIP4":
+            # print ("Task",task,self.task_gpu[task],self.task_gpu)
+        if gpu in self.gpu_list:
+            self.gpu_list[gpu] = (self.gpu_list[gpu]/2) + (new_time/2)
+            # print(self.gpu_list[gpu])
+           
+        else:
+            pass
+            # sprint ("GPU Not Found:" + gpu +" | ")
+          

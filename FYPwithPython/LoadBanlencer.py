@@ -4,15 +4,23 @@ import time
 import pyobject
 import threading
 
+
+
+
+
+
 ipdata = ['CamIP1','CamIP2','CamIP3','CamIP4']
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2","GPU3"])
 
 def split_result(result):
-    
-    res =  result.split("'")[1].split("\\")[0].split(" ")
-    r = int(res[0])
-    t = int(res[1])
-    return ( r,t)
+ 
+    try:
+        res = result.split("'")[1].replace("\\n",'').split(' ')
+        r = int(res[0])
+        t = int(res[1])
+        return(r,t)
+    except:
+        return ( 0,0)
 
 
 def work(task):
@@ -23,15 +31,23 @@ def work(task):
 
     while line:
         myline = str(my_tool_subprocess.stdout.readline())
-        print(task,gpu_handeler.get_gpu(task) ,myline)
+        # print(task,gpu_handeler.get_gpu(task) ,myline)
         r,t = split_result(myline)
         gpu_handeler.update_gpu_time(task, t)
+   
+    
 
+thread_array = []
 
 for task in ipdata:
     x = threading.Thread(target=work, args=(task,))
+    thread_array.append(x)
     x.start()
     time.sleep(1)
 
 
+inp = input("Press Enter to continue...")
 
+for t in thread_array :
+    t._stop()
+exit()
