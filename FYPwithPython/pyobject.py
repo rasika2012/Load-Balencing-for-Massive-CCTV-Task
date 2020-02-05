@@ -21,8 +21,7 @@ class FQueue:
         self.q[self.i] = val
         self.total += val
         
-
-    
+  
     def sum(self):
         return self.total
 
@@ -38,6 +37,11 @@ class GPUHandeler:
         for gpu in gpu_list:
             self.gpu_list[gpu] = 0
 
+    def clean_task(self,task):
+        del (self.task_gpu[task])
+
+    
+
     def get_gpu(self, task_ip):
         if self.task_gpu.get(task_ip) :
             return self.task_gpu[task_ip]
@@ -50,20 +54,18 @@ class GPUHandeler:
                 gpu_min_time = self.gpu_list[i]
 
         self.task_gpu[task_ip] = gpu_min
-        print(gpu_min,self.gpu_list )
-        print(gpu_min)
+       
+        print(self.task_gpu)
         return gpu_min
 
     def update_gpu_time(self, task, new_time):
         
         gpu = self.task_gpu[task] 
-        # if task != "CamIP4":
-            # print ("Task",task,self.task_gpu[task],self.task_gpu)
         if gpu in self.gpu_list:
             self.gpu_list[gpu] = (self.gpu_list[gpu]/2) + (new_time/2)
-            # print(self.gpu_list[gpu])
+            print(self.gpu_list)
            
         else:
             pass
-            # sprint ("GPU Not Found:" + gpu +" | ")
+            print ("GPU Not Found:" + gpu +" | ")
           

@@ -3,7 +3,7 @@ import subprocess
 import time
 import pyobject
 import threading
-
+import random
 
 
 
@@ -26,14 +26,20 @@ def split_result(result):
 def work(task):
     cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
-    my_tool_subprocess = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
+    sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True
 
     while line:
-        myline = str(my_tool_subprocess.stdout.readline())
+        myline = str(sub_process.stdout.readline())
         # print(task,gpu_handeler.get_gpu(task) ,myline)
         r,t = split_result(myline)
         gpu_handeler.update_gpu_time(task, t)
+        if random.randrange(100) > 98 :
+            sub_process.kill()
+            cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
+            print(cmd)
+            sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
+           
    
     
 
@@ -44,6 +50,7 @@ for task in ipdata:
     thread_array.append(x)
     x.start()
     time.sleep(1)
+
 
 
 inp = input("Press Enter to continue...")
