@@ -1,9 +1,9 @@
-# Load-Balencing-for-Massive-CCTV-Task
+# Load-Balancing-for-Massive-CCTV-Task
 Final Year Project - 2019 Department of Computer Engineering, University of Peradeniya
 
 # Load Balance and Load Management tool form CCTV Network!
 
-Undergrad project for massive size CCTV Load management. This project can used to distribute load between multiple servers and GPU Cards.
+Undergrads project for massive size CCTV Load management. This project can used to distribute load between multiple servers and GPU Cards.
 
 
 # Files
