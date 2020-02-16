@@ -10,9 +10,8 @@
 #include <arpa/inet.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
-#include <unistd.h> 
+#include <unistd.h>
 #include <string.h>
-
 using namespace cv;
 using namespace std;
 static int weght = 20*40;
@@ -21,7 +20,7 @@ void *display(void *);
 
 int capDev = 0;
 
-    VideoCapture cap("cctv1.webm"); // open the default camera
+    VideoCapture cap(0); // open the default camera "CCTV.mp4"
 
 //    VideoCapture cap(0);
    
@@ -122,15 +121,19 @@ void *display(void *ptr){
           img = img.clone();
           imgGray = img.clone();
     }
-        
+
+    unsigned int microseconds = 30000;
+
     std::cout << "Image Size:" << imgSize << std::endl;
     while(1) {
                 
             /* get a frame from camera */
 //        [1280 x 720]
 //        [640 x 480]
-                cap >> img;
-                if(img.empty()){
+        cap >> img;
+//        cv::imshow("CV Video read server", img);
+
+        if(img.empty()){
                     cout << " clip end\n" << endl;
                     break;
                 }
@@ -142,7 +145,10 @@ void *display(void *ptr){
                 if ((bytes = send(socket, img.data, imgSize, 0)) < 0){
                      std::cerr << "bytes = " << bytes << std::endl;
                      break;
-                } 
+                }
+
+
+        usleep(microseconds);
     }
 
 }

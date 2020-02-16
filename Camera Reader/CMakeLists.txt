@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_WITH_CUDA FALSE)
 
 project( server )
-find_package( OpenCV REQUIRED )
+find_package( OpenCV REQUIRED PATHS "/home/chathuranga/Public/Acadamic/FYP/CV/installation/OpenCV-3.4.4")
 add_executable( server server.cpp )
 # add_executable( server server.cpp )
 target_link_libraries( server ${OpenCV_LIBS})

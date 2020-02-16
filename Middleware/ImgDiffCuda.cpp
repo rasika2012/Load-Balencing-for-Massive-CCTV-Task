@@ -32,7 +32,7 @@ public:
         else
         {
             double mse = sse /(double)(I1.channels() * I1.total());
-            double psnr = 3.0*log10((255*255)/mse);
+            double psnr = 50.0*log10((255*255)/mse);
             val = round(psnr);
 //             printf("%d\n",val);
             return val;
@@ -40,9 +40,10 @@ public:
     }
     int getPSNR_CPU(const Mat& I1, const Mat& I2)
     {
-        int val = 0;
         Mat s1;
+        double val = 0;
         absdiff(I1, I2, s1);       // |I1 - I2|
+
         s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
         s1 = s1.mul(s1);           // |I1 - I2|^2
 
@@ -50,12 +51,14 @@ public:
 
         double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels
 
-        if( sse <= 1e-10) // for small values return zero
+        if( sse <= 1e-10) {
+            std::cout<< "sse             " << (double)sse << std::endl;
             return 0;
-        else
+        }// for small values return zero
+         else
         {
             double  mse =sse /(double)(I1.channels() * I1.total());
-            double psnr = 5.0*log10((255*255)/mse);
+            double psnr = 10.0*log10((255*255)/mse);
             val = round(psnr);
             return val;
         }
