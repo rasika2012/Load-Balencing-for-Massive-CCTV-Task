@@ -50,7 +50,7 @@ void * cameraRead(){
 
 
     cv::Mat img, img2;
-    BufferPSNR bufferPsnr;
+//    BufferPSNR bufferPsnr;
     GPU_CAL cal = GPU_CAL();
     img = Mat::zeros(hight , weght, CV_8UC3);
     img2 = Mat::zeros(hight , weght, CV_8UC3);
@@ -61,7 +61,6 @@ void * cameraRead(){
     if ( ! img.isContinuous() ) {
         img = img.clone();
     }
-    std::cout << "Image Size:" << imgSize << std::endl;
     bool isFirst = true;
     double result,temp = 0.0;
     double time_cuda = 0.0;
@@ -76,7 +75,6 @@ void * cameraRead(){
         // tmp add
         if (isFirst){
 //            bufferPsnr.gI1.upload(img);
-            std::cout<< "one\n "  << std::endl;
             img2 = img;
             isFirst = false;
         } else{

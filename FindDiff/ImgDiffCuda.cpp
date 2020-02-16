@@ -52,7 +52,6 @@ public:
         double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels
 
         if( sse <= 1e-10) {
-            std::cout<< "sse             " << (double)sse << std::endl;
             return 0;
         }// for small values return zero
          else
