@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <queue>
 #include "ImgDiffCuda.cpp"
+#include "cascade.cpp"
 
 void *display(void *);
 char **args;
@@ -66,6 +67,7 @@ void * cameraRead(){
     double result,temp = 0.0;
     double time_cuda = 0.0;
     char windowName[20];
+    Cascade cascade; //= new Cascade();
     while (key != 'q') {
 
         if ((bytes = recv(sokt, iptr, imgSize , MSG_WAITALL)) == -1) {
@@ -75,19 +77,19 @@ void * cameraRead(){
         resived_data.push(img.clone());
         // tmp add
         if (isFirst){
-//            bufferPsnr.gI1.upload(img);
-            std::cout<< "one\n "  << std::endl;
+            bufferPsnr.gI1.upload(img);
             img2 = img;
             isFirst = false;
         } else{
             time_cuda = (double)getTickCount();
-//            bufferPsnr.gI2.upload(img);
+            bufferPsnr.gI2.upload(img);
 //            cv::imshow("windowName", img);
 //            cv::imshow("windowName 2", img2);
 
-            result = cal.getPSNR_CPU(img,img2);
+//            result = cal.getPSNR_CPU(img,img2);
             img2 = img.clone();
-//            result = cal.getPSNR_CUDA(img, bufferPsnr);
+            result = cal.getPSNR_CUDA(img, bufferPsnr);
+            cascade.getLicense_gpu(img);
             time_cuda = 1000*((double)getTickCount() - time_cuda)/getTickFrequency();
 
         }
