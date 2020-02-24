@@ -1,0 +1,361 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2aebd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2aebd.dir/build.make CMakeFiles/cmTC_2aebd.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2aebd.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_2aebd.dir/CheckSymbolExists.c.o   -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c"
+Linking C executable cmTC_2aebd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2aebd.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     -rdynamic CMakeFiles/cmTC_2aebd.dir/CheckSymbolExists.c.o  -o cmTC_2aebd 
+/usr/bin/ld: CMakeFiles/cmTC_2aebd.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1f): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_2aebd.dir/build.make:87: cmTC_2aebd] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_2aebd/fast] Error 2
+
+File /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9f3f4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9f3f4.dir/build.make CMakeFiles/cmTC_9f3f4.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9f3f4.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_9f3f4.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_9f3f4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f3f4.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_9f3f4.dir/CheckFunctionExists.c.o  -o cmTC_9f3f4 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_9f3f4.dir/build.make:87: cmTC_9f3f4] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_9f3f4/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b5977/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b5977.dir/build.make CMakeFiles/cmTC_b5977.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b5977.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_b5977.dir/CheckSymbolExists.c.o   -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c"
+Linking C executable cmTC_b5977
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b5977.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     CMakeFiles/cmTC_b5977.dir/CheckSymbolExists.c.o  -o cmTC_b5977 
+/usr/bin/ld: CMakeFiles/cmTC_b5977.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1f): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_b5977.dir/build.make:87: cmTC_b5977] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_b5977/fast] Error 2
+
+File /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d5400/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d5400.dir/build.make CMakeFiles/cmTC_d5400.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d5400.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_d5400.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d5400
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d5400.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_d5400.dir/CheckFunctionExists.c.o  -o cmTC_d5400 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_d5400.dir/build.make:87: cmTC_d5400] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_d5400/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ae5d0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ae5d0.dir/build.make CMakeFiles/cmTC_ae5d0.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ae5d0.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_ae5d0.dir/CheckSymbolExists.c.o   -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c"
+Linking C executable cmTC_ae5d0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ae5d0.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     -rdynamic CMakeFiles/cmTC_ae5d0.dir/CheckSymbolExists.c.o  -o cmTC_ae5d0 
+/usr/bin/ld: CMakeFiles/cmTC_ae5d0.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1f): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_ae5d0.dir/build.make:87: cmTC_ae5d0] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_ae5d0/fast] Error 2
+
+File /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ce7ea/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ce7ea.dir/build.make CMakeFiles/cmTC_ce7ea.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ce7ea.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_ce7ea.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_ce7ea
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ce7ea.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_ce7ea.dir/CheckFunctionExists.c.o  -o cmTC_ce7ea -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_ce7ea.dir/build.make:87: cmTC_ce7ea] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_ce7ea/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_33a11/fast"
+/usr/bin/make -f CMakeFiles/cmTC_33a11.dir/build.make CMakeFiles/cmTC_33a11.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_33a11.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_33a11.dir/CheckSymbolExists.c.o   -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c"
+Linking C executable cmTC_33a11
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_33a11.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     -rdynamic CMakeFiles/cmTC_33a11.dir/CheckSymbolExists.c.o  -o cmTC_33a11 
+/usr/bin/ld: CMakeFiles/cmTC_33a11.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1f): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_33a11.dir/build.make:87: cmTC_33a11] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_33a11/fast] Error 2
+
+File /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_eb306/fast"
+/usr/bin/make -f CMakeFiles/cmTC_eb306.dir/build.make CMakeFiles/cmTC_eb306.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_eb306.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_eb306.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_eb306
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eb306.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_eb306.dir/CheckFunctionExists.c.o  -o cmTC_eb306 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_eb306.dir/build.make:87: cmTC_eb306] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_eb306/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_51d7c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_51d7c.dir/build.make CMakeFiles/cmTC_51d7c.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_51d7c.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_51d7c.dir/CheckSymbolExists.c.o   -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c"
+Linking C executable cmTC_51d7c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_51d7c.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     -rdynamic CMakeFiles/cmTC_51d7c.dir/CheckSymbolExists.c.o  -o cmTC_51d7c 
+/usr/bin/ld: CMakeFiles/cmTC_51d7c.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1f): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_51d7c.dir/build.make:87: cmTC_51d7c] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_51d7c/fast] Error 2
+
+File /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cccb7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cccb7.dir/build.make CMakeFiles/cmTC_cccb7.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cccb7.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_cccb7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_cccb7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cccb7.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_cccb7.dir/CheckFunctionExists.c.o  -o cmTC_cccb7 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_cccb7.dir/build.make:87: cmTC_cccb7] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_cccb7/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_78a4a/fast"
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_78a4a.dir/build.make CMakeFiles/cmTC_78a4a.dir/build
+make[2]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_78a4a.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_78a4a.dir/CheckSymbolExists.c.o   -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c"
+Linking C executable cmTC_78a4a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_78a4a.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     -rdynamic CMakeFiles/cmTC_78a4a.dir/CheckSymbolExists.c.o  -o cmTC_78a4a 
+/usr/bin/ld: CMakeFiles/cmTC_78a4a.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1f): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_78a4a.dir/build.make:87: cmTC_78a4a] Error 1
+make[2]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_78a4a/fast] Error 2
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+
+File /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_791ca/fast"
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_791ca.dir/build.make CMakeFiles/cmTC_791ca.dir/build
+make[2]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_791ca.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_791ca.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_791ca
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_791ca.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_791ca.dir/CheckFunctionExists.c.o  -o cmTC_791ca -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_791ca.dir/build.make:87: cmTC_791ca] Error 1
+make[2]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_791ca/fast] Error 2
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_50207/fast"
+/usr/bin/make -f CMakeFiles/cmTC_50207.dir/build.make CMakeFiles/cmTC_50207.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_50207.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_50207.dir/CheckSymbolExists.c.o   -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c"
+Linking C executable cmTC_50207
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50207.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     -rdynamic CMakeFiles/cmTC_50207.dir/CheckSymbolExists.c.o  -o cmTC_50207 
+/usr/bin/ld: CMakeFiles/cmTC_50207.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1f): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_50207.dir/build.make:87: cmTC_50207] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_50207/fast] Error 2
+
+File /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f7533/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f7533.dir/build.make CMakeFiles/cmTC_f7533.dir/build
+make[1]: Entering directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f7533.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_f7533.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f7533
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f7533.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_f7533.dir/CheckFunctionExists.c.o  -o cmTC_f7533 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_f7533.dir/build.make:87: cmTC_f7533] Error 1
+make[1]: Leaving directory '/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_f7533/fast] Error 2
+
+
