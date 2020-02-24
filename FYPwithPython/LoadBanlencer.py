@@ -43,6 +43,7 @@ def split_result(result):
 
 
 def work(task):
+    
     cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
@@ -60,8 +61,10 @@ def work(task):
         myline = str(sub_process.stdout.readline())
         # print(task,gpu_handeler.get_gpu(task) ,myline)
         r,t = split_result(myline)
-        gpu_handeler.update_gpu_time(task, t)
+        val = gpu_handeler.update_gpu_time(task, t)
         elapse = time.time()
+        # socketio.emit('process', {'v':val}, namespace='/test')
+
 
         # if random.randrange(100) > 98 :
         # if elapse - start > 10:
@@ -76,7 +79,7 @@ def work(task):
         #     socketio.emit('newnumber', {'number': cmd}, namespace='/test')
         #     #
 
-        if elapse - start > 10:
+        if elapse - start > 5:
             start = time.time()
             sub_process.kill()
             print('killing process')
@@ -86,8 +89,9 @@ def work(task):
             print(cmd)
             sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
 
-            socketio.emit('process', {'camera': task,'weight':proc}, namespace='/test')
-        #     #
+            # socketio.emit('process', {'camera': task,'weight':proc}, namespace='/test')
+            socketio.emit('process', {'v':val}, namespace='/test')
+
             
 
 
