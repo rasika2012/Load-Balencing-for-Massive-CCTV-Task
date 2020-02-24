@@ -296,38 +296,8 @@ time.setMilliseconds(00);
 
 function updateChart(count) {
     console.log('count '+count.camera+'count '+count.weight);
-	// count = count || 1;
-	// var deltaY1, deltaY2;
-	// for (var i = 0; i < count; i++) {
-	// 	time.setTime(time.getTime()+ updateInterval);
-	// 	deltaY1 = .5 + Math.random() *(-.5-.5);
-	// 	deltaY2 = .5 + Math.random() *(-.5-.5);
-
-	// // adding random value and rounding it to two digits. 
-	// yValue1 = Math.round((yValue1 + deltaY1)*100)/100;
-	// yValue2 = Math.round((yValue2 + deltaY2)*100)/100;
-
-	// // pushing the new values
-	// dataPoints1.push({
-	// 	x: time.getTime(),
-	// 	y: yValue1
-	// });
-	// dataPoints2.push({
-	// 	x: time.getTime(),
-	// 	y: yValue2
-    // });
-    // dataPoints3.push({
-	// 	x: time.getTime(),
-	// 	y: (yValue2+yValue1)/2
-	// });
-	// }
-
-	// // updating legend text with  updated with y Value 
-	// chart.options.data[0].legendText = " Company A  $" + yValue1;
-	// chart.options.data[1].legendText = " Company B  $" + yValue2; 
-	// chart.render();
 }
-// generates first set of dataPoints 
+
 	
 this.readd();
 // setInterval(function(){updateChart()}, updateInterval);

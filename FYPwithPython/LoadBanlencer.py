@@ -22,13 +22,10 @@ app.config['DEBUG'] = True
 #turn the flask app into a socketio app
 socketio = SocketIO(app, async_mode=None, logger=True, engineio_logger=True)
 
-#random number Generator Thread
 thread = Thread()
 thread_stop_event = Event()
 
 ipdata = ['CamIP1','CamIP2','CamIP3','CamIP4','CamIP5','CamIP6','CamIP7','CamIP8']
-# ipdata = ['camip']
-# gpu_handeler = pyobject.GPUHandeler(["GPU1"])
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2","GPU3"])
 
 def split_result(result):
@@ -51,33 +48,13 @@ def work(task):
     start = time.time()
     elapse = 0
 
-    # while not thread_stop_event.isSet():
-    #     number = round(random()*10, 3)
-    #     print(number)
-    #     socketio.emit('newnumber', {'number': number}, namespace='/test')
-    #     socketio.sleep(5)
-
     while not thread_stop_event.isSet():
         myline = str(sub_process.stdout.readline())
         # print(task,gpu_handeler.get_gpu(task) ,myline)
         r,t = split_result(myline)
         val = gpu_handeler.update_gpu_time(task, t)
         elapse = time.time()
-        # socketio.emit('process', {'v':val}, namespace='/test')
-
-
-        # if random.randrange(100) > 98 :
-        # if elapse - start > 10:
-        #     start = time.time()
-        #     sub_process.kill()
-        #     print('killing process')
-
-        #     cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
-        #     print(cmd)
-        #     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
-
-        #     socketio.emit('newnumber', {'number': cmd}, namespace='/test')
-        #     #
+    
 
         if elapse - start > 5:
             start = time.time()
@@ -89,41 +66,13 @@ def work(task):
             print(cmd)
             sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
 
-            # socketio.emit('process', {'camera': task,'weight':proc}, namespace='/test')
             socketio.emit('process', {'v':val}, namespace='/test')
 
             
 
 
     return cmd
-    
-# def pr():
-#     thread_array = []
-#     # ser.app.run()
 
-#     # y =  threading.Thread(target=ser.app.run )
-#     # y.start()
-#     # ser.hello()
-#     for task in ipdata:
-#         x = threading.Thread(target=work, args=(task,))
-#         thread_array.append(x)
-#         x.start()
-#         time.sleep(1)
-
-
-
-
-    # inp = input("Press Enter to continue...")
-
-    # for t in thread_array :
-    #     t._stop()
-    # exit()
-
-
-
-
-# if __name__ == '__main__':
-#     pr()
 
 @app.route('/')
 def index():

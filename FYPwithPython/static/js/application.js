@@ -3,7 +3,6 @@ window.onload = function () {
     var dataPoints1 = [];
     var dataPoints2 = [];
     var dataPoints3 = [];
-    var count = 0;
     
     
     var chart = new CanvasJS.Chart("chartContainer", {
@@ -66,29 +65,15 @@ window.onload = function () {
 
 
     var updateInterval = 3000;
-    // initial value
+  
 
     var time = new Date;
-    // starting at 9.30 am
-    // time.setHours(9);
-    // time.setMinutes(30);
-    // time.setSeconds(00);
-    // time.setMilliseconds(00);
 
     function updateChart(val1,val2,val3) {
         
-        // count = count || 1;
-        // // var deltaY1, deltaY2;
-        // for (var i = 0; i < count; i++) {
+      
         time.setTime(time.getTime()+ updateInterval);
-        // deltaY1 = .5 + Math.random() *(-.5-.5);
-        // deltaY2 = .5 + Math.random() *(-.5-.5);
-    
-        // adding random value and rounding it to two digits. 
-        // yValue1 = Math.round((yValue1 + deltaY1)*100)/100;
-        // yValue2 = Math.round((yValue2 + deltaY2)*100)/100;
-    
-        // pushing the new values
+      
         dataPoints1.push({
             x: time.getTime(),
             y: val1
@@ -125,10 +110,6 @@ window.onload = function () {
             console.log("Received number" + msg.v.GPU1);
             
             updateChart(msg.v.GPU1,msg.v.GPU2,msg.v.GPU3)
-
-
-            // $('#log').html();
-            // $('#ce').html();
     });
 
     }
