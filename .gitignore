@@ -52,3 +52,11 @@ CMakeFiles/mainServer.dir/depend.make~32c123864369158da694b4587c2db7923da45520
 CMakeFiles/mainServer.dir/DependInfo.cmake~32c123864369158da694b4587c2db7923da45520
 CMakeFiles/mainServer.dir/link.txt~32c123864369158da694b4587c2db7923da45520
 CMakeFiles/mainServer.dir/main.cpp.o~32c123864369158da694b4587c2db7923da45520
+<<<<<<< HEAD
+/Middleware/middleware
+/Camera Reader/server
+=======
+
+
+.vscode
+>>>>>>> 104aa76523906f7758e01432de0dcca78d5a8c99

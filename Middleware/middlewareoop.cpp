@@ -12,31 +12,47 @@
 #include <iostream>
 #include <sstream>
 #include <unistd.h>
-#include <queue> 
+#include <queue>
+#include "ImgDiffCuda.cpp"
 
 void *display(void *);
 char **args;
 using namespace std;
 using namespace cv;
+
 queue <Mat> resived_data;
 queue <Mat> to_send_data;
-
+static int weght = 20*40;
+static int hight = 20*30;
+//BufferPSNR bufferPsnr;
 ///gloal variables
     char * IP;
     int rmport,srvport;
 //
 
-void clean_q(){
+// struct BufferPSNR                                     // Optimized CUDA versions
+// {   // Data allocations are very expensive on CUDA. Use a buffer to solve: allocate once reuse later.
+//     cuda::GpuMat gI1, gI2, gs, t1,t2;
+
+//     cuda::GpuMat buf;
+// };
+
+void clean_q_r(){
+    if(resived_data.size() > 150 )
     while (resived_data.size() > 100 ){
         resived_data.pop();
-        cout<<"cleaned\n";
+//        cout<<"cleaned rsd\n";
     }
 
+}
+void clea_q_s(){
+    if(to_send_data.size() > 150 )
     while (to_send_data.size() > 100 ){
         to_send_data.pop();
-        cout<<"cleaned\n";
+//        cout<<"cleaned send\n";
+
     }
-}
+ }
 
 
 
@@ -44,7 +60,7 @@ void * connectCamera(void * inp){
     char * serverIP = IP;
     int serverPort = rmport;
 
-    int         sokt;
+    int sokt;
     struct  sockaddr_in serverAddr;
     socklen_t           addrLen = sizeof(struct sockaddr_in);
 
@@ -60,7 +76,7 @@ void * connectCamera(void * inp){
         std::cerr << "connect() failed!" << std::endl;
     }
     Mat img;
-    img = Mat::zeros(480 , 640, CV_8UC3);
+    img = Mat::zeros(hight , weght, CV_8UC3);
     int imgSize = img.total() * img.elemSize();
     uchar *iptr = img.data;
     int bytes = 0;
@@ -75,6 +91,7 @@ void * connectCamera(void * inp){
         if ((bytes = recv(sokt, iptr, imgSize , MSG_WAITALL)) == -1) {
             std::cerr << "recv failed, received bytes = " << bytes << std::endl;
         }
+        //for(int i =0 ; i<10;i++)
         resived_data.push(img.clone());
         // tmp add
        
@@ -85,7 +102,7 @@ void * connectCamera(void * inp){
 
         // to_send_data.push(resived_data.front());
         // resived_data.pop();
-        clean_q();
+        clean_q_r();
         if (key = cv::waitKey(10) >= 0) break;
     }   
 
@@ -96,7 +113,7 @@ void * connectCamera(void * inp){
 void * connectDisplay(void * ptr){
     int socket = *(int *)ptr;
     Mat img;
-    img = Mat::zeros(480 , 640, CV_8UC3);   
+    img = Mat::zeros(hight , weght, CV_8UC3);
 
     if (!img.isContinuous()) {
         img = img.clone();
@@ -112,16 +129,19 @@ void * connectDisplay(void * ptr){
           img = img.clone();
     }
         
-    std::cout << "Image Size:" << imgSize << std::endl;
+//    std::cout << "Image Size:" << imgSize << std::endl;
     while(1) {
-                
+        clea_q_s();
+//        cout<<"Q size"<<to_send_data.size()<<" "<<resived_data.size()<<std::endl;
             /* get a frame from camera */
                 if (to_send_data.size()>0){
                     img = to_send_data.front();
                     to_send_data.pop();
-                }
-                    
-                cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
+
+                    if(!img.empty()){
+                        cv::resize(img, img, cv::Size(weght, hight),CV_8UC3);
+
+                    }
                 
                 //do video processing here 
                 //cvtColor(img, imgGray, CV_BGR2GRAY);
@@ -129,38 +149,81 @@ void * connectDisplay(void * ptr){
                 if ((bytes = send(socket, img.data, imgSize, 0)) < 0){
                      std::cerr << "bytes = " << bytes << std::endl;
                      break;
-                } 
+                }
+                } else{
+                   // sleep(0.1);
+                }
 
    
     }
 
 }
-
+BufferPSNR bufferPsnr;
+GPU_CAL cal = GPU_CAL();
+int result, temp = 0;
+Mat img1;
+Mat img2;
 void * algorithm(void * prt){
+
+
+//    int TIMES = 10;
+    double time_cpu, time_cuda = 0.0;
+    while (!(resived_data.size() >3)){
+        printf("waiting...\n");
+    }
+    img1 = resived_data.front();
+    bufferPsnr.gI1.upload(img1);
     while (1)
-
     {
-         clean_q();
-         cout<<resived_data.size()<<"recieved \n";
-         cout<<to_send_data.size()<<" tosend\n";
-        /* code */
-    
-    
-   
-    if(resived_data.size() >0){
-         Mat img = resived_data.front();
-        resived_data.pop();
+        if(resived_data.size() >3){
 
-          putText(img, "Text", Point(5,100), FONT_HERSHEY_DUPLEX, 1, Scalar(0,143,143), 2);
-        
-         to_send_data.push(img);
-        // to_send_data.push(resived_data.front());
-        // resived_data.pop();
-       
-   }
+            Mat img1 = resived_data.front();
+            resived_data.pop();
+
+            if (img1.empty())
+                break;
+            img2 = resived_data.front();
+
+            if (img2.empty()){
+                break;
+            }
+            
+            time_cuda = (double)getTickCount();
+            bufferPsnr.gI2.upload(img2);
+            result = cal.getPSNR_CUDA(img2, bufferPsnr);
+            time_cuda = 1000*((double)getTickCount() - time_cuda)/getTickFrequency();
+    //        cout << "CUDA : " << time_cuda << endl;
+            time_cpu = (double)getTickCount();
+//            result = cal.getPSNR_CPU(img2, img1);
+            time_cpu = 1000*((double)getTickCount() - time_cpu)/getTickFrequency();
+//        cout << "CPU : " << time_cpu << endl;
+//        printf("pass cuda\n");
+
+            if(temp != result)
+            {
+//            printf("Detected\n");
+                cout <<  time_cpu <<","<< time_cuda<< "," << "Detected" << endl;
+
+//            printf("%lu\t%lu\tDetected\n", time_cpu, time_cuda);
+                to_send_data.push(img2);
+                bufferPsnr.gI1.upload(img1);
+
+            }else
+            {
+//            printf("Ignore\n");
+//            printf("%lu\t%lu\tIgnore\n", time_cpu, time_cuda);
+                to_send_data.push(img2);
+//                bufferPsnr.gI1.upload(img1);
+                cout <<  time_cpu <<","<< time_cuda<< "," << "Ignore" << endl;
+
+            }
+            
+            temp = result;
+       }
    }
         
 }
+
 
 void * serverUp(void * prt){
     int localSocket, remoteSocket;                               
@@ -191,7 +254,7 @@ void * serverUp(void * prt){
 
     
     while(1){
-   
+//        clean_q();
         remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);  
     
         if (remoteSocket < 0) {
@@ -205,7 +268,7 @@ void * serverUp(void * prt){
 
 
 
-int main(int argc, char** argv){   
+int main(int argc, char** argv){
     string command;
     if ( argc <4){
         perror("arguments not found");
@@ -223,44 +286,19 @@ int main(int argc, char** argv){
     IP = argv[1]; 
 
 
-        if (!cv::ocl::haveOpenCL())
-{
-    cout << "OpenCL is not available..." << endl;
-    //return;
-}
-
-cv::ocl::Context context;
-
-if (!context.create(cv::ocl::Device::TYPE_GPU))
-{
-    cout << "Failed creating the context..." << endl;
-    //return;
-}
-
-cout << context.ndevices() << " GPU devices are detected." << endl; //This bit provides an overview of the OpenCL devices you have in your computer
-for (int i = 0; i < context.ndevices(); i++)
-{
-    cv::ocl::Device device = context.device(i);
-    cout << "name:              " << device.name() << endl;
-    cout << "available:         " << device.available() << endl;
-    cout << "imageSupport:      " << device.imageSupport() << endl;
-    cout << "OpenCL_C_Version:  " << device.OpenCL_C_Version() << endl;
-    cout << endl;
-}
-
-cv::ocl::Device(context.device(0));
-
-    
+ 
      cin >> command;
      
         pthread_t t;
         pthread_t p;
         pthread_t alg;
+//        pthread_t alg2;
 
-        cout<<"\nQ Size:"<<resived_data.size()<<"\n>";
+//        cout<<"\nQ Size:"<<resived_data.size()<<"\n>";
         pthread_create(&t,NULL,connectCamera,&t);
         pthread_create(&p,NULL,serverUp,&p);
         pthread_create(&alg,NULL,algorithm,&alg);
+//        pthread_create(&alg2,NULL,algorithm2,&alg2);
 
         cin >> command;
     
