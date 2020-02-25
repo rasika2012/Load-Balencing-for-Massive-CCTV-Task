@@ -1,3 +1,0 @@
-/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles/rebuild_cache.dir
-/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles/mainServer.dir
-/home/rasika/Desktop/Linux Project/Load Balence GPU/Hama/Load-Balencing-for-Massive-CCTV-Task/CMakeFiles/edit_cache.dir

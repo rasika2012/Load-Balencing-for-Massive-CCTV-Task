@@ -1,131 +1,160 @@
-from queue import Queue
+import subprocess
+import time
+import pyobject
+import threading
+import random
+# import ser
+import socket
+
+# Start with a basic flask app webpage.
+from flask_socketio import SocketIO, emit
+from flask import Flask, render_template, url_for, copy_current_request_context
+from random import random
+from time import sleep
+from threading import Thread, Event
 
 
-class FQueue:
-    MaxDelay = 0
-    MinDelay = 0
-    
-    def __init__(self):
-        self.q = [0]
-        self.maxlen = 10
-        self.q = self.q*self.maxlen
-        self.i = -1
-        self.total =0
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+app.config['DEBUG'] = True
 
-    def add(self,val):
-        self.i +=1
-        print(self.i)
-        if self.i >= self.maxlen :
-            self.i = 0
-        self.total-=self.q[self.i]
-        self.q[self.i] = val
-        self.total += val
+#turn the flask app into a socketio app
+socketio = SocketIO(app, async_mode=None, logger=True, engineio_logger=True)
+
+#random number Generator Thread
+thread = Thread()
+thread_stop_event = Event()
+
+ipdata = ['CamIP1','CamIP2','CamIP3','CamIP4','CamIP5','CamIP6','CamIP7','CamIP8']
+gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2","GPU3"])
+server_handler = pyobject.Server_Handeler()
+
+server_handler.add_server('ser1')
+server_handler.add_server('ser2')
+server_handler.add_server('ser3')
+
+def split_result(result):
+
+    try:
+        res = result.split("'")[1].replace("\\n",'').split(' ')
+        r = int(res[0])
+        t = int(res[1])
+        return(r,t)
+    except:
+        return ( 0,0)
+
+def work(task):
+    cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
+    print(cmd)
+    sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
+    line = True
+    start = time.time()
+    elapse = 0
+   
+
+
+    while not thread_stop_event.isSet():
+        myline = str(sub_process.stdout.readline())
+        r,t = split_result(myline)
+        gpu_handeler.update_gpu_time(task, t)
+        elapse = time.time()
+        # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task), " Time:", t, " Result:", r)
         
-  
-    def sum(self):
-        return self.total
-
-
-class GPUHandeler:
-
-    def __init__(self,gpu_list):
-        self.gpu_list  = {}
-        self.task_gpu  = {}
-        self.task_need_to_reset  = {}
-        self.task_list = {}
-        
-        for gpu in gpu_list:
-            self.gpu_list[gpu] = 0
-
-    def clean_task(self,task):
-        del (self.task_gpu[task])
-
-    
-
-    def get_gpu(self, task_ip):
-        if self.task_gpu.get(task_ip) :
-            return self.task_gpu[task_ip]
-
-        gpu_min = ""
-        gpu_min_time = 9223372036854775807
-        for i  in self.gpu_list.keys():
-            if self.gpu_list[i] == 0 or self.gpu_list[i] < gpu_min_time:
-                gpu_min = i 
-                gpu_min_time = self.gpu_list[i]
-
-        self.task_gpu[task_ip] = gpu_min
-       
-        print(self.task_gpu)
-        return gpu_min
-
-    def update_gpu_time(self, task, new_time):
-        
-        gpu = self.task_gpu[task] 
-        if gpu in self.gpu_list:
-            self.gpu_list[gpu] = (self.gpu_list[gpu]/2) + (new_time/2)
-            # print(self.gpu_list)
-           
+        if r ==1:
+            server_handler.add_task(task)
         else:
-            pass
-            print ("GPU Not Found:" + gpu +" | ")
-          
+            server_handler.remove_task(task)
+        server_handler.get_server_loads()
+        server_handler.update_server_time(task,t)
 
-class Server_Handeler:
-    def __init__(self):
-        self.server_task = {}
-        self.task_server = {}
-        self.servers = set()
-        self.server_time={}
+        if elapse - start > 10:
+            # server_handler.remove_task(task)
+            start = time.time()
+            sub_process.kill()
+            print('killing process')
+
+            proc = gpu_handeler.get_gpu(task)
+            cmd = './a.out {} {}'.format(task,proc)
+            print(cmd)
+            sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
+            
+            socketio.emit('process', {'camera': task,'weight':proc}, namespace='/test')
+        #     #
+            
+
+
+    return cmd
+    
+def pr():
+    thread_array = []
+    # ser.app.run()
+
+    # y =  threading.Thread(target=ser.app.run )
+    # y.start()
+    # ser.hello()
+    for task in ipdata:
+        x = threading.Thread(target=work, args=(task,))
+        thread_array.append(x)
+        x.start()
+        time.sleep(1)
+
+
+
+
+    inp = input("Press Enter to continue...")
+
+    for t in thread_array :
+        t._stop()
+    exit()
+
+
+
+
+if __name__ == '__main__':
+    pr()
+
+@app.route('/')
+def index():
+    #only by sending this page first will the client be connected to the socketio instance
+    return render_template('index.html')
+
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    # need visibility of the global thread object
+    global thread
+    print('Client connected')
+
+    #Start the random number generator thread only if the thread has not been started before.
+    if not thread.isAlive():
+        print("Starting Thread")
         
+        thread_array = []
+        # ser.app.run()
 
-    def add_server(self, url):
-        self.servers.add(url)
-        self.server_task[url] = []
-    
-    def remove_server(self, url):
-        self.servers.remove(url)
-        tasks = self.server_task[url].copy()
-        self.server_task.pop(url)
-
-        for task in tasks[url]:
-            self.remove_task(task)
-            self.add_task(task)
-        return server
-
-    def remove_task(self, task):
-        server = self.task_server[task]
-        del(self.task_server[task])
-        self.server_task[server].remove(task)
-        self.server_time[server]["count"] -= 1
-
-        return task
-
-    def add_task(self, task):
-        selected_server = ""
-        min_time = -1
-        for server in self.servers:
-            if self.server_time[server]['count'] ==0:
-                selected_server = server
-                break
-
-            if min_time < 0 or min_time < self.server_time[server]['time']:
-                selected_server = server
-                min_time = self.server_time[server]['time']
-
-        self.task_server[task] = server
-
-        if not self.server_task.get(server):
-            self.server_task[server]=[]
-        self.server_task[server].append(task)
-
-    def get_server_load(self,server):
-        return self.server_task[server]
-
-
-
-
-    
-
-    
+        # y =  threading.Thread(target=ser.app.run )
+        # y.start()
+        # ser.hello()
+        for task in ipdata:
+            thread = threading.Thread(target=work, args=(task,))
+            # thread = socketio.start_background_task(work, task)
+            thread_array.append(thread)
+            thread.start()
+            time.sleep(1)
 
         
+        inp = input("Press Enter to continue...")
+
+        for t in thread_array :
+            t._stop()
+        exit()
+
+
+
+@socketio.on('disconnect', namespace='/test')
+def test_disconnect():
+    print('Client disconnected')
+
+
+# if __name__ == '__main__':
+# # def rr():
+#     socketio.run(app)
