@@ -32,9 +32,9 @@ using namespace cv;
 queue <Mat> hdQ;
 queue <Mat> lpdQ;
 
-string json = "{\"call\": \"KF6GPE\",\"type\":\"l\",\"time\":\"1399371514\",\"lasttime\":\"1418597513\",\"lat\": 37.17667,\"lng\": -122.14650,\"result\":\"ok\"}";
-string json_file = "{ \"CAM\": [{\"IP\": \"127.0.0.1\", \"PORT\" : \"5000\",\"PROCESS_ID\": 1,\"IS_START\": \"True\"},{\"IP\": \"127.0.0.1\",\"PORT\" : \"5000\",\"PROCESS_ID\": 2,\"IS_START\": \"True\"}]}";
-void* humanDetect(void * prt){
+//string json = "{\"call\": \"KF6GPE\",\"type\":\"l\",\"time\":\"1399371514\",\"lasttime\":\"1418597513\",\"lat\": 37.17667,\"lng\": -122.14650,\"result\":\"ok\"}";
+//string json_file = "{ \"CAM\": [{\"IP\": \"127.0.0.1\", \"PORT\" : \"5000\",\"PROCESS_ID\": 1,\"IS_START\": \"True\"},{\"IP\": \"127.0.0.1\",\"PORT\" : \"5000\",\"PROCESS_ID\": 2,\"IS_START\": \"True\"}]}";
+void humanDetect_cuda(){
     cout<<"humanDetect"<<endl;
 }
 void* licenPlateDetect(void * prt){
@@ -42,23 +42,23 @@ void* licenPlateDetect(void * prt){
 }
 int main(int argc, char const *argv[])
 {
-    pthread_t HD;
-    pthread_t LPD;
-
-    pthread_create(&HD,NULL,humanDetect,&HD);
-    pthread_create(&LPD,NULL,licenPlateDetect,&LPD);
+//    pthread_t HD;
+//    pthread_t LPD;
 //
-    Json::Reader reader;
-    Json::Value root;
-    bool parseSuccess = reader.parse(json_file, root, false);
-
-    if (parseSuccess)
-    {
-        const Json::Value resultValue = root["CAM"];
-        const Json::Value val = resultValue[0]["IP"];
-        string s = val.asString();
-        cout << "Result is " << resultValue. << "\n";
-    }
+//    pthread_create(&HD,NULL,humanDetect,&HD);
+//    pthread_create(&LPD,NULL,licenPlateDetect,&LPD);
+//
+//    Json::Reader reader;
+//    Json::Value root;
+//    bool parseSuccess = reader.parse(json_file, root, false);
+//
+//    if (parseSuccess)
+//    {
+//        const Json::Value resultValue = root["CAM"];
+//        const Json::Value val = resultValue[0]["IP"];
+//        string s = val.asString();
+//        cout << "Result is " << resultValue. << "\n";
+//    }
 
 
 
