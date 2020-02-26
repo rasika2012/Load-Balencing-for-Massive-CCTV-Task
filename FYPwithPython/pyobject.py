@@ -63,9 +63,87 @@ class GPUHandeler:
         gpu = self.task_gpu[task] 
         if gpu in self.gpu_list:
             self.gpu_list[gpu] = (self.gpu_list[gpu]/2) + (new_time/2)
-            print(self.gpu_list)
+            # print(self.gpu_list)
            
         else:
             pass
             print ("GPU Not Found:" + gpu +" | ")
           
+
+class Server_Handeler:
+    def __init__(self):
+        self.server_task = {}
+        self.task_server = {}
+        self.servers = set()
+        self.server_time={}
+        
+
+    def add_server(self, url):
+        self.servers.add(url)
+        self.server_task[url] = []
+        self.server_time[url] = {"time":0, "count": 0}
+    
+    def remove_server(self, url):
+        self.servers.remove(url)
+        tasks = self.server_task[url].copy()
+        self.server_task.pop(url)
+
+        for task in tasks[url]:
+            self.remove_task(task)
+            self.add_task(task)
+        return server
+
+    def remove_task(self, task):
+        if self.task_server.get(task):
+            server = self.task_server[task]
+            del(self.task_server[task])
+            self.server_task[server].remove(task)
+            self.server_time[server]['count'] -= 1
+
+            return task
+        return 0
+
+    def add_task(self, task):
+        selected_server = ""
+        min_time = 113034557360
+        if self.task_server.get(task):
+            return 0
+        for server in self.servers:
+            if  self.server_time[server]['count'] ==0:
+                min_time = self.server_time[server]['time']
+                selected_server = server
+                break
+            if (self.server_time[server].get('time')):
+                if min_time > self.server_time[server]['time']:
+                    selected_server = server
+                    min_time = self.server_time[server]['time']
+
+        self.task_server[task] = server
+        self.server_time[server]['count'] += 1
+        print('task added:',self.task_server, 'min_time: ', min_time, 'count:', self.server_time[server]['count'] )
+
+        if not self.server_task.get(server):
+            self.server_task[server]=set()
+        self.server_task[server].add(task)
+
+    def get_server_load(self,server):
+        return self.server_task[server]
+
+    def update_server_time(self,task,time):
+        if self.task_server.get(task):
+            server = self.task_server[task]
+            self.server_time[server]['time'] = time
+
+    def get_server_loads(self):
+        print(self.server_task)
+        print(self.server_time)
+        return self.server_time
+
+
+
+
+    
+
+    
+
+        

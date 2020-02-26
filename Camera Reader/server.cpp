@@ -20,9 +20,9 @@ void *display(void *);
 
 int capDev = 0;
 
-    VideoCapture cap(0); // open the default camera "CCTV.mp4"
+//    VideoCapture cap("rtsp://192.168.8.101:8080/h264_ulaw.sdp"); // open the default camera "CCTV.mp4"
 
-//    VideoCapture cap(0);
+    VideoCapture cap(0);
    
 
 
@@ -131,7 +131,7 @@ void *display(void *ptr){
 //        [1280 x 720]
 //        [640 x 480]
         cap >> img;
-//        cv::imshow("CV Video read server", img);
+        cv::imshow("CV Video read server", img);
 
         if(img.empty()){
                     cout << " clip end\n" << endl;

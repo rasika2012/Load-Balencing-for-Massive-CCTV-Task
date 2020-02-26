@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/subServer.cpp" "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/middleware.dir/subServer.cpp.o"
+  "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/main.cpp" "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles/middleware.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

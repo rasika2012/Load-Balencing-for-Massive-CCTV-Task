@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/middleware.dir/subServer.cpp.o"
+  "CMakeFiles/middleware.dir/main.cpp.o"
   "middleware.pdb"
   "middleware"
 )

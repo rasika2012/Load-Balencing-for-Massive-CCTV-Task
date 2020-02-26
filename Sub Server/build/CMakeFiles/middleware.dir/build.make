@@ -57,27 +57,27 @@ include CMakeFiles/middleware.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/middleware.dir/flags.make
 
-CMakeFiles/middleware.dir/subServer.cpp.o: CMakeFiles/middleware.dir/flags.make
-CMakeFiles/middleware.dir/subServer.cpp.o: ../subServer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/middleware.dir/subServer.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/middleware.dir/subServer.cpp.o -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/subServer.cpp"
+CMakeFiles/middleware.dir/main.cpp.o: CMakeFiles/middleware.dir/flags.make
+CMakeFiles/middleware.dir/main.cpp.o: ../main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/middleware.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/middleware.dir/main.cpp.o -c "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/main.cpp"
 
-CMakeFiles/middleware.dir/subServer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/middleware.dir/subServer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/subServer.cpp" > CMakeFiles/middleware.dir/subServer.cpp.i
+CMakeFiles/middleware.dir/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/middleware.dir/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/main.cpp" > CMakeFiles/middleware.dir/main.cpp.i
 
-CMakeFiles/middleware.dir/subServer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/middleware.dir/subServer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/subServer.cpp" -o CMakeFiles/middleware.dir/subServer.cpp.s
+CMakeFiles/middleware.dir/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/middleware.dir/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/main.cpp" -o CMakeFiles/middleware.dir/main.cpp.s
 
 # Object files for target middleware
 middleware_OBJECTS = \
-"CMakeFiles/middleware.dir/subServer.cpp.o"
+"CMakeFiles/middleware.dir/main.cpp.o"
 
 # External object files for target middleware
 middleware_EXTERNAL_OBJECTS =
 
-middleware: CMakeFiles/middleware.dir/subServer.cpp.o
+middleware: CMakeFiles/middleware.dir/main.cpp.o
 middleware: CMakeFiles/middleware.dir/build.make
 middleware: /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/lib/libopencv_cudabgsegm.so.3.4.9
 middleware: /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/lib/libopencv_cudaobjdetect.so.3.4.9

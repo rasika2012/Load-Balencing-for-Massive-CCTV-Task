@@ -6,7 +6,25 @@
 
 #IncludeRegexTransform: 
 
-/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/subServer.cpp
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/algorithems/cascade.cpp
+iostream
+-
+iomanip
+-
+opencv2/objdetect/objdetect.hpp
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/algorithems/opencv2/objdetect/objdetect.hpp
+opencv2/highgui/highgui.hpp
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/algorithems/opencv2/highgui/highgui.hpp
+opencv2/imgproc/imgproc.hpp
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/algorithems/opencv2/imgproc/imgproc.hpp
+opencv2/cudaobjdetect.hpp
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/algorithems/opencv2/cudaobjdetect.hpp
+opencv2/cudaimgproc.hpp
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/algorithems/opencv2/cudaimgproc.hpp
+opencv2/cudawarping.hpp
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/algorithems/opencv2/cudawarping.hpp
+
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/main.cpp
 opencv2/opencv.hpp
 /home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/opencv2/opencv.hpp
 opencv2/core/ocl.hpp
@@ -37,8 +55,8 @@ queue
 -
 sstream
 -
-json/json.h
--
+algorithems/cascade.cpp
+/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Sub Server/algorithems/cascade.cpp
 
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv/cxcore.h
 opencv2/core/core_c.h
@@ -552,6 +570,12 @@ lsh_index.h
 autotuned_index.h
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/flann/autotuned_index.h
 
+/home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/flann/allocator.h
+stdlib.h
+-
+stdio.h
+-
+
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/flann/any.h
 defines.h
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/flann/defines.h
@@ -597,6 +621,8 @@ kdtree_index.h
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/flann/kdtree_index.h
 kmeans_index.h
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/flann/kmeans_index.h
+
+/home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/flann/config.h
 
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/flann/defines.h
 config.h
@@ -950,6 +976,10 @@ opencv2/videoio.hpp
 opencv2/highgui/highgui_c.h
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/opencv2/highgui/highgui_c.h
 
+/home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/highgui/highgui.hpp
+opencv2/highgui.hpp
+/home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/highgui/opencv2/highgui.hpp
+
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/highgui/highgui_c.h
 opencv2/core/core_c.h
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/highgui/opencv2/core/core_c.h
@@ -973,6 +1003,10 @@ opencv2/core.hpp
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/opencv2/core.hpp
 opencv2/imgproc/imgproc_c.h
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/opencv2/imgproc/imgproc_c.h
+
+/home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/imgproc/imgproc.hpp
+opencv2/imgproc.hpp
+/home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/imgproc/opencv2/imgproc.hpp
 
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/imgproc/imgproc_c.h
 opencv2/imgproc/types_c.h
@@ -1009,6 +1043,10 @@ opencv2/core.hpp
 -
 vector
 -
+
+/home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/objdetect/objdetect.hpp
+opencv2/objdetect.hpp
+/home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/objdetect/opencv2/objdetect.hpp
 
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/objdetect/objdetect_c.h
 opencv2/core/core_c.h
@@ -1417,94 +1455,4 @@ opencv2/videostab/log.hpp
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/xfeatures2d/cuda.hpp
 opencv2/core/cuda.hpp
 /home/chathuranga/Public/FYP/opencv/installation/OpenCV-master/include/opencv2/xfeatures2d/opencv2/core/cuda.hpp
-
-/usr/include/jsoncpp/json/allocator.h
-cstring
--
-memory
--
-
-/usr/include/jsoncpp/json/autolink.h
-config.h
-/usr/include/jsoncpp/json/config.h
-cpptl/cpptl_autolink.h
--
-autolink.h
-/usr/include/jsoncpp/json/autolink.h
-
-/usr/include/jsoncpp/json/config.h
-stddef.h
--
-string
--
-cpptl/config.h
--
-version.h
-/usr/include/jsoncpp/json/version.h
-allocator.h
-/usr/include/jsoncpp/json/allocator.h
-
-/usr/include/jsoncpp/json/features.h
-forwards.h
-/usr/include/jsoncpp/json/forwards.h
-
-/usr/include/jsoncpp/json/forwards.h
-config.h
-/usr/include/jsoncpp/json/config.h
-
-/usr/include/jsoncpp/json/json.h
-autolink.h
-/usr/include/jsoncpp/json/autolink.h
-value.h
-/usr/include/jsoncpp/json/value.h
-reader.h
-/usr/include/jsoncpp/json/reader.h
-writer.h
-/usr/include/jsoncpp/json/writer.h
-features.h
-/usr/include/jsoncpp/json/features.h
-
-/usr/include/jsoncpp/json/reader.h
-features.h
-/usr/include/jsoncpp/json/features.h
-value.h
-/usr/include/jsoncpp/json/value.h
-deque
--
-iosfwd
--
-stack
--
-string
--
-istream
--
-
-/usr/include/jsoncpp/json/value.h
-forwards.h
-/usr/include/jsoncpp/json/forwards.h
-string
--
-vector
--
-exception
--
-map
--
-cpptl/smallmap.h
--
-cpptl/forwards.h
--
-
-/usr/include/jsoncpp/json/version.h
-
-/usr/include/jsoncpp/json/writer.h
-value.h
-/usr/include/jsoncpp/json/value.h
-vector
--
-string
--
-ostream
--
 

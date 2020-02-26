@@ -25,13 +25,6 @@ def work(arg):
         myline = my_tool_subprocess.stdout.readline()
 
 
-
-
-
-
-
-
-
 num = 4  # set to the number of workers you want (it defaults to the cpu count of your machine)
 tp = ThreadPool(num)
 

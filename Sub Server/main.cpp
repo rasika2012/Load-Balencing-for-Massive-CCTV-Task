@@ -17,16 +17,91 @@
 #include <unistd.h>
 #include <queue>
 #include <sstream>
+#include "algorithems/cascade.cpp"
 using namespace std;
 using namespace cv;
+using namespace std::chrono;
+bool isPush = false;
+void licence(string ip){
+    Cascade cascade;
+    Mat img;
+    VideoCapture cap(ip);
+    while (1) {
+        cap >> img;
+
+        cascade.getLicense_gpu(img);
+    }
+}
+void licence2(string ip){
+    Cascade cascade;
+    Mat img;
+    img = Mat::zeros(480, 640, CV_8UC3);
+//    VideoCapture cap("rtsp://10.42.0.48:8080/h264_ulaw.sdp");
+    VideoCapture cap("CCTV2.mp4");
+    if (!img.isContinuous()) {
+        img = img.clone();
+    }
+    cout << "ProccessID, countOfDetection, Time(ms)"<< endl;
+    while (1) {
+        cap >> img;
+        if(img.empty()){
+            cout << " clip end\n" << endl;
+            break;
+        }
+        cv::resize(img, img, cv::Size(640, 480),CV_8UC3);
+//        cout << img.size() << "    ";
+//        cv::imshow("result1", img);
+        auto start = high_resolution_clock::now();
+        cascade.getLicense_gpu(img);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        cout << " "<< duration.count();
+        cout<< " "<< " "  << endl;
+        if(isPush){
+            while (isPush){
+                usleep(100000);
+            };
+        }
+    }
+}
+
+void *catch_std_in(void *threadid) {
+    int input = 0;
+    for (std::string line; std::getline(std::cin, line);) {
+        try {
+            input = std::stoi(line);
+        }catch (int x){
+            input = 0;
+        }
+
+        if(input == 4){
+            isPush = true;
+        } else{
+            isPush = false;
+        }
+
+        std::cout <<"************************************" <<line << std::endl;
+    }
+    pthread_exit(NULL);
+}
+
 int main(int argc, char const *argv[])
 {
-    cout<< argc << endl;
-    if(argc!=3){
-        cout << "2,0" << endl;
-        exit();
+    int process = std::stoi(argv[2]);
+    string cam = argv[1];
+    pthread_t std_in;
+    pthread_create(&std_in, NULL, catch_std_in, (void *)process);
+    switch (process){
+        case 1:
+            licence(cam);
+            break;
+        case 2:
+            licence2(cam);
+            break;
+        default:
+            cout << "defoult" << endl;
+            licence(cam);
     }
-    string camera_path = argc[1];
-    
+
     return 0;
 }

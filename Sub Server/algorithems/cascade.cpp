@@ -23,7 +23,7 @@ class Cascade {
     double scaleFactor = 1.2;
     bool filterRects = true;
     bool findLargestObject = true;
-    string cascadeName = "../haarcascade_licence_plate_rus_16stages.xml";
+    string cascadeName = "../classifires/haarcascade_licence_plate_rus_16stages.xml";
 public:
     void getLicense_gpu(Mat frame);
 
@@ -76,19 +76,20 @@ public:
 
     //print detections to console
     cout << setfill(' ') << setprecision(2);
-    cout << setw(6) << fixed << fps << " FPS, " << faces.size() << " det";
-    if ((filterRects || findLargestObject) && !faces.empty()) {
-        for (size_t i = 0; i < faces.size(); ++i) {
-            cout << ", [" << setw(4) << faces[i].x
-                 << ", " << setw(4) << faces[i].y
-                 << ", " << setw(4) << faces[i].width
-                 << ", " << setw(4) << faces[i].height << "]";
-        }
-    }
-    cout << endl;
+    cout << "1, ";
+    cout << faces.size() << ",";
+//    if ((filterRects || findLargestObject) && !faces.empty()) {
+//        for (size_t i = 0; i < faces.size(); ++i) {
+//            cout << "  [" << setw(4) << faces[i].x
+//                 << ", " << setw(4) << faces[i].y
+//                 << ", " << setw(4) << faces[i].width
+//                 << ", " << setw(4) << faces[i].height << "] ";
+//        }
+//    }
+
     cv::cvtColor(resized_cpu, frameDisp, COLOR_GRAY2BGR);
 //        displayState(frameDisp, helpScreen, useGPU, findLargestObject, filterRects, fps);
-    imshow("result", frameDisp);
+//    imshow("result1", frameDisp);
 
 }
 Cascade::Cascade(void) {
