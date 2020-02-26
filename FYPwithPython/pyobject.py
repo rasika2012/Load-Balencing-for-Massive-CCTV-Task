@@ -1,5 +1,14 @@
 from queue import Queue
+# from socket import SocketIO
+# from flask import Flask, render_template, url_for, copy_current_request_context
+# from random import random
+# from time import sleep
+# from threading import Thread, Event
 
+
+# app = Flask(__name__)
+# app.config['SECRET_KEY'] = 'secret!'
+# app.config['DEBUG'] = True
 
 class FQueue:
     MaxDelay = 0
@@ -27,6 +36,7 @@ class FQueue:
 
 
 class GPUHandeler:
+    # socketio = SocketIO(app, async_mode=None, logger=True, engineio_logger=True)
 
     def __init__(self,gpu_list):
         self.gpu_list  = {}
@@ -64,8 +74,11 @@ class GPUHandeler:
         if gpu in self.gpu_list:
             self.gpu_list[gpu] = (self.gpu_list[gpu]/2) + (new_time/2)
             # print(self.gpu_list)
-           
+            # socketio.emit('pro', {'pro':self.gpu_list}, namespace='/val')
+            
         else:
             pass
             print ("GPU Not Found:" + gpu +" | ")
+
+        return self.gpu_list        
           
