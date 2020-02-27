@@ -135,8 +135,8 @@ class Server_Handeler:
             self.server_time[server]['time'] = time
 
     def get_server_loads(self):
-        print(self.server_task)
-        print(self.server_time)
+        # print(self.server_task)
+        # print(self.server_time)
         return self.server_time
 
 

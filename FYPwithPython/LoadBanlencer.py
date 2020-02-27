@@ -5,7 +5,8 @@ import threading
 import random
 # import ser
 import socket
-
+import os
+import signal
 # Start with a basic flask app webpage.
 from flask_socketio import SocketIO, emit
 from flask import Flask, render_template, url_for, copy_current_request_context
@@ -25,8 +26,8 @@ socketio = SocketIO(app, async_mode=None, logger=True, engineio_logger=True)
 thread = Thread()
 thread_stop_event = Event()
 
-ipdata = ['CamIP1','CamIP2','CamIP3','CamIP4','CamIP5','CamIP6','CamIP7','CamIP8']
-gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2","GPU3"])
+ipdata = ['CamIP1','CamIP2','Cam']
+gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
 
 server_handler.add_server('ser1')
@@ -34,17 +35,21 @@ server_handler.add_server('ser2')
 server_handler.add_server('ser3')
 
 def split_result(result):
-
+    # res=(result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' '))
+    # r = res[0]
+    # t = res[2]
+    # print("rt",res)
     try:
-        res = result.split("'")[1].replace("\\n",'').split(' ')
+        res = result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' ')
         r = int(res[0])
-        t = int(res[1])
+        t = int(res[2])
+        
         return(r,t)
     except:
         return ( 0,0)
 
 def work(task):
-    cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
+    cmd = './server {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True
@@ -56,9 +61,10 @@ def work(task):
     while not thread_stop_event.isSet():
         myline = str(sub_process.stdout.readline())
         r,t = split_result(myline)
+        print(r,t)
         gpu_handeler.update_gpu_time(task, t)
         elapse = time.time()
-        # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task), " Time:", t, " Result:", r)
+        print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task), " Time:", t, " Result:", r)
         
         if r ==1:
             server_handler.add_task(task)
@@ -67,19 +73,24 @@ def work(task):
         server_handler.get_server_loads()
         server_handler.update_server_time(task,t)
 
-        if elapse - start > 10:
+        print("Time",elapse - start, random()*100>90,sub_process.pid)
+        
+        if random()*100>90 and elapse - start > 13:
             # server_handler.remove_task(task)
             start = time.time()
             sub_process.kill()
-            print('killing process')
+            subprocess.call("kill -9 "+str(sub_process.pid))
+            # print('killing process',sub_process.pid)
+            # os.killpg(os.getpgid(sub_process.pid), signal.SIGTERM)
+            
 
             proc = gpu_handeler.get_gpu(task)
-            cmd = './a.out {} {}'.format(task,proc)
+            cmd = './server {} {}'.format(task,proc)
             print(cmd)
             sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
             
-            socketio.emit('process', {'camera': task,'weight':proc}, namespace='/test')
-        #     #
+            # socketio.emit('process', {'camera': task,'weight':proc}, namespace='/test')
+        # #     #
             
 
 
@@ -96,9 +107,7 @@ def pr():
         x = threading.Thread(target=work, args=(task,))
         thread_array.append(x)
         x.start()
-        time.sleep(1)
-
-
+        time.sleep(5)
 
 
     inp = input("Press Enter to continue...")
