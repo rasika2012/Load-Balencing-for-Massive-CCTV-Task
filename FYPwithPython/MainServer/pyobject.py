@@ -80,7 +80,7 @@ class Server_Handeler:
 
     def add_server(self, url):
         self.servers.add(url)
-        self.server_task[url] = []
+        self.server_task[url] = set()
         self.server_time[url] = {"time":0, "count": 0}
     
     def remove_server(self, url):
@@ -137,9 +137,13 @@ class Server_Handeler:
     def get_server_loads(self):
         # print(self.server_task)
         # print(self.server_time)
-        return self.server_time
+        print(self.server_task)
+        map = {}
+        for i in self.server_task.keys():
+            map[i] = list(self.server_task[i])
 
-
+        print(map)
+        return map
 
 
     
