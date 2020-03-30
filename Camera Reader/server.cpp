@@ -33,11 +33,13 @@ cv::Mat df;
 int main(int argc, char** argv)
 
 {   
-    VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
-    if(argc >1 )
-    VideoCapture vcap(argv[1]); 
+      VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
+    //  VideoCapture vcap("CCTV.mp4");
+     if(argc >1 )
+        VideoCapture vcap(argv[1]); 
      
-    
+    // VideoCapture vcap;
+    // cout<<vcap.open("rtsp://192.168.1.101:8080/h264_ulaw.sdp");
 
     bool t = 0;
     int count = 0;
@@ -76,7 +78,8 @@ int main(int argc, char** argv)
             cout<<" "<<" "<< second_time - begin_time<<" "<< float(cv::norm(df)) <<endl;
             // cout<<fr2-fr1 <<",";
             fr1 = clock();
-
+            // system("pause");
+            
         }else if (!t)
         {
              image1 = image.clone();

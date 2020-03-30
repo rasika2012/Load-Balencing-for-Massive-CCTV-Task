@@ -45,7 +45,7 @@ def split_result(result):
         return ( 0,0)
 
 def work(task):
-    cmd = './server {} {}'.format(task,gpu_handeler.get_gpu(task))
+    cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True

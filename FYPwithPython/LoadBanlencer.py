@@ -34,6 +34,10 @@ server_handler.add_server('ser1')
 server_handler.add_server('ser2')
 # server_handler.add_server('ser3')
 
+
+
+
+
 def split_result(result):
     # res=(result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' '))
     # r = res[0]
@@ -49,7 +53,7 @@ def split_result(result):
         return ( 0,0)
 
 def work(task):
-    cmd = './server {} {}'.format(task,gpu_handeler.get_gpu(task))
+    cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True
@@ -61,7 +65,7 @@ def work(task):
     while not thread_stop_event.isSet():
         myline = str(sub_process.stdout.readline())
         r,t = split_result(myline)
-        # print(r,t)
+        print(myline)
         gpu_handeler.update_gpu_time(task, t)
         elapse = time.time()
         # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task), " Time:", t, " Result:", r)
@@ -167,7 +171,7 @@ def test_disconnect():
 
 
 if __name__ == '__main__':
-    pr()
+    # pr()
     socketio.run(app)
 
 # if __name__ == '__main__':

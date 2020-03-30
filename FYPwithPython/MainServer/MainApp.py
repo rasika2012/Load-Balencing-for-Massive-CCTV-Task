@@ -21,8 +21,8 @@ app = Flask(__name__)
 #random number Generator Thread
 thread = Thread()
 thread_stop_event = Event()
-
-ipdata = ['rtsp://192.168.8.101:8080/h264_ulaw.sdp']#,'rtsp://192.168.8.100:8080/h264_ulaw.sdp','rtsp://192.168.8.102:8080/h264_ulaw.sdp']
+ 
+ipdata = ['rtsp://192.168.8.100:8080/h264_ulaw.sdp','rtsp://192.168.8.100:8080/h264_ulaw.sdp ','rtsp://192.168.8.100:8080/h264_ulaw.sdp  ']
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
 
@@ -60,7 +60,7 @@ def work(task):
         # print(r,t)
         gpu_handeler.update_gpu_time(task, t)
         elapse = time.time()
-        # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task), " Time:", t, " Result:", r)
+        # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task),"Line",myline, " Time:", t, " Result:", r)
         
         if r ==1:
             server_handler.add_task(task)
@@ -123,6 +123,9 @@ def index():
     #only by sending this page first will the client be connected to the socketio instance
     return json.dumps(server_handler.get_server_loads())
 
+@app.route('/ips')
+def ips():
+    return json.dumps(ipdata)
 
 
 
