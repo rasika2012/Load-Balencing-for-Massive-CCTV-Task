@@ -22,7 +22,7 @@ app = Flask(__name__)
 thread = Thread()
 thread_stop_event = Event()
  
-ipdata = ['rtsp://192.168.8.100:8080/h264_ulaw.sdp','rtsp://192.168.8.100:8080/h264_ulaw.sdp ','rtsp://192.168.8.100:8080/h264_ulaw.sdp  ']
+ipdata = ['rtsp://192.168.8.101:8080/h264_ulaw.sdp','rtsp://192.168.8.101:8080/h264_ulaw.sdp ','rtsp://192.168.8.101:8080/h264_ulaw.sdp  ']
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
 

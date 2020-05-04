@@ -33,7 +33,7 @@ cv::Mat df;
 int main(int argc, char** argv)
 
 {   
-      VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
+      VideoCapture vcap("rtsp://192.168.8.101:8080/h264_ulaw.sdp");
     //  VideoCapture vcap("CCTV.mp4");
      if(argc >1 )
         VideoCapture vcap(argv[1]); 
