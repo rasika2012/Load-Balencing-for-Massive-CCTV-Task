@@ -132,6 +132,12 @@ class Server_Handeler:
     def update_server_time(self,task,time):
         if self.task_server.get(task):
             server = self.task_server[task]
+            print(server)
+            self.server_time[server]['time'] = time
+
+
+    def update_server_time_by_server(self,server,time):
+        if(self.server_time.get(server)):
             self.server_time[server]['time'] = time
 
     def get_server_times(self):
@@ -140,12 +146,12 @@ class Server_Handeler:
     def get_server_loads(self):
         # print(self.server_task)
         # print(self.server_time)
-        print(self.server_task)
+        # print(self.server_task)
         map = {}
         for i in self.server_task.keys():
             map[i] = list(self.server_task[i])
 
-        print(map)
+        # print(map)
         return map
 
 

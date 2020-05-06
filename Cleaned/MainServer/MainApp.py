@@ -22,7 +22,7 @@ app = Flask(__name__)
 thread = Thread()
 thread_stop_event = Event()
  
-ipdata = ['rtsp://192.168.8.101:8080/h264_ulaw.sdp','rtsp://192.168.8.101:8080/h264_ulaw.sdp ','rtsp://192.168.8.101:8080/h264_ulaw.sdp  ']
+ipdata = ['rtsp://192.168.8.101:8080/h264_ulaw.sdp1','rtsp://192.168.8.101:8080/h264_ulaw.sdp 2','rtsp://192.168.8.101:8080/h264_ulaw.sdp 3 ']
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
 
@@ -64,12 +64,15 @@ def work(task):
         
         if r ==1:
             server_handler.add_task(task)
+            print(task)
         else:
             server_handler.remove_task(task)
 
-        server_handler.get_server_loads()
-        server_handler.update_server_time(task,t)
-        
+        ##############
+        # print(server_handler.get_server_loads())
+    
+        #  server_handler.update_server_time(task,t)
+        #######################
 
 
     return cmd
@@ -88,6 +91,14 @@ def pr():
 @app.route('/load')
 def index():
     #only by sending this page first will the client be connected to the socketio instance
+    return json.dumps(server_handler.get_server_loads())
+
+@app.route('/subserver/<server>/<time>')
+def sub_server(server,time):
+    #only by supdate
+    print(server,time)
+    server_handler.update_server_time_by_server(server,int(time))
+    server_handler.update_server_time_by_server('ser2',int(time)+2)
     return json.dumps(server_handler.get_server_loads())
 
 @app.route('/ips')

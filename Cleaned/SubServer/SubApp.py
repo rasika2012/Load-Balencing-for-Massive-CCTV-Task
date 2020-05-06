@@ -15,6 +15,10 @@ ips = []
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 
 r = requests.get("http://localhost:9000/ips")
+
+server_name = 'ser1'
+server_time = 10
+
 print("IP info taken\n", r.content)
 ips =  json.loads(r.content)
 
@@ -31,8 +35,12 @@ def work(task):
 
     while True:
         myline = str(sub_process.stdout.readline())
-        sub_process.stdin.writelines('4')
+        # sub_process.stdin.writelines('4')
         print('myLine',myline)
+        server_time = random.randint(100,300)
+        # print(server_time)
+        r = requests.get("http://localhost:9000/subserver/"+server_name+'/'+str(server_time))
+        
 
 
 
@@ -44,7 +52,7 @@ for task in ips:
     time.sleep(5)
 
 while True:
-    r = requests.get("http://localhost:9000/load")
+    r = requests.get("http://localhost:9000/load/")
     print ('content',r.content)
     time.sleep(0.1)
 
