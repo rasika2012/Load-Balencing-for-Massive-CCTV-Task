@@ -1,3 +1,0 @@
-/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Camera Server/build/CMakeFiles/rebuild_cache.dir
-/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Camera Server/build/CMakeFiles/server.dir
-/home/chathuranga/Public/FYP/Project 2/Load-Balencing-for-Massive-CCTV-Task/Camera Server/build/CMakeFiles/edit_cache.dir

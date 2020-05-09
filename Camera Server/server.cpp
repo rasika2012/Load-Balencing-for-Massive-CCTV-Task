@@ -16,84 +16,91 @@ using namespace cv;
 using namespace std;
 static int weght = 20*40;
 static int hight = 20*30;
-void *run_thrad(void *);
-void display(int);
+void *display(void *);
+int nuofClient = 0;
 int capDev = 0;
-
-struct args {
-    int port;
-};
 
 //    VideoCapture cap("rtsp://192.168.8.101:8080/h264_ulaw.sdp"); // open the default camera "CCTV.mp4"
 
-    VideoCapture cap(0);
-
-int main(int argc, char** argv) {
-    int no_of_cam = 0;
-    cout << "Number of Cameras: ";
-    cin  >> no_of_cam;
-    pthread_t thread_id[no_of_cam];
-    struct args *ARG = (struct args *)malloc(sizeof(struct args));
-    int ports[no_of_cam];
-    for (int i = 0; i < no_of_cam; ++i) {
-        cout << "Port " << i+1 << ": ";
-        cin >> ports[i];
-        ARG->port = ports[i];
-        pthread_create(&thread_id[i],NULL,run_thrad,(void *)ARG);
-    }
-
-
-}
-
-void *run_thrad(void *input) {
-    int port = ((struct args*)input)->port;
+    
+int main(int argc, char** argv)
+{   
 
     //--------------------------------------------------------
     //networking stuff: socket, bind, listen
     //--------------------------------------------------------
-    int localSocket,
-            remoteSocket;
+    int                 localSocket,
+                        remoteSocket,
+                        port = 4090;                               
 
-
-    struct sockaddr_in localAddr,
-            remoteAddr;
-
-
+    struct  sockaddr_in localAddr,
+                        remoteAddr;
+    pthread_t thread_id;
+    
+           
     int addrLen = sizeof(struct sockaddr_in);
 
-    localSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (localSocket == -1) {
-        perror("socket() call failed!!");
+       
+    if ( (argc > 1) && (strcmp(argv[1],"-h") == 0) ) {
+          std::cerr << "usage: ./cv_video_srv [port] [capture device]\n" <<
+                       "port           : socket port (4097 default)\n" <<
+                       "capture device : (0 default)\n" << std::endl;
+
+          exit(1);
     }
+
+    if (argc == 2) port = atoi(argv[1]);
+
+    localSocket = socket(AF_INET , SOCK_STREAM , 0);
+    if (localSocket == -1){
+         perror("socket() call failed!!");
+    }    
 
     localAddr.sin_family = AF_INET;
     localAddr.sin_addr.s_addr = INADDR_ANY;
-    localAddr.sin_port = htons(port);
+    localAddr.sin_port = htons( port );
 
-    if (bind(localSocket, (struct sockaddr *) &localAddr, sizeof(localAddr)) < 0) {
-        perror("Can't bind() socket");
-        exit(1);
+    if( bind(localSocket,(struct sockaddr *)&localAddr , sizeof(localAddr)) < 0) {
+         perror("Can't bind() socket");
+         exit(1);
     }
-
+    
     //Listening
-    listen(localSocket, 3);
-
-    std::cout << "Waiting for connections...\n"
-              << "Server Port:" << port << std::endl;
+    listen(localSocket , 3);
+    
+    std::cout <<  "Waiting for connections...\n"
+              <<  "Server Port:" << port << std::endl;
 
     //accept connection from an incoming client
-    remoteSocket = accept(localSocket, (struct sockaddr *) &remoteAddr, (socklen_t * ) & addrLen);
+    while(1){
+    //if (remoteSocket < 0) {
+    //    perror("accept failed!");
+    //    exit(1);
+    //}
+       
+     remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);  
+      //std::cout << remoteSocket<< "32"<< std::endl;
     if (remoteSocket < 0) {
         perror("accept failed!");
         exit(1);
+    } 
+    std::cout << "Connection accepted" << std::endl;
+    pthread_create(&thread_id,NULL,display,&remoteSocket);
+
+     //pthread_join(thread_id,NULL);
+
     }
-    cout << "pass\n";
-    display(remoteSocket);
+    //pthread_join(thread_id,NULL);
+    //close(remoteSocket);
+
+    return 0;
 }
 
-void display(int socket){
-    std::cout << "Start\n"
-              << "Server socket:" << socket << std::endl;
+void *display(void *ptr){
+    VideoCapture cap("CCTV.mp4");
+
+    nuofClient = nuofClient + 1;
+    int socket = *(int *)ptr;
     //OpenCV Code
     //----------------------------------------------------------
 
@@ -124,21 +131,31 @@ void display(int socket){
 //        [1280 x 720]
 //        [640 x 480]
         cap >> img;
-        cv::imshow("CV Video read server", img);
+       
 
         if(img.empty()){
                     cout << " clip end\n" << endl;
+                    nuofClient = nuofClient - 1;
+                    close(socket);
                     break;
                 }
                 cv::resize(img, img, cv::Size(weght, hight),CV_8UC3);
-                cout << img.size() << endl;
+                // cout << img.size() << endl;
                 //do video processing here 
                 //cvtColor(img, imgGray, CV_BGR2GRAY);
                 //send processed image
+                clock_t begin_time = clock();
                 if ((bytes = send(socket, img.data, imgSize, 0)) < 0){
+                    nuofClient = nuofClient - 1;
                      std::cerr << "bytes = " << bytes << std::endl;
                      break;
                 }
+                if ((bytes = recv(socket, img.data, imgSize , MSG_WAITALL)) == -1) {
+                    nuofClient = nuofClient - 1;
+                    std::cerr << "recv failed, received bytes = " << bytes << std::endl;
+                    break;
+                }
+                cout << nuofClient << ", "<<float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
 
 
         usleep(microseconds);
