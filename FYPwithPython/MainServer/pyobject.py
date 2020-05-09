@@ -1,29 +1,29 @@
-# from queue import Queue
+from queue import Queue
 
 
-# class FQueue:
-#     MaxDelay = 0
-#     MinDelay = 0
+class FQueue:
+    MaxDelay = 0
+    MinDelay = 0
     
-#     def __init__(self):
-#         self.q = [0]
-#         self.maxlen = 10
-#         self.q = self.q*self.maxlen
-#         self.i = -1
-#         self.total =0
+    def __init__(self):
+        self.q = [0]
+        self.maxlen = 10
+        self.q = self.q*self.maxlen
+        self.i = -1
+        self.total =0
 
-#     def add(self,val):
-#         self.i +=1
-#         # print(self.i)
-#         if self.i >= self.maxlen :
-#             self.i = 0
-#         self.total-=self.q[self.i]
-#         self.q[self.i] = val
-#         self.total += val
+    def add(self,val):
+        self.i +=1
+        # print(self.i)
+        if self.i >= self.maxlen :
+            self.i = 0
+        self.total-=self.q[self.i]
+        self.q[self.i] = val
+        self.total += val
         
   
-#     def sum(self):
-#         return self.total
+    def sum(self):
+        return self.total
 
 
 class GPUHandeler:
@@ -80,7 +80,7 @@ class Server_Handeler:
 
     def add_server(self, url):
         self.servers.add(url)
-        self.server_task[url] = []
+        self.server_task[url] = set()
         self.server_time[url] = {"time":0, "count": 0}
     
     def remove_server(self, url):
@@ -137,9 +137,13 @@ class Server_Handeler:
     def get_server_loads(self):
         # print(self.server_task)
         # print(self.server_time)
-        return self.server_task
+        print(self.server_task)
+        map = {}
+        for i in self.server_task.keys():
+            map[i] = list(self.server_task[i])
 
-
+        print(map)
+        return map
 
 
     

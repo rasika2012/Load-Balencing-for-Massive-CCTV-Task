@@ -8,35 +8,27 @@ import socket
 import os
 import signal
 # Start with a basic flask app webpage.
-from flask_socketio import SocketIO, emit
-from flask import Flask, render_template, url_for, copy_current_request_context
+
+from flask import Flask
+import json
+#--
 from random import random
 from time import sleep
 from threading import Thread, Event
 
-
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-app.config['DEBUG'] = True
-
-#turn the flask app into a socketio app
-socketio = SocketIO(app, async_mode=None, logger=True, engineio_logger=True)
 
 #random number Generator Thread
 thread = Thread()
 thread_stop_event = Event()
-
-ipdata = ['rtsp://192.168.8.101:8080/h264_ulaw.sdp','rtsp://192.168.8.100:8080/h264_ulaw.sdp','rtsp://192.168.8.102:8080/h264_ulaw.sdp']
+ 
+ipdata = ['rtsp://192.168.8.101:8080/h264_ulaw.sdp','rtsp://192.168.8.101:8080/h264_ulaw.sdp ','rtsp://192.168.8.101:8080/h264_ulaw.sdp  ']
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
 
 server_handler.add_server('ser1')
 server_handler.add_server('ser2')
 # server_handler.add_server('ser3')
-
-
-
-
 
 def split_result(result):
     # res=(result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' '))
@@ -53,7 +45,7 @@ def split_result(result):
         return ( 0,0)
 
 def work(task):
-    cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
+    cmd = './server {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True
@@ -65,10 +57,10 @@ def work(task):
     while not thread_stop_event.isSet():
         myline = str(sub_process.stdout.readline())
         r,t = split_result(myline)
-        print(myline)
+        # print(r,t)
         gpu_handeler.update_gpu_time(task, t)
         elapse = time.time()
-        # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task), " Time:", t, " Result:", r)
+        # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task),"Line",myline, " Time:", t, " Result:", r)
         
         if r ==1:
             server_handler.add_task(task)
@@ -81,7 +73,7 @@ def work(task):
         #     print("Task:->",server_handler.task_server[task]," : ",server_handler.get_server_load(server_handler.task_server[task]))
 
         # print("Time",elapse - start, random()*100>90,sub_process.pid)
-        print(server_handler.get_server_loads())
+        # print(server_handler.get_server_loads())
         # if random()*100>90 and elapse - start > 13:
         #     # server_handler.remove_task(task)
         #     start = time.time()
@@ -126,53 +118,20 @@ def pr():
 
 
 
-@app.route('/')
+@app.route('/load')
 def index():
     #only by sending this page first will the client be connected to the socketio instance
-    return render_template('index.html')
+    return json.dumps(server_handler.get_server_loads())
 
-@socketio.on('connect', namespace='/test')
-def test_connect():
-    # need visibility of the global thread object
-    global thread
-    print('Client connected')
-
-    #Start the random number generator thread only if the thread has not been started before.
-    if not thread.isAlive():
-        print("Starting Thread")
-        
-        thread_array = []
-        # ser.app.run()
-
-        # y =  threading.Thread(target=ser.app.run )
-        # y.start()
-        # ser.hello()
-        for task in ipdata:
-            thread = threading.Thread(target=work, args=(task,))
-            # thread = socketio.start_background_task(work, task)
-            thread_array.append(thread)
-            thread.start()
-            time.sleep(1)
-
-        
-        inp = input("Press Enter to continue...")
-
-        for t in thread_array :
-            t._stop()
-        exit()
-
-
-
-@socketio.on('disconnect', namespace='/test')
-def test_disconnect():
-    print('Client disconnected')
-
+@app.route('/ips')
+def ips():
+    return json.dumps(ipdata)
 
 
 
 if __name__ == '__main__':
-    # pr()
-    socketio.run(app)
+    pr()
+    Flask.run(app,port=9000)
 
 # if __name__ == '__main__':
 # # def rr():
