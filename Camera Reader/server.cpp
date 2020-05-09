@@ -23,8 +23,6 @@ int capDev = 0;
 //    VideoCapture cap("rtsp://192.168.8.101:8080/h264_ulaw.sdp"); // open the default camera "CCTV.mp4"
 
     VideoCapture cap(0);
-   
-
 
 int main(int argc, char** argv)
 {   
