@@ -1,29 +1,29 @@
-from queue import Queue
+# from queue import Queue
 
 
-class FQueue:
-    MaxDelay = 0
-    MinDelay = 0
+# class FQueue:
+#     MaxDelay = 0
+#     MinDelay = 0
     
-    def __init__(self):
-        self.q = [0]
-        self.maxlen = 10
-        self.q = self.q*self.maxlen
-        self.i = -1
-        self.total =0
+#     def __init__(self):
+#         self.q = [0]
+#         self.maxlen = 10
+#         self.q = self.q*self.maxlen
+#         self.i = -1
+#         self.total =0
 
-    def add(self,val):
-        self.i +=1
-        print(self.i)
-        if self.i >= self.maxlen :
-            self.i = 0
-        self.total-=self.q[self.i]
-        self.q[self.i] = val
-        self.total += val
+#     def add(self,val):
+#         self.i +=1
+#         # print(self.i)
+#         if self.i >= self.maxlen :
+#             self.i = 0
+#         self.total-=self.q[self.i]
+#         self.q[self.i] = val
+#         self.total += val
         
   
-    def sum(self):
-        return self.total
+#     def sum(self):
+#         return self.total
 
 
 class GPUHandeler:
@@ -120,7 +120,7 @@ class Server_Handeler:
 
         self.task_server[task] = server
         self.server_time[server]['count'] += 1
-        print('task added:',self.task_server, 'min_time: ', min_time, 'count:', self.server_time[server]['count'] )
+        # print('task added:',self.task_server, 'min_time: ', min_time, 'count:', self.server_time[server]['count'] )
 
         if not self.server_task.get(server):
             self.server_task[server]=set()
@@ -137,7 +137,7 @@ class Server_Handeler:
     def get_server_loads(self):
         # print(self.server_task)
         # print(self.server_time)
-        return self.server_time
+        return self.server_task
 
 
 

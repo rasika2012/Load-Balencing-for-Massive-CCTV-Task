@@ -26,13 +26,17 @@ socketio = SocketIO(app, async_mode=None, logger=True, engineio_logger=True)
 thread = Thread()
 thread_stop_event = Event()
 
-ipdata = ['CamIP1','CamIP2','Cam']
+ipdata = ['rtsp://192.168.8.101:8080/h264_ulaw.sdp','rtsp://192.168.8.100:8080/h264_ulaw.sdp','rtsp://192.168.8.102:8080/h264_ulaw.sdp']
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
 
 server_handler.add_server('ser1')
 server_handler.add_server('ser2')
-server_handler.add_server('ser3')
+# server_handler.add_server('ser3')
+
+
+
+
 
 def split_result(result):
     # res=(result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' '))
@@ -49,7 +53,7 @@ def split_result(result):
         return ( 0,0)
 
 def work(task):
-    cmd = './server {} {}'.format(task,gpu_handeler.get_gpu(task))
+    cmd = './a.out {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True
@@ -61,35 +65,38 @@ def work(task):
     while not thread_stop_event.isSet():
         myline = str(sub_process.stdout.readline())
         r,t = split_result(myline)
-        print(r,t)
+        print(myline)
         gpu_handeler.update_gpu_time(task, t)
         elapse = time.time()
-        print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task), " Time:", t, " Result:", r)
+        # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task), " Time:", t, " Result:", r)
         
         if r ==1:
             server_handler.add_task(task)
         else:
             server_handler.remove_task(task)
+
         server_handler.get_server_loads()
         server_handler.update_server_time(task,t)
+        # if server_handler.task_server.get(task):
+        #     print("Task:->",server_handler.task_server[task]," : ",server_handler.get_server_load(server_handler.task_server[task]))
 
-        print("Time",elapse - start, random()*100>90,sub_process.pid)
-        
-        if random()*100>90 and elapse - start > 13:
-            # server_handler.remove_task(task)
-            start = time.time()
-            sub_process.kill()
-            subprocess.call("kill -9 "+str(sub_process.pid))
-            # print('killing process',sub_process.pid)
-            # os.killpg(os.getpgid(sub_process.pid), signal.SIGTERM)
+        # print("Time",elapse - start, random()*100>90,sub_process.pid)
+        print(server_handler.get_server_loads())
+        # if random()*100>90 and elapse - start > 13:
+        #     # server_handler.remove_task(task)
+        #     start = time.time()
+        #     sub_process.kill()
+        #     # subprocess.call("kill -9 "+str(sub_process.pid))
+        #     # print('killing process',sub_process.pid)
+        #     # os.killpg(os.getpgid(sub_process.pid), signal.SIGTERM)
             
 
-            proc = gpu_handeler.get_gpu(task)
-            cmd = './server {} {}'.format(task,proc)
-            print(cmd)
-            sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
+        #     proc = gpu_handeler.get_gpu(task)
+        #     cmd = './server {} {}'.format(task,proc)
+        #     print(cmd)
+        #     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
             
-            # socketio.emit('process', {'camera': task,'weight':proc}, namespace='/test')
+        #     # socketio.emit('process', {'camera': task,'weight':proc}, namespace='/test')
         # #     #
             
 
@@ -110,17 +117,14 @@ def pr():
         time.sleep(5)
 
 
-    inp = input("Press Enter to continue...")
+    # inp = input("Press Enter to continue...")
 
-    for t in thread_array :
-        t._stop()
-    exit()
-
-
+    # for t in thread_array :
+    #     t._stop()
+    # exit()
 
 
-if __name__ == '__main__':
-    pr()
+
 
 @app.route('/')
 def index():
@@ -163,6 +167,12 @@ def test_connect():
 def test_disconnect():
     print('Client disconnected')
 
+
+
+
+if __name__ == '__main__':
+    # pr()
+    socketio.run(app)
 
 # if __name__ == '__main__':
 # # def rr():
