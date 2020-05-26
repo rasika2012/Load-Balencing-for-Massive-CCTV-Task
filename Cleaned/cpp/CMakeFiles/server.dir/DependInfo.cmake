@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/media/rochana/Private1/University/Acadamic/Sem 8/CO425/8May/Load-Balencing-for-Massive-CCTV-Task/Cleaned/cpp/server.cpp" "/media/rochana/Private1/University/Acadamic/Sem 8/CO425/8May/Load-Balencing-for-Massive-CCTV-Task/Cleaned/cpp/CMakeFiles/server.dir/server.cpp.o"
+  "/media/rochana/Private1/University/Acadamic/Sem 8/CO425/8May/Load-Balencing-for-Massive-CCTV-Task koulda/Cleaned/cpp/server.cpp" "/media/rochana/Private1/University/Acadamic/Sem 8/CO425/8May/Load-Balencing-for-Massive-CCTV-Task koulda/Cleaned/cpp/CMakeFiles/server.dir/server.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
