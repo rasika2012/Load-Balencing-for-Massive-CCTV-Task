@@ -20,6 +20,7 @@ CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/cvst
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/cvstd_wrapper.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/fast_math.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/hal/interface.h
+CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/hal/msa_macros.h
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/mat.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/mat.inl.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/matx.hpp
@@ -32,6 +33,8 @@ CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/satu
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/traits.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/types.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/utility.hpp
+CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/utils/instrumentation.hpp
+CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/utils/tls.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/version.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/core/vsx_utils.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/dnn.hpp
@@ -85,11 +88,6 @@ CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/objdetect
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/opencv.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/opencv_modules.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/photo.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/shape.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/shape/emdL1.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/shape/hist_cost.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/shape/shape_distance.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/shape/shape_transformer.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/stitching.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/stitching/detail/blenders.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/stitching/detail/camera.hpp
@@ -102,25 +100,8 @@ CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/stitching
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/stitching/detail/warpers.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/stitching/detail/warpers_inl.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/stitching/warpers.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/superres.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/superres/optical_flow.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/video.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/video/background_segm.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/video/tracking.hpp
 CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videoio.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/deblurring.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/fast_marching.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/fast_marching_inl.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/frame_source.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/global_motion.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/inpainting.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/log.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/motion_core.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/motion_stabilizing.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/optical_flow.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/outlier_rejection.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/ring_buffer.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/stabilizer.hpp
-CMakeFiles/server.dir/server.cpp.o: /usr/local/include/opencv4/opencv2/videostab/wobble_suppression.hpp
 

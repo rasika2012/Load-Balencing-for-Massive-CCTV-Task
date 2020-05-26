@@ -23,14 +23,24 @@ cv::Mat image;
 cv::Mat image1;
 cv::Mat image2;
 cv::Mat df;
-VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp"); // open the default camera "CCTV.mp4"
+//"rtsp://192.168.8.100:8080/h264_ulaw.sdp"
+// open the default camera "CCTV.mp4"
 
 //    VideoCapture cap(0);
    
 
 
 int main(int argc, char** argv)
+
 {   
+      VideoCapture vcap("rtsp://192.168.8.101:8080/h264_ulaw.sdp");
+    //  VideoCapture vcap("CCTV.mp4");
+     if(argc >1 )
+        VideoCapture vcap(argv[1]); 
+     
+    // VideoCapture vcap;
+    // cout<<vcap.open("rtsp://192.168.1.101:8080/h264_ulaw.sdp");
+
     bool t = 0;
     int count = 0;
     clock_t begin_time = clock();
@@ -52,9 +62,8 @@ int main(int argc, char** argv)
 
             cv::imshow("Output Window", df);
 
-            
-            count++;
-            if(count>100)break;
+            // count++;
+            // if(count>100)break;
             if(cv::waitKey(1) >= 0) break;
             image2 = image;
             image = image1;
@@ -62,13 +71,15 @@ int main(int argc, char** argv)
             second_time = clock();
 
             //cout<< float(cv::norm(df))<<" ";
-            // if (float(cv::norm(df)) > 600.0)
-            // cout<< "1";
-            // else
-            // cout<< "0";
-            // cout<<" "<<" "<< second_time - begin_time<<" "<< fr2-fr1 <<endl;
-            cout<<fr2-fr1 <<",";
+            if (float(cv::norm(df)) > 600.0)
+            cout<< "1";
+            else
+            cout<< "0";
+            cout<<" "<<" "<< second_time - begin_time<<" "<< float(cv::norm(df)) <<endl;
+            // cout<<fr2-fr1 <<",";
             fr1 = clock();
+            // system("pause");
+            
         }else if (!t)
         {
              image1 = image.clone();
