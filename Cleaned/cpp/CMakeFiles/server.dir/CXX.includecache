@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/Camera Reader/server.cpp
+/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/Cleaned/cpp/server.cpp
 opencv2/imgproc/imgproc.hpp
 -
 opencv2/opencv.hpp
-/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/Camera Reader/opencv2/opencv.hpp
+/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/Cleaned/cpp/opencv2/opencv.hpp
 iostream
 -
 sys/socket.h

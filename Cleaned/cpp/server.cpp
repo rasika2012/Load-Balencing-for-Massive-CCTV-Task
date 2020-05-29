@@ -18,6 +18,8 @@ static int weght = 20*40;
 static int hight = 20*30;
 void *display(void *);
 
+#define URL "rtsp://192.16.8.100:8080/h264_ulaw.sdp" 
+
 int capDev = 0;
 cv::Mat image;
 cv::Mat image1;
@@ -33,13 +35,14 @@ cv::Mat df;
 int main(int argc, char** argv)
 
 {   
-      VideoCapture vcap("rtsp://192.168.8.101:8080/h264_ulaw.sdp");
+    cout<<URL;
+    VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
     //  VideoCapture vcap("CCTV.mp4");
      if(argc >1 )
         VideoCapture vcap(argv[1]); 
      
     // VideoCapture vcap;
-    // cout<<vcap.open("rtsp://192.168.1.101:8080/h264_ulaw.sdp");
+     cout<<URL;
 
     bool t = 0;
     int count = 0;

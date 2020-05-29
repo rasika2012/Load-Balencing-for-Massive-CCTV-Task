@@ -8,7 +8,7 @@ int main(){
 
   // Create a VideoCapture object and open the input file
   // If the input is the web camera, pass 0 instead of the video file name
-  VideoCapture cap("rtsp://192.168.1.101:8080/h264_ulaw.sdp"); 
+  VideoCapture cap("rtsp://192.168.1.100:8080/h264_ulaw.sdp"); 
    
   // Check if camera opened successfully
   while (!cap.isOpened()){

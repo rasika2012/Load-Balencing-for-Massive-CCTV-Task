@@ -22,7 +22,7 @@ app = Flask(__name__)
 thread = Thread()
 thread_stop_event = Event()
  
-ipdata = ['rtsp://192.168.8.101:8080/h264_ulaw.sdp1','rtsp://192.168.8.101:8080/h264_ulaw.sdp 2','rtsp://192.168.8.101:8080/h264_ulaw.sdp 3 ']
+ipdata = ['rtsp://192.168.8.100:8080/h264_ulaw.sdp1','rtsp://192.168.8.100:8080/h264_ulaw.sdp 2','rtsp://192.168.8.100:8080/h264_ulaw.sdp 3 ']
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
 
@@ -45,7 +45,7 @@ def split_result(result):
         return ( 0,0)
 
 def work(task):
-    cmd = './server {} {}'.format(task,gpu_handeler.get_gpu(task))
+    cmd = '../cpp/server {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True
@@ -98,6 +98,8 @@ def sub_server(server,time):
     #only by supdate
     print(server,time)
     server_handler.update_server_time_by_server(server,int(time))
+
+    # Remove when muliple servers runinig
     server_handler.update_server_time_by_server('ser2',int(time)+2)
     return json.dumps(server_handler.get_server_loads())
 
