@@ -37,9 +37,9 @@ int main(int argc, char** argv)
 {   
     cout<<URL;
     // VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
-    VideoCapture vcap("CCTV.mp4");
+    // VideoCapture vcap("CCTV.mp4");
     //  if(argc >1 )
-    //     VideoCapture vcap(argv[1]); 
+    VideoCapture vcap(argv[1]); 
      
     // VideoCapture vcap;
      cout<<URL;
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
             absdiff(image1, image, df);
             cv::cvtColor(df, df, cv::COLOR_BGR2GRAY);
 
-            cv::imshow("Output Window", df);
+            cv::imshow("Output Window", image);
 
             // count++;
             // if(count>100)break;

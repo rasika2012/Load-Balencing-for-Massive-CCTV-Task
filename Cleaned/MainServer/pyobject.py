@@ -81,7 +81,7 @@ class Server_Handeler:
     def add_server(self, url):
         self.servers.add(url)
         self.server_task[url] = set()
-        self.server_time[url] = {"time":0, "count": 0}
+        self.server_time[url] = {"time":-1, "count": 0}
     
     def remove_server(self, url):
         self.servers.remove(url)

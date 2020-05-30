@@ -24,6 +24,20 @@ print("IP info taken\n", r.content)
 ips =  json.loads(r.content)
 server_tasks = {}
 
+def split_result(result):
+    # res=(result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' '))
+    # r = res[0]
+    # t = res[2]
+    # print("rt",res)
+    try:
+        res = result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' ')
+        r = int(res[0])
+        t = int(res[2])
+        
+        return(r,t)
+    except:
+        return ( 0,0)
+
 ## Start Sub process programes
 def work(task):
     cmd = '../subapp/server {} {}'.format(task,gpu_handeler.get_gpu(task))
@@ -38,7 +52,9 @@ def work(task):
     while True:
         myline = str(sub_process.stdout.readline())
         sub_process.stdout.flush()
-        print(myline)
+        
+        result,t = (split_result(myline))
+        requests.get("http://localhost:9000/subserver/"+server_name+'/'+str(t))
 
         try:
             
@@ -49,7 +65,7 @@ def work(task):
                 print("RESTARTED")
                
                 while (task not in server_tasks[server_name]):
-                    time.sleep(1.0)
+                    time.sleep(0.1)
                 os.kill(sub_process.pid +1 , signal.SIGCONT)
             else:
                 os.kill(sub_process.pid +1 , signal.SIGCONT)
@@ -60,62 +76,13 @@ def work(task):
             try:
                 os.kill(sub_process.pid +1, signal.SIGSTOP)
                 while not server_tasks.get(server_name):
-                    time.sleep(1)
+                    time.sleep(0.1)
 
                 os.kill(sub_process.pid +1, signal.SIGCONT)
             except:
-                pass
-
-    
-    
+                pass       
         
-
-        # sub_process.stdin.write(b'asd')
-        # sub_process.stdin.flush()
        
-        # print('myLine',myline)
-        # sub_process.stdout.flush()
-        # try:
-        #     cont = True
-        #     while cont:
-               
-        #         if ( task in server_tasks[server_name]):
-        #             print("point")
-        #             try:
-        #             # pass
-        #                 print("Passed",task)
-        #                 cont=False
-        #                 time.sleep(1) 
-        #                 sub_process.communicate(input="asd\n".encode(), timeout=1)[0]
-        #                 sub_process.stdin.flush()
-
-        #             except:
-        #                 print("Error STDIN",task)
-        #                 pass
-        #         else:
-        #             print("Waiting",task)
-        #             time.sleep(1)       
-        # except:
-        #     # try:
-        #     # # pass
-        #     #     print("Passed",task)
-        #     #     cont=False
-        #     #     time.sleep(1)    
-        #     #     sub_process.communicate(input="asd\n".encode(), timeout=10)[0]
-        #     #     sub_process.stdin.flush()
-                
-        #     # except:
-        #     #     print("Error STDIN",task)
-        #     #     pass
-        #     # print("get task STDIN",task)
-        #     # pass
-        
-        # print('myLine',myline)
-        
-        server_time = random.randint(100,300)
-        # print(server_time)
-
-        r = requests.get("http://localhost:9000/subserver/"+server_name+'/'+str(server_time))
         
     
 
@@ -125,7 +92,7 @@ for task in ips:
     x = threading.Thread(target=work, args=(task,))
     thread_array.append(x)
     x.start()
-    time.sleep(5)
+    time.sleep(2)
 
 while True:
     r = requests.get("http://localhost:9000/load")

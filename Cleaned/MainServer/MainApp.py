@@ -55,7 +55,7 @@ def split_result(result):
         return ( 0,0)
 
 def work(task):
-    cmd = './server {} {}'.format(task,gpu_handeler.get_gpu(task))
+    cmd = '../cpp/server {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True
@@ -115,7 +115,7 @@ def sub_server(server,time):
     server_handler.update_server_time_by_server(server,int(time))
 
     # Remove when muliple servers runinig
-    server_handler.update_server_time_by_server('ser2',int(time)+2)
+    # server_handler.update_server_time_by_server('ser2',int(time)+2)
     return json.dumps(server_handler.get_server_loads())
 
 @app.route('/ips')
