@@ -9,6 +9,6 @@ find_package( OpenCV REQUIRED PATHS "/home/rasika/opencv/build")
 add_executable(server server.cpp)
 # add_executable( server server.cpp )
 target_link_libraries( server ${OpenCV_LIBS})
-SET(CMAKE_THREAD_LIBS_INIT "${CMAKE_THREAD_LIBS_INIT} -std=c++11 -pthread")
+SET(CMAKE_THREAD_LIBS_INIT "${CMAKE_THREAD_LIBS_INIT}-std=c++11 -pthread")
 
 target_link_libraries( server ${CMAKE_THREAD_LIBS_INIT}) 

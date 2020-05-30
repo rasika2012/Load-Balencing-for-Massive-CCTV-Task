@@ -22,13 +22,23 @@ app = Flask(__name__)
 thread = Thread()
 thread_stop_event = Event()
  
-ipdata = ['rtsp://192.168.1.101:8080/h264_ulaw.sdp','rtsp://192.168.1.101:8080/h264_ulaw.sdp 1','rtsp://192.168.1.101:8080/h264_ulaw.sdp 3']
+ipdata = []
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
 
-server_handler.add_server('ser1')
-server_handler.add_server('ser2')
+# server_handler.add_server('ser1')
+# server_handler.add_server('ser2')
 # server_handler.add_server('ser3')
+
+ # Load Saved Configurations
+conf = open("./config.json","r") 
+lines = json.loads(str(conf.read()))
+ipdata = (lines['configs']['ips'])
+print(ipdata)
+for server in lines['configs']['servers']:
+    server_handler.add_server(server)
+gpu_handeler = pyobject.GPUHandeler(lines['configs']['gpus'])
+
 
 def split_result(result):
     # res=(result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' '))
@@ -45,7 +55,7 @@ def split_result(result):
         return ( 0,0)
 
 def work(task):
-    cmd = '../cpp/server {} {}'.format(task,gpu_handeler.get_gpu(task))
+    cmd = './server {} {}'.format(task,gpu_handeler.get_gpu(task))
     print(cmd)
     sub_process = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE)
     line = True
@@ -61,7 +71,6 @@ def work(task):
         gpu_handeler.update_gpu_time(task, t)
         elapse = time.time()
         # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task),"Line",myline, " Time:", t, " Result:", r)
-        
         if r ==1:
             server_handler.add_task(task)
             print(task)
@@ -77,7 +86,13 @@ def work(task):
 
     return cmd
     
-def pr():
+
+
+
+def programe():
+   
+
+    print(ipdata)
     thread_array = []
     for task in ipdata:
         x = threading.Thread(target=work, args=(task,))
@@ -114,5 +129,5 @@ def timing():
 
 
 if __name__ == '__main__':
-    pr()
+    programe()
     Flask.run(app,port=9000)

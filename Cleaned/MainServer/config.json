@@ -1,0 +1,8 @@
+{
+    "configs": {
+        
+        "ips": ["rtsp://192.168.1.101:8080/h264_ulaw.sdp","rtsp://192.168.1.101:8080/h264_ulaw.sdp 1"],
+        "servers": ["ser1", "ser2"],
+        "gpus": ["gpu1", "gpu2"]
+    }
+}

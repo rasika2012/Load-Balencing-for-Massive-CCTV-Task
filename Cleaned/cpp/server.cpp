@@ -36,10 +36,10 @@ int main(int argc, char** argv)
 
 {   
     cout<<URL;
-    VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
-    //  VideoCapture vcap("CCTV.mp4");
-     if(argc >1 )
-        VideoCapture vcap(argv[1]); 
+    // VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
+    VideoCapture vcap("CCTV.mp4");
+    //  if(argc >1 )
+    //     VideoCapture vcap(argv[1]); 
      
     // VideoCapture vcap;
      cout<<URL;
