@@ -21,8 +21,15 @@
     padding-top: 40px;
 }
 
-.table {
-    /* max-width: 500px; */
-    /* margin: auto; */
+/* .table {
+    max-width: 500px;
+    margin: auto;
     padding: 10px;
+}   */
+
+.table {
+    padding-top: 40px;
+    max-width: 900px;
+    margin-top: 20px;
+    margin: auto;   
 }

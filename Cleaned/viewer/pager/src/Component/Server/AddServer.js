@@ -81,7 +81,7 @@ export class Add extends Component {
             {/* <SubForm></SubForm> */}
 
             <Tables/>
-            {/* <Chart/> */}
+            <Chart/>
         </React.Fragment>
         )
     }

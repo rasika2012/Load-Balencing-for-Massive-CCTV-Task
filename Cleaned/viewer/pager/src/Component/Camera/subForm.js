@@ -1,5 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+
+
 export class SubForm extends Component {
 
     constructor(props) {
@@ -45,10 +47,5 @@ export class SubForm extends Component {
     }
   
 }
-
-function more() {
-    
-}
-// ReactDOM.render(<Tables />, document.querySelector('#root'));
 
 export default SubForm;
