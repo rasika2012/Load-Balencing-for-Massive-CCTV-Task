@@ -1,3 +1,4 @@
+
 # Load-Balancing-for-Massive-CCTV-Task
 Final Year Project - 2019 Department of Computer Engineering, University of Peradeniya
 
@@ -27,50 +28,44 @@ Please follow following steps for to run project.
 2.  setup IP cameras to local network/ use [IP Camera simulator](https://play.google.com/store/apps/details?id=com.pas.webcam&hl=en) 
 3.  Configure following files on cleaned folder
     
-### Project Configurations on /cpp/server.cpp
+### Project Configurations on /Main Server/config.json
 
- - For single ip camera
-     ```
-   39 VideoCapture vcap("<ip>:<port>");
+ - Edit this file to add new cameras and new Sub Servers
+     
+   
     ```
- - For many ip cameras
-      ```
-   39 // VideoCapture vcap("<ip>:<port>"); or delete this line
+	{
+		"configs": {
+			"ips": ["camera1:ip","camera2:ip"...],
+			"servers": ["sub_server_name1","sub_server_name2"..],
+			"gpus": ["gpuid1", "gpuid2"..]
+		}
+	}
     ``` 
    
     
   
-### Project Configurations on /MainServer/MainApp.py
+### Project Configurations on /Sub Server/config.json
 
- - Main App controll the main filter program and sub servers insert sub server infomation
+ - edit following pram to update configurations
      ```
-    ipdata = [<ip camera ips/ if one camera dummy ips]
-    gpu_handeler = pyobject.GPUHandeler([<GPU IDs to selectt GPU for sub program>])
-    server_handler = pyobject.Server_Handeler()
-
-    server_handler.add_server(<server-id1>)
-    server_handler.add_server(<server-id2>) # add many servers as you want and config this nem on sub server program
+	{
+		"configs": {
+			"name": "server name",
+			"ip":"Main Server IP :Port",
+			"gpus": ["gpuid1", "gpuid2"..]
+		}
+	}
     ```           
-    
-### Project Configurations on /SubServer/SubApp.py
-
- - Main App controll the main filter program and sub servers insert sub server infomation
-     ```
-    15:gpu_handeler = pyobject.GPUHandeler([<GPU Ids>])
-    17:r = requests.get("<Main Server IP>/ips")
-    19:server_name = <Sub Server id userd in Main Server Configuration>
-    ```           
-    - replace ``` localhost:9000``` with server ip and port
     
        
 ### Now you successfully configured the project
 
  - Run ``` cmake ``` and ```make``` on cpp cpp project and copy server program to python programs
- - run ```mainApp.py``` and then run the ```SubApp.py
+ - run ```python3 MainApp.py``` and then run the ```python3  SubApp.py``` on main and sub servers
  
 ### Run Process Viewer
 
  - Run ``` npm i ``` on ```viewer folder``` on=
  - run ```npm start``` and provide ```main server ip```
  
-
