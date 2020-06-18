@@ -52,6 +52,8 @@ int main(int argc, char** argv)
     clock_t fr1 = clock();
     clock_t fr2 = clock();
 
+    Size size(200,200);//the dst image size,e.g.100x100
+    Mat dst;//dst image
     for(;;) {
         begin_time = clock();
         if(!vcap.read(image)) {
@@ -63,7 +65,8 @@ int main(int argc, char** argv)
             absdiff(image1, image, df);
             cv::cvtColor(df, df, cv::COLOR_BGR2GRAY);
 
-            cv::imshow("Output Window", image);
+            resize(image,dst,size);//resize image
+            cv::imshow("Output Window", dst);
 
             // count++;
             // if(count>100)break;

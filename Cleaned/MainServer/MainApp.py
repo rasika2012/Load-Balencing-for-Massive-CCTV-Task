@@ -37,6 +37,7 @@ ipdata = (lines['configs']['ips'])
 print(ipdata)
 for server in lines['configs']['servers']:
     server_handler.add_server(server)
+    print("ADD SERVER:",server)
 gpu_handeler = pyobject.GPUHandeler(lines['configs']['gpus'])
 
 

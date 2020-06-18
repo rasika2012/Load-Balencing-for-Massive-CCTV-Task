@@ -11,18 +11,30 @@ import socket
 import os
 import signal
 
-ips = []
+ips = [] #Set by requesting from main server
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
+server_name = 'ser1'    # update from config file
+main_server_ip = ""     # update from config file
 
-r = requests.get("http://localhost:9000/ips")
-server_name = 'ser1'
 server_time = 0
-global count
 
+conf = open("./config.json","r") 
+lines = json.loads(str(conf.read()))
+server_name = (lines['configs']['name'])
+main_server_ip = (lines['configs']['ip'])
+gpu_handeler = pyobject.GPUHandeler(lines['configs']['gpus'])
 
+# Take data from main server
+r = requests.get(main_server_ip+"/ips")
+
+# update ips
 print("IP info taken\n", r.content)
 ips =  json.loads(r.content)
+
+# Curent server task list
 server_tasks = {}
+
+
 
 def split_result(result):
     # res=(result.replace("\\n",'').split("'")[1].replace("\\n",'').split(' '))
@@ -54,19 +66,20 @@ def work(task):
         sub_process.stdout.flush()
         
         result,t = (split_result(myline))
-        requests.get("http://localhost:9000/subserver/"+server_name+'/'+str(t))
-
+        requests.get(main_server_ip+"/subserver/"+server_name+'/'+str(t))
+        print("hi")
         try:
-            
+            print(server_tasks[server_name])
             if (task not in server_tasks[server_name]):
                 os.kill(sub_process.pid +1 , signal.SIGSTOP)
                 print("PAUSED")
             
-                print("RESTARTED")
+               
                
                 while (task not in server_tasks[server_name]):
                     time.sleep(0.1)
                 os.kill(sub_process.pid +1 , signal.SIGCONT)
+                print("RESTARTED")
             else:
                 os.kill(sub_process.pid +1 , signal.SIGCONT)
                 print(server_tasks[server_name],task)
@@ -81,11 +94,6 @@ def work(task):
                 os.kill(sub_process.pid +1, signal.SIGCONT)
             except:
                 pass       
-        
-       
-        
-    
-
 
 thread_array = []
 for task in ips:
@@ -95,9 +103,10 @@ for task in ips:
     time.sleep(2)
 
 while True:
-    r = requests.get("http://localhost:9000/load")
+    r = requests.get(main_server_ip+"/load")
     # print ('content',json.loads(str(r.content).split("'")[1]))
     server_tasks = json.loads(str(r.content).split("'")[1])
+    print(server_tasks)
     time.sleep(0.1)
 
 inp = input("Press Enter to continue...")

@@ -1,8 +1,7 @@
 {
     "configs": {
-        
-        "ips": ["rtsp://192.168.8.100:8080/h264_ulaw.sdp","rtsp://192.168.8.100:8080/h264_ulaw.sdp 1"],
-        "servers": ["ser1"],
+        "ips": ["http://92.154.56.150:8888/mjpg/video.mjpg","rtsp://freja.hiof.no:1935/rtplive/definst/hessdalen03.stream "],
+        "servers": ["ser2"],
         "gpus": ["gpu1", "gpu2"]
     }
 }
