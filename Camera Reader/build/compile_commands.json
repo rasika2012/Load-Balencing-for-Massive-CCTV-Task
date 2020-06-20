@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/Camera Reader/build",
-  "command": "/usr/bin/c++   -isystem /usr/local/include/opencv4  -g   -std=gnu++11 -o CMakeFiles/server.dir/server.cpp.o -c \"/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/Camera Reader/server.cpp\"",
-  "file": "/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/Camera Reader/server.cpp"
-}
-]

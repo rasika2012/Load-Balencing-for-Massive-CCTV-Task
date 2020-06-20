@@ -1,0 +1,3 @@
+/media/rasika/Other/Academic/8th Seme/FYP-RELEASE CLEAN/Filter/CMakeFiles/rebuild_cache.dir
+/media/rasika/Other/Academic/8th Seme/FYP-RELEASE CLEAN/Filter/CMakeFiles/server.dir
+/media/rasika/Other/Academic/8th Seme/FYP-RELEASE CLEAN/Filter/CMakeFiles/edit_cache.dir
