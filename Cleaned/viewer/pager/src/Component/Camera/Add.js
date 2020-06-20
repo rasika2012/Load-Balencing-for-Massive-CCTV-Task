@@ -21,6 +21,7 @@ export class Add extends Component {
              ip : '',
              other: '',
              isSubmitted: false,
+             length: ''
             //  values: []
         }
              
@@ -61,10 +62,21 @@ export class Add extends Component {
         console.log(this.state.values);
     }
 
+    changeLength(length) {
+        this.setState({
+          length: length
+        });
+        console.log("c",this.state.length)
+    }
+
+    
  
     render() {
         if (this.state.isSubmitted) {
-            return  <SubForm IPAddress ={this.state.ip}></SubForm>
+            return  <SubForm 
+                        IPAddress = {this.state.ip}
+                        length = {this.state.length}>                           
+                    </SubForm>
         }
 
         return (
@@ -80,9 +92,12 @@ export class Add extends Component {
                     Add Camera
                 </Button> 
             </form>    
-            {/* <SubForm></SubForm> */}
+            {/* <SubForm></SubForm>  */}
 
-            <Table/>
+            <Table  
+                length = {this.state.length}   
+                changeLength = {this.changeLength.bind(this)}>
+            </Table>
         </React.Fragment>
         )
     }

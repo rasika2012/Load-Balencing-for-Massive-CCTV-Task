@@ -9,6 +9,7 @@ export class SubForm extends Component {
     
         this.state = {
              ip : props.IPAddress,
+             length: Number(props.length)+1,
              comments: '',
         }        
     }
@@ -17,8 +18,24 @@ export class SubForm extends Component {
         this.setState({
             comments: event.target.value
         })
-    
+    }    
+    handleSubmit = (e) => {
+        // e.preventDefault();
+        // console.log(this.state.comments)
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                                id: this.state.length,
+                                ip: this.state.ip,
+                                comments: this.state.comments
+                            })
+        };
+        fetch('http://localhost:9000/submitData', requestOptions)
+            .then(response => response.json())
+            .then(data => console.log(data));
     }
+    
 
     render(){
         return (
@@ -28,7 +45,7 @@ export class SubForm extends Component {
       
                   <FormGroup>
                       <Label for="id">Camera ID</Label>
-                      <Input type="text" name="id" id="id" placeholder="ID" value="ID0088" readOnly />
+                      <Input type="text" name="id" id="id" placeholder="ID" value={"CAM0"+this.state.length} readOnly />
                   </FormGroup>
                   <FormGroup>
                       <Label for="IPaddress">IP Address</Label>
@@ -38,7 +55,7 @@ export class SubForm extends Component {
                       <Label for="Details">Additional Comments</Label>
                       <Input type="textarea" name="text" value={this.state.comments} onChange={this.handleCommentsChange} id="comments" />
                   </FormGroup>
-                  <Button>Submit</Button>
+                  <Button type='submit'>Submit</Button>
                   </Form>
                 
 

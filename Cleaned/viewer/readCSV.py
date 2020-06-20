@@ -1,7 +1,9 @@
 import csv
 from flask import Flask
+from flask import request
 import json
 from flask_cors import CORS
+from datetime import date
 
 app = Flask(__name__)
 app.config["debug"] = True
@@ -20,7 +22,38 @@ def home():
             
     return json.dumps(wholeFile)
 
+
+@app.route('/submitData', methods=['POST'])
+def submit():
+    print('checked')
+    # language = request.args['ip']
+    content = request.json
+    id = 'CAM0' + str(content['id'])
+    ip = content['ip']
+    comments = content['comments']
+    add = date.today()
+
+    with open('DataFile.csv', 'a+', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([id, ip, add, 'running', comments])
+
+    # print (language['ip'])
+    return json.dumps('true')
+
+
+@app.route('/stream', methods=['POST'])
+def meth():
+    content = request.json
+    ip = content['ip']
+    id = "asdf"
+    print(ip)
+    return json.dumps(id)
+
+        
+
+
 Flask.run(app, port=9000)
+
 
 # import flask
 
