@@ -8,9 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import styles from './AddStyle.css'
-import Button from '@material-ui/core/Button';
-
-
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -29,8 +26,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(id, ip, status, addedDate, additional, add) {
-  return { id, ip, status, addedDate, additional, add };
+function createData(id, ip, status, addedDate, additional) {
+  return { id, ip, status, addedDate, additional };
 }
 
 const rows = [
@@ -55,36 +52,10 @@ function more(event){
     const key = event.target.getAttribute('key');
     console.log(rows[val]);
 }
-function getData() {
-  fetch('http://localhost:9000/data')
-      .then(response => response.json())
-      .then(data => {
-        setData(data);
-        
-      });
-}
-
-const row = [
-  createData('CAM0001', '192.168.101.1', 'running', '2018/12/25')
-];
-
- function setData(data) {
-  for (var i = 0; i < data.length; i++) {
-    // row.push(createData(data[i][0],data[i][1],data[i][2],data[i][3],data[i][4],data[i][5]));
-  } 
-  row.push(createData('CAM0001', '192.168.101.1', 'running', '2018/12/25'));
-  console.log(row)
-}
-
-function check() {
-    console.log(row)
-}
-
 
 export default function CustomizedTables() {
-   
   const classes = useStyles();
-  
+
   
   return (
     <TableContainer component={Paper}>
@@ -99,7 +70,7 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {row.map((row,index) => (
+          {rows.map((row,index) => (
             <StyledTableRow key={row.name}>
               {/* <StyledTableCell component="th" scope="row">
                 {row.name}
@@ -113,10 +84,6 @@ export default function CustomizedTables() {
           ))}
         </TableBody>
       </Table>
-   
-      <Button  variant="contained" color="primary" onClick={check}>
-      Add Camera
-      </Button>
-      </TableContainer>
-);
+    </TableContainer>
+ );
 }

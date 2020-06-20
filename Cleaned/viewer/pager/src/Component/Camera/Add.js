@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 
 import styles from './AddStyle.css';
 import SubForm from './subForm';
-import Table from './Table';
+import Tables from './Tables';
 
 
 export class Add extends Component {
@@ -20,11 +20,10 @@ export class Add extends Component {
              id : '',
              ip : '',
              other: '',
-             isSubmitted: false,
-             length: ''
-            //  values: []
+             isSubmitted: false
         }
-             
+        
+        
     }
     
     handleIdChange = (event) => {
@@ -58,26 +57,14 @@ export class Add extends Component {
         e.preventDefault();
     }
 
-    check() {
-        console.log(this.state.values);
-    }
 
-    changeLength(length) {
-        this.setState({
-          length: length
-        });
-        console.log("c",this.state.length)
-    }
-
-    
  
     render() {
         if (this.state.isSubmitted) {
-            return  <SubForm 
-                        IPAddress = {this.state.ip}
-                        length = {this.state.length}>                           
-                    </SubForm>
-        }
+            // return <AdditionalDetails ip={this.state.ip}/>;
+            return  <SubForm IPAddress ={this.state.ip}></SubForm>
+
+          }
 
         return (
             <React.Fragment>
@@ -85,24 +72,33 @@ export class Add extends Component {
                 <div>
                     Form
                 </div>
+
+                {/* <div>
+                    <TextField className='add' id="standard-basic" label="Camera ID" type='text' value={this.state.id} onChange={this.handleIdChange} />
+                </div> */}
                 <div>    
                     <TextField className='add' id="standard-basic" label="Camera IP" type='text' value={this.state.ip} onChange={this.handleIPChange} />
                 </div>
                 <Button  type= 'submit' variant="contained" color="primary">
                     Add Camera
-                </Button> 
+                </Button>
             </form>    
-            {/* <SubForm></SubForm>  */}
+            {/* <SubForm></SubForm> */}
 
-            <Table  
-                length = {this.state.length}   
-                changeLength = {this.changeLength.bind(this)}>
-            </Table>
+            <Tables/>
         </React.Fragment>
         )
     }
 
 
+}
+
+
+function AdditionalDetails(props) {
+    return(
+        <SubForm IPAddress ={props.ip}></SubForm>
+        
+    );
 }
 
 

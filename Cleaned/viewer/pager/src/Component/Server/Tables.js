@@ -32,11 +32,11 @@ function createData(id, ip, status, addedDate, additional) {
 }
 
 const rows = [
-  createData('SERVER0001', '192.168.8.101', 'running', '2020/05/25'),
-  // createData('SERVER0002', '192.168.8.100', 'running', '2020/05/25'),
-  // createData('SERVER0003', '192.168.101.3', 'running', '2018/12/25'),
-  // createData('SERVER0004', '192.168.101.1', 'running', '2018/12/25'),
-  // createData('SERVER0005', '192.168.101.10', 'stopped', '2018/12/26'),
+  createData('SERVER0001', '192.168.101.1', 'running', '2018/12/25'),
+  createData('SERVER0002', '192.168.101.2', 'running', '2018/12/25'),
+  createData('SERVER0003', '192.168.101.3', 'running', '2018/12/25'),
+  createData('SERVER0004', '192.168.101.1', 'running', '2018/12/25'),
+  createData('SERVER0005', '192.168.101.10', 'stopped', '2018/12/26'),
 ];
 
 const useStyles = makeStyles({
