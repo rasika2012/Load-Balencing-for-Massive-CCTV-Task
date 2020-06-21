@@ -1,6 +1,9 @@
 
 # Load-Balancing-for-Massive-CCTV-Task
-Final Year Project - 2019 Department of Computer Engineering, University of Peradeniya
+ 2019 Department of Computer Engineering, University of Peradeniya
+
+> In the surveillance systems, the CCTVs are mostly used for security purposes and also other monitoring purposes. With expanding the number of cameras connected and the objectives the CCTV cameras are used, increase the complexity of the overall system. When real-time decisions are demanded, then the system is going to be more complicated. The manual monitoring might not be efficient with the involved systems.
+The ultimate purpose of the idea is to reduce human involvement in the system and make the complete system automated. The research is leading to handling the CCTV cameras and developing a central server with a load-balancing algorithm. The multiple servers are connected to the central server as the sub servers which are capable of handling CCTV live feeds and operate algorithms on them. In the overall process, decisive factors such as networking, servers’ capabilities, CCTVs feed qualities should be considered. To improve the efficiency of the complete system, the algorithms that are performing on GPUs are used. Briefly, the research is experimenting on a distributed system on CCTVs and developing an efficient system that renders real-time outputs.
 
 # Load Balance and Load Management tool form CCTV Network!
 
@@ -77,6 +80,6 @@ default path is ``` /home/ {USER_NAME} /opencv/build``` and replace your user na
  
 ### Run Process Viewer
 
- - Run ``` npm i ``` on ```viewer folder``` on=
- - run ```npm start``` and provide ```main server ip```
+ - Run ``` npm i ``` on ```React``` folder
+ - run ```npm start``` and provide ```main server ip``` to get info from server
  
