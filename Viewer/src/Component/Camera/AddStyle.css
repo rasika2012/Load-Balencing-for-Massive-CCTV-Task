@@ -1,0 +1,35 @@
+.form{
+    margin-top: 40px;
+    max-width: 150px;
+    margin: auto;
+    /* border: 10px; */
+    /* align-items: center; */
+    /* background-color: #282c34; */
+    /* color: rgb(190, 36, 36); */
+    padding-top: 40px;
+    font-family: Arial;
+    text-align: left;
+    color: "white";
+    background-Color: "DodgerBlue";
+    padding: "10px";
+    font-Family: "Arial"
+}
+
+.formAdditional{
+    max-width: 500px;
+    margin: auto;
+    padding-top: 40px;
+}
+
+/* .table {
+    max-width: 500px;
+    margin: auto;
+    padding: 10px;
+}   */
+
+.table {
+    padding-top: 40px;
+    max-width: 900px;
+    margin-top: 20px;
+    margin: auto;   
+}
