@@ -63,7 +63,7 @@ int main(int argc, char** argv)
             absdiff(image1, image, df);
             cv::cvtColor(df, df, cv::COLOR_BGR2GRAY);
 
-            cv::imshow("Output Window", df);
+            // cv::imshow("Output Window", df);
 
             // count++;
             // if(count>100)break;
