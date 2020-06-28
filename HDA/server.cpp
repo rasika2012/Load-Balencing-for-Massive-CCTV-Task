@@ -1,99 +1,91 @@
-/**
- * OpenCV video streaming over TCP/IP
- * Server: Captures video from a webcam and send it to a client
- * by Isaac Maia
- */
-#include <opencv2/imgproc/imgproc.hpp>
-#include "opencv2/opencv.hpp"
 #include <iostream>
-#include <sys/socket.h> 
-#include <arpa/inet.h>
-#include <sys/ioctl.h>
-#include <net/if.h>
-#include <unistd.h>
-#include <string.h>
-using namespace cv;
+#include <opencv2/opencv.hpp>
+
 using namespace std;
-static int weght = 20*40;
-static int hight = 20*30;
-void *display(void *);
+using namespace cv;
+using namespace cv::ml;
 
-#define URL "rtsp://192.16.8.100:8080/h264_ulaw.sdp" 
+int main( int argc, const char** argv )
+{
+    /// Use the cmdlineparser to process input arguments
+    // CommandLineParser parser(argc, argv,
+    //     "{ help h            |      | show this message }"
+    //     "{ video v           |      | (required) path to video }"
+    // );
 
-int capDev = 0;
-cv::Mat image;
-cv::Mat image1;
-cv::Mat image2;
-cv::Mat df;
-//"rtsp://192.168.8.100:8080/h264_ulaw.sdp"
-// open the default camera "CCTV.mp4"
+    // /// If help is entered
+    // if (parser.has("help")){
+    //     parser.printMessage();
+    //     return 0;
+    // }
 
-//    VideoCapture cap(0);
-   
+    // /// Parse arguments
+    // string video_location(parser.get<string>("video"));
+    // if (video_location.empty()){
+    //     parser.printMessage();
+    //     return -1;
+    // }
 
+    /// Create a videoreader interface
+    VideoCapture cap(argv[1]);
+    Mat current_frame;
 
-int main(int argc, char** argv)
-
-{   
-    cout<<URL;
-    // VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
-    // VideoCapture vcap("CCTV.mp4");
-    //  if(argc >1 )
-    VideoCapture vcap(argv[1]); 
-     
-    // VideoCapture vcap;
-     cout<<URL;
-    char cmd[] = "cmd";
-    bool t = 0;
-    int count = 0;
-    clock_t begin_time = clock();
+    /// Set up the pedestrian detector --> let us take the default one
+    HOGDescriptor hog;
+    hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
+    Size size(640,480);
+    /// Set up tracking vector
+    vector<Point> track;
+    clock_t first_time = clock();
     clock_t second_time = clock();
+    while(true){
+        /// Grab a single frame from the video
+        cap >> current_frame;
 
-    clock_t fr1 = clock();
-    clock_t fr2 = clock();
-
-    Size size(200,200);//the dst image size,e.g.100x100
-    Mat dst;//dst image
-    for(;;) {
-        begin_time = clock();
-        if(!vcap.read(image)) {
-            std::cout << "No frame" << std::endl;
-            cv::waitKey();
-        }else if (t){
-            fr2 = clock();
-            
-            absdiff(image1, image, df);
-            cv::cvtColor(df, df, cv::COLOR_BGR2GRAY);
-
-            resize(image,dst,size);//resize image
-            cv::imshow("Output Window", dst);
-
-            // count++;
-            // if(count>100)break;
-            if(cv::waitKey(1) >= 0) break;
-            image2 = image;
-            image = image1;
-            image1 = image2;
-            second_time = clock();
-
-            //cout<< float(cv::norm(df))<<" ";
-            if (float(cv::norm(df)) > 600.0)
-            cout<< "1";
-            else
-            cout<< "0";
-            cout<<" "<<" "<< second_time - begin_time<<" "<< float(cv::norm(df)) <<endl;
-            // cout<<fr2-fr1 <<",";
-            // cin>>cmd;
-            fr1 = clock();
-            // system("pause");
-            
-        }else if (!t)
-        {
-             image1 = image.clone();
-             t=1;
+        /// Check if the frame has content
+        if(current_frame.empty()){
+            cerr << "Video has ended or bad frame was read. Quitting." << endl;
+            return 0;
         }
-        
-    }   
-    cout<<endl;
-}
 
+        /// run the detector with default parameters. to get a higher hit-rate
+        /// (and more false alarms, respectively), decrease the hitThreshold and
+        /// groupThreshold (set groupThreshold to 0 to turn off the grouping completely).
+
+        ///image, vector of rectangles, hit threshold, win stride, padding, scale, group th
+        Mat img = current_frame.clone();
+        resize(img,img,size);
+
+        vector<Rect> found;
+        vector<double> weights;
+
+        first_time = clock();
+        hog.detectMultiScale(img, found, weights);
+        second_time = clock();
+
+        /// draw detections and store location
+        for( size_t i = 0; i < found.size(); i++ )
+        {
+            Rect r = found[i];
+            rectangle(img, found[i], cv::Scalar(0,0,255), 3);
+            stringstream temp;
+            temp << weights[i];
+            putText(img, temp.str(),Point(found[i].x,found[i].y+50), FONT_HERSHEY_SIMPLEX, 1, Scalar(0,0,255));
+            track.push_back(Point(found[i].x+found[i].width/2,found[i].y+found[i].height/2));
+        }
+      
+        cout<<found.size()<<" "<<" "<< second_time - first_time << " " << 4 <<endl;
+
+
+        /// plot the track so far
+        for(size_t i = 1; i < track.size(); i++){
+            line(img, track[i-1], track[i], Scalar(255,255,0), 2);
+        }
+
+        /// Show
+        imshow("detected person", img);
+        waitKey(1);
+    }
+
+    return 0;
+}

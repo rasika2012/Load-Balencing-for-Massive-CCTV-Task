@@ -6,24 +6,10 @@
 
 #IncludeRegexTransform: 
 
-/media/rasika/Other/Academic/8th Seme/FYP-RELEASE CLEAN/HDA/server.cpp
-opencv2/imgproc/imgproc.hpp
--
-opencv2/opencv.hpp
-/media/rasika/Other/Academic/8th Seme/FYP-RELEASE CLEAN/HDA/opencv2/opencv.hpp
+/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/HDA/server.cpp
 iostream
 -
-sys/socket.h
--
-arpa/inet.h
--
-sys/ioctl.h
--
-net/if.h
--
-unistd.h
--
-string.h
+opencv2/opencv.hpp
 -
 
 /usr/local/include/opencv4/opencv2/calib3d.hpp
@@ -869,10 +855,6 @@ opencv2/core.hpp
 /usr/local/include/opencv4/opencv2/imgproc.hpp
 opencv2/core.hpp
 /usr/local/include/opencv4/opencv2/opencv2/core.hpp
-
-/usr/local/include/opencv4/opencv2/imgproc/imgproc.hpp
-opencv2/imgproc.hpp
-/usr/local/include/opencv4/opencv2/imgproc/opencv2/imgproc.hpp
 
 /usr/local/include/opencv4/opencv2/ml.hpp
 opencv2/core.hpp

@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/media/rasika/Other/Academic/8th Seme/FYP-RELEASE CLEAN/HDA/server.cpp" "/media/rasika/Other/Academic/8th Seme/FYP-RELEASE CLEAN/HDA/CMakeFiles/server.dir/server.cpp.o"
+  "/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/HDA/server.cpp" "/media/rasika/Soft/Final Year Project/Load-Balencing-for-Massive-CCTV-Task/HDA/CMakeFiles/server.dir/server.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

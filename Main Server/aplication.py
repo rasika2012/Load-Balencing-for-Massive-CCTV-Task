@@ -73,6 +73,7 @@ def work(task):
         elapse = time.time()
         # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task),"Line",myline, " Time:", t, " Result:", r)
         if r ==1:
+            # server_handler.remove_task(task)
             server_handler.add_task(task)
             print(task)
         else:

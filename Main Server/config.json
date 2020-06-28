@@ -1,7 +1,16 @@
 {
     "configs": {
-        "ips": ["http://92.154.56.150:8888/mjpg/video.mjpg","rtsp://freja.hiof.no:1935/rtplive/definst/hessdalen03.stream","rtsp://192.168.1.101:8080/h264_ulaw.sdp","rtsp://192.168.1.101:8080/h264_ulaw.sdp #","http://110.54.126.130:50000/cgi-bin/camera?resolution=640&amp;quality=1&amp;Language=0&amp;COUNTER#.Xu4Mv6Y9kIs.link","http://81.83.10.9:8001/mjpg/video.mjpg#.Xu4NjtogW0Y.link"],
-        "servers": ["ser2","ser3"],
+        "ips": [
+
+            "http://98.254.195.214:8080/?action=stream#.XvZFjEEDfPs.link",
+            "http://128.101.26.182/mjpg/video.mjpg#.XvZHO1Am1Is.link",
+            "http://76.179.85.149:8888/mjpg/video.mjpg#.XvZIpKi16lM.link",
+            "http://107.145.132.144:8082/img/video.mjpeg#.XvZJF5_iC3k.link"
+         
+
+
+        ],
+        "servers": ["ser2","ser1"],
         "gpus": ["gpu1", "gpu2"]
     }
 }
