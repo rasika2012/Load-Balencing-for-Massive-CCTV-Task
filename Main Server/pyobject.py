@@ -1,5 +1,6 @@
 from queue import Queue
 import random
+import base64
 
 class FQueue:
     MaxDelay = 0
