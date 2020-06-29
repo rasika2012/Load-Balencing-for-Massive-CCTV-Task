@@ -83,3 +83,18 @@ default path is ``` /home/ {USER_NAME} /opencv/build``` and replace your user na
  - Run ``` npm i ``` on ```React``` folder
  - run ```npm start``` and provide ```main server ip``` to get info from server
  
+ 
+ # Usable Controller API Calls
+
+### Process times of the Subservers
+``` 0.0.0.0:9000/timing```
+> returns subserver id and its processing time
+
+### Process Load of the Subservers
+``` 0.0.0.0:9000/load```
+> returns subserver id and its processing load (CCTV CAMERA IPS)
+
+### Results
+``` 0.0.0.0:9000/result```
+> IPs of the ip camera vs number of human detected by HOG algorithms
+
