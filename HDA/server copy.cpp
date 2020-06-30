@@ -37,13 +37,13 @@ int main(int argc, char** argv)
 {   
     cout<<URL;
     // VideoCapture vcap("rtsp://192.168.8.100:8080/h264_ulaw.sdp");
-    //VideoCapture vcap("CCTV.mp4");
-    //if(argc >1 )
+    // VideoCapture vcap("CCTV.mp4");
+    //  if(argc >1 )
     VideoCapture vcap(argv[1]); 
      
     // VideoCapture vcap;
      cout<<URL;
-
+    char cmd[] = "cmd";
     bool t = 0;
     int count = 0;
     clock_t begin_time = clock();
@@ -51,8 +51,9 @@ int main(int argc, char** argv)
 
     clock_t fr1 = clock();
     clock_t fr2 = clock();
-    Size size(320,240);
-    
+
+    Size size(200,200);//the dst image size,e.g.100x100
+    Mat dst;//dst image
     for(;;) {
         begin_time = clock();
         if(!vcap.read(image)) {
@@ -60,13 +61,12 @@ int main(int argc, char** argv)
             cv::waitKey();
         }else if (t){
             fr2 = clock();
-            resize(image1,image1,size);//resize image
-            resize(image,image,size);//resize image
-            GaussianBlur(image, image, Size(5, 5), 0);
+            
             absdiff(image1, image, df);
             cv::cvtColor(df, df, cv::COLOR_BGR2GRAY);
 
-            cv::imshow("Output Window", df);
+            resize(image,dst,size);//resize image
+            cv::imshow("Output Window", dst);
 
             // count++;
             // if(count>100)break;
@@ -77,12 +77,13 @@ int main(int argc, char** argv)
             second_time = clock();
 
             //cout<< float(cv::norm(df))<<" ";
-            if (float(cv::norm(df)) > 800.0)
+            if (float(cv::norm(df)) > 600.0)
             cout<< "1";
             else
             cout<< "0";
             cout<<" "<<" "<< second_time - begin_time<<" "<< float(cv::norm(df)) <<endl;
             // cout<<fr2-fr1 <<",";
+            // cin>>cmd;
             fr1 = clock();
             // system("pause");
             

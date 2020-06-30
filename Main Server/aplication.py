@@ -8,7 +8,7 @@ import socket
 import os
 import signal
 # Start with a basic flask app webpage.
-
+import base64
 from flask import Flask
 from flask import request
 import json
@@ -27,7 +27,7 @@ CORS(app)
 #random number Generator Thread
 thread = Thread()
 thread_stop_event = Event()
- 
+results = {}
 ipdata = []
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_handler = pyobject.Server_Handeler()
@@ -79,6 +79,7 @@ def work(task):
         elapse = time.time()
         # print ("Task:", task, " GPU:", gpu_handeler.get_gpu(task),"Line",myline, " Time:", t, " Result:", r)
         if r ==1:
+            # server_handler.remove_task(task)
             server_handler.add_task(task)
             print(task)
         else:
@@ -105,7 +106,7 @@ def programe():
         x = threading.Thread(target=work, args=(task,))
         thread_array.append(x)
         x.start()
-        time.sleep(5)
+        time.sleep(1)
 
 
 
@@ -115,10 +116,12 @@ def index():
     #only by sending this page first will the client be connected to the socketio instance
     return json.dumps(server_handler.get_server_loads())
 
-@app.route('/subserver/<server>/<time>')
-def sub_server(server,time):
+@app.route('/subserver/<server>/<time>/<task>/<result>')
+def sub_server(server,time,task,result):
     #only by supdate
-    print(server,time)
+    # print("---------",server,time, base64.urlsafe_b64decode(task.encode('ascii')).decode(),result)
+    decoded_task = base64.urlsafe_b64decode(task.encode('ascii')).decode()
+    results[decoded_task] = int(result)
     server_handler.update_server_time_by_server(server,int(time))
 
     # Remove when muliple servers runinig
@@ -129,6 +132,9 @@ def sub_server(server,time):
 def ips():
     return json.dumps(ipdata)
 
+@app.route('/results')
+def get_results():
+    return json.dumps(results)
 
 @app.route('/timing')
 def timing():

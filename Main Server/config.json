@@ -1,7 +1,12 @@
 {
     "configs": {
-        "ips": ["http://192.168.101.1:8080"],
-        "servers": ["ser2","ser1","ser3","ser5","ser4"],
+        "ips": [
+            "http://98.254.195.214:8080/?action=stream#.XvZFjEEDfPs.link",
+            "http://128.101.26.182/mjpg/video.mjpg#.XvZHO1Am1Is.link",
+            "http://76.179.85.149:8888/mjpg/video.mjpg#.XvZIpKi16lM.link",
+            "http://107.145.132.144:8082/img/video.mjpeg#.XvZJF5_iC3k.link"
+        ],
+        "servers": ["ser2","ser1"],
         "gpus": ["gpu1", "gpu2"]
     }
 }

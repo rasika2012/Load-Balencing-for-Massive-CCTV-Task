@@ -10,11 +10,14 @@ import random
 import socket
 import os
 import signal
+import base64
 
 ips = [] #Set by requesting from main server
 gpu_handeler = pyobject.GPUHandeler(["GPU1","GPU2"])
 server_name = 'ser1'    # update from config file
 main_server_ip = ""     # update from config file
+
+
 
 server_time = 0
 
@@ -66,7 +69,9 @@ def work(task):
         sub_process.stdout.flush()
         
         result,t = (split_result(myline))
-        requests.get(main_server_ip+"/subserver/"+server_name+'/'+str(t))
+        
+        print(base64.urlsafe_b64encode(task.encode('ascii')))
+        requests.get(main_server_ip+"/subserver/"+server_name+'/'+str(t)+'/'+str(base64.urlsafe_b64encode(task.encode('ascii')).decode('ascii'))+'/'+str(result))
         print("hi")
         try:
             print(server_tasks[server_name])
@@ -100,7 +105,7 @@ for task in ips:
     x = threading.Thread(target=work, args=(task,))
     thread_array.append(x)
     x.start()
-    time.sleep(2)
+    time.sleep(1)
 
 while True:
     r = requests.get(main_server_ip+"/load")

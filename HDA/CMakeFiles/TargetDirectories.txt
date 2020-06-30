@@ -1,3 +1,0 @@
-/media/rochana/Private1/University/Acadamic/Sem 8/CO425/27.06 latest alpha release/Load-Balencing-for-Massive-CCTV-Task/HDA/CMakeFiles/rebuild_cache.dir
-/media/rochana/Private1/University/Acadamic/Sem 8/CO425/27.06 latest alpha release/Load-Balencing-for-Massive-CCTV-Task/HDA/CMakeFiles/edit_cache.dir
-/media/rochana/Private1/University/Acadamic/Sem 8/CO425/27.06 latest alpha release/Load-Balencing-for-Massive-CCTV-Task/HDA/CMakeFiles/server.dir

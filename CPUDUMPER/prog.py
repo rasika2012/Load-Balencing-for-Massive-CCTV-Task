@@ -7,7 +7,7 @@ print(str(time.gmtime().tm_hour) , ":", str(time.gmtime().tm_min),":",str(time.g
 while True:
     print(psutil.cpu_percent(interval=1, percpu=True)) 
     
-    outF.write(str(time.gmtime().tm_hour) + ":"+ str(time.gmtime().tm_min)+":"+str(time.gmtime().tm_sec))
+    outF.write(str(time.gmtime().tm_hour) + ":"+ str(time.gmtime().tm_min)+":"+ str(time.gmtime().tm_sec))
     outF.write(", ")
 
     for line in psutil.cpu_percent(interval=1, percpu=True):

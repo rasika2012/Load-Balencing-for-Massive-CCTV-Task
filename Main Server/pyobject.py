@@ -1,5 +1,6 @@
 from queue import Queue
-
+import random
+import base64
 
 class FQueue:
     MaxDelay = 0
@@ -91,40 +92,64 @@ class Server_Handeler:
         for task in tasks[url]:
             self.remove_task(task)
             self.add_task(task)
-        return server
+        # return server
 
     def remove_task(self, task):
         if self.task_server.get(task):
             server = self.task_server[task]
             del(self.task_server[task])
-            self.server_task[server].remove(task)
-            self.server_time[server]['count'] -= 1
+            # if self.server_task[server]:
+            try:
+                self.server_task[server].remove(task)
+                self.server_time[server]['count'] -= 1
+            except:
+                pass
+            
 
-            return task
+            return server
         return 0
 
     def add_task(self, task):
         selected_server = ""
-        min_time = 113034557360
+        min_time = 113034567360
+        penalty = 0
+        pre_server = ''
+
         if self.task_server.get(task):
-            return 0
+            pre_server = self.remove_task(task)
+            # self.server_time[pre_server]['count'] -= 1
+            # pre_server = self.task_server[task]
+            penalty = 300
+            # self.remove_task(task)
+            # return 0
+
         for server in self.servers:
+       
             if  self.server_time[server]['count'] ==0:
-                min_time = self.server_time[server]['time']
+                # min_time = self.server_time[server]['time']
                 selected_server = server
                 break
-            if (self.server_time[server].get('time')):
-                if min_time > self.server_time[server]['time']:
-                    selected_server = server
-                    min_time = self.server_time[server]['time']
-
-        self.task_server[task] = server
-        self.server_time[server]['count'] += 1
+            if (self.server_time[server].get('time')) and self.server_time[server]['time'] > 0 :
+                if server == pre_server:
+                    if min_time > self.server_time[server]['time'] - 6000:
+                        selected_server = server
+                        min_time = self.server_time[server]['time']- 6000
+                else:
+                    if min_time > self.server_time[server]['time']:
+                        selected_server = server
+                        min_time = self.server_time[server]['time']
+            
+        if selected_server =="":           
+            selected_server = random.sample( self.servers,1)[0]
+            self.task_server[task] = selected_server
+        else:
+            self.task_server[task] = selected_server
+        self.server_time[selected_server]['count'] += 1
         # print('task added:',self.task_server, 'min_time: ', min_time, 'count:', self.server_time[server]['count'] )
 
-        if not self.server_task.get(server):
-            self.server_task[server]=set()
-        self.server_task[server].add(task)
+        if not self.server_task.get(selected_server):
+            self.server_task[selected_server]=set()
+        self.server_task[selected_server].add(task)
 
     def get_server_load(self,server):
         return self.server_task[server]
