@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
-import CanvasJSReact from './../assets/canvasjs.react';
+import CanvasJSReact from '../assets/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 // var dps = [{x: 1, y: 10}, {x: 2, y: 13}, {x: 3, y: 18}, {x: 4, y: 20}, {x: 5, y: 17},{x: 6, y: 10}, {x: 7, y: 13}, {x: 8, y: 18}, {x: 9, y: 20}, {x: 10, y: 17}];   //dataPoints.
 // var dps2 = [{x: 1, y: 13}, {x: 2, y: 18}, {x: 3, y: 20}, {x: 4, y: 17},{x: 5, y: 10}, {x: 6, y: 13}, {x: 8, y: 18}, {x: 9, y: 20}, {x: 10, y: 17}];   //dataPoints.
-var dps = [];
-var dps2 = [];
-var xVal = dps.length + 1;
-var yVal = 15;
-var yVal2 = 15;
+// var dps = [];
+var xVal = 1;
+var yVal = [];
+var valuesArr = [];
 var updateInterval = 1000;
+var data = [];
 
-
-export class Chart extends Component {
+export class Char extends Component {
 	constructor() {
 		super();
 		this.updateChart = this.updateChart.bind(this);
 		this.loadData = this.loadData.bind(this);
 
-        this.state = {
+		this.state = {
 			data: [],
 			length: '',
 			serverTime : [],
 			serverCount: [],
-			curTime : new Date().toLocaleString(),
 	   }
 	}
 	componentDidMount() {
@@ -31,6 +29,8 @@ export class Chart extends Component {
 		setInterval(this.loadData,1000);
 
 		setInterval(this.updateChart, updateInterval);
+		setInterval(this.updateIndivChart, updateInterval);
+
 	}
 	loadData() {
 		fetch("http://localhost:9000/timing")
@@ -46,45 +46,50 @@ export class Chart extends Component {
 	updateChart() {
 		
 		for (var i=1; i <= this.state.length; i++) {
-			console.log(this.state.data['ser'+i]);
+			if(yVal[i-1] == undefined){
+				yVal[i-1] = [];
+			}
+			// console.log(this.state.data['ser'+i]);
+
+            if (this.state.data['ser'+i].count != 0 ){
+				// yVal[i-1].push(this.state.data['ser'+i].time);
+				yVal[i-1].push(1000 + Math.random() * 1000);
+            } 
+            else {
+				// yVal[i-1].push(this.state.data['ser'+i].time);
+				yVal[i-1].push(1000 + Math.random() * 1000);
+
+            }
 		}
 
-		if (this.state.serverCount1 != 0 ){
-			yVal = this.state.serverTime1;
-		} 
-		else {
-			yVal = 0;
-		}
-		dps.push({x: this.state.curTime,y: yVal});
-		if (this.state.serverCount2 != 0) {
-			yVal2 = this.state.serverTime2
-		}
-		else {
-			yVal2 = 0;
-		}
-		dps2.push({x: xVal,y: yVal2});
-		
-		xVal++;
-		if (dps.length >  10 ) {
-			dps.shift();
-			dps2.shift();
-		}
+		data = [];
+		yVal.forEach(y => {
+			let dps = [];
+			xVal = 0;
+			y.forEach(yInstance => {				
+				if (dps.length > 10){
+					dps.shift();
+				}
+				dps.push({x: xVal++,y: yInstance})
+			});
+			
+			data.push({
+				type: "line",
+				dataPoints: dps
+			})
+				
+		});
 		this.chart.render();
 	}
+
 	render() {
 		const options = {
 			title :{
 				text: "Server Processing time"
 			},
-			data: [{
-				type: "line",
-				dataPoints : dps
-			},
-			{
-				type: "line",
-				dataPoints : dps2
-			}]
+			data: data,
 		}
+
 		return (
 		<div>
 			<CanvasJSChart options = {options}
@@ -94,4 +99,4 @@ export class Chart extends Component {
 		);
 	}
 }
-export default Chart;
+export default Char;

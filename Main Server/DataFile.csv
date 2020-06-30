@@ -1,0 +1,13 @@
+CAM001,192.168.100.1,2019-03-05,running,http://92.154.56.150:8888/mjpg/video.mjpg, type = Infrared/Night Vision CCTV Camera,
+CAM002,192.168.100.2,2019-03-05,running,http://110.54.126.130:50000/cgi-bin/camera?resolution=640&amp;quality=1&amp;Language=0&amp;COUNTER#.Xu4Mv6Y9kIs.link,
+CAM003,192.168.100.3,2019-03-05,running,http://81.83.10.9:8001/mjpg/video.mjpg#.Xu4NjtogW0Y.link, type = Infrared/Night Vision CCTV Camera
+CAM004,192.168.100.4,2019-03-05,running,http://213.34.225.97:8080/mjpg/video.mjpg#.Xu4NjpJpPR8.link,
+CAM005,192.168.100.5,2019-03-05,stopped,http://174.6.126.86/mjpg/video.mjpg#.Xu4MvzBcdlY.link, under construction
+CAM006,192.168.100.6,2019-03-06,running,rtsp://freja.hiof.no:1935/rtplive/definst/hessdalen03.stream,type = Infrared/Night Vision CCTV Camera
+CAM007,192.168.100.7,2019-03-06,stopped,type = Infrared/Night Vision CCTV Camera
+CAM008,192.168.100.8,2019-04-05,running,type = Infrared/Night Vision CCTV Camera
+CAM009,192.168.100.9,2019-04-25,running,
+CAM010,192.168.100.10,2019-04-25,running, type = Infrared/Night Vision CCTV Camera
+CAM011,192.168.100.11,2020-06-05,running,test
+CAM012,192.168.100.12,2020-06-05,running,test 2
+CAM013,192.168.100.15,2020-06-28,running,

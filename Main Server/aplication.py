@@ -10,13 +10,19 @@ import signal
 # Start with a basic flask app webpage.
 
 from flask import Flask
+from flask import request
 import json
+import csv
+from flask_cors import CORS
+from datetime import date
 #--
 from random import random
 from time import sleep
 from threading import Thread, Event
 
 app = Flask(__name__)
+CORS(app)
+
 
 #random number Generator Thread
 thread = Thread()
@@ -127,6 +133,37 @@ def ips():
 @app.route('/timing')
 def timing():
     return json.dumps(server_handler.get_server_times())
+
+@app.route('/data', methods=['GET'])
+def readFile():
+    wholeFile = []
+    with open('DataFile.csv','r') as csv_file: #Opens the file in read mode
+        csv_reader = csv.reader(csv_file) # Making use of reader method for reading the file
+    
+    
+        for line in csv_reader: #Iterate through the loop to read line by line
+            wholeFile.append(line)
+            
+    return json.dumps(wholeFile)
+
+
+@app.route('/submitData', methods=['POST'])
+def submit():
+    print('checked')
+    # language = request.args['ip']
+    content = request.json
+    id = 'CAM0' + str(content['id'])
+    ip = content['ip']
+    comments = content['comments']
+    add = date.today()
+
+    with open('DataFile.csv', 'a+', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([id, ip, add, 'running', comments])
+
+    # print (language['ip'])
+    return json.dumps('true')
+
 
 
 if __name__ == '__main__':

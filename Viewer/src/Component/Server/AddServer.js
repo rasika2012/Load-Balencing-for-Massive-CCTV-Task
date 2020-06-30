@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Tables from './Tables';
 import Chart from './Chart'
-
+import Char from './Char'
 
 
 export class Add extends Component {
@@ -81,7 +81,8 @@ export class Add extends Component {
             {/* <SubForm></SubForm> */}
 
             <Tables/>
-            <Chart/>
+            {/* <Chart/> */}
+            <Char/>
         </React.Fragment>
         )
     }

@@ -81,7 +81,7 @@ export class Table extends Component {
               <tbody>
               {value.map((item,index) => (
                 <tr index={item.id} onClick={this.onClickHandler.bind(this)}>
-                  <td data-item={item.link} >{item.id}</td>
+                  <td data-item={item.links}>{item.id}</td>
                   <td>{item.ip}</td>
                   <td>{item.status}</td>
                   <td>{item.addedDate}</td>
