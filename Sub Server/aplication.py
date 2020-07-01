@@ -32,7 +32,7 @@ r = requests.get(main_server_ip+"/ips")
 
 # update ips
 print("IP info taken\n", r.content)
-ips =  json.loads(r.content)
+ips =  json.loads(r.content.decode())
 
 # Curent server task list
 server_tasks = {}
