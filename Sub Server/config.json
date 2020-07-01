@@ -1,7 +1,7 @@
 {
     "configs": {
-        "name": "ser1",
-        "ip":"http://localhost:9000",
+        "name": "server0",
+        "ip":"http://35229.166.153:9000",
         "gpus": ["gpu1", "gpu2"]
     }
 }
