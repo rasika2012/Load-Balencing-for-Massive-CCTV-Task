@@ -5,6 +5,7 @@ import {Timing} from './Component/timing'
 import Home from './Component/Home';
 import Add from './Component/Camera/Add'
 import AddServer from './Component/Server/AddServer'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'; 
 import Rtsp from './Component/Rtsp';

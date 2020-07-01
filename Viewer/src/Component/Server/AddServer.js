@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Tables from './Tables';
 import Chart from './Chart'
 import Char from './Char'
-
+import Result from './Result'
 
 export class Add extends Component {
 
@@ -82,7 +82,9 @@ export class Add extends Component {
 
             <Tables/>
             {/* <Chart/> */}
+            <Result/>
             <Char/>
+
         </React.Fragment>
         )
     }

@@ -68,7 +68,7 @@ export class Table extends Component {
         }
       else{
             return (
-            <table className='table'>
+            <Table striped bordered hover>
               <thead>
                 <tr>
                   <th>Camera ID</th>
@@ -89,7 +89,7 @@ export class Table extends Component {
                 </tr>
               ))}
               </tbody>
-            </table>
+            </Table>
      
             );
         }
