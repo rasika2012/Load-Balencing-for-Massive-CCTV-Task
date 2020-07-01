@@ -74,7 +74,7 @@ int main( int argc, const char** argv )
             track.push_back(Point(found[i].x+found[i].width/2,found[i].y+found[i].height/2));
         }
       
-        cout<<found.size()<<" "<<" "<< second_time - first_time << " " << 4 <<endl;
+        cout<<found.size()<<" "<<" "<< (second_time - first_time)*1000/CLOCKS_PER_SEC << " " << 4 <<endl;
 
 
         /// plot the track so far
