@@ -72,3 +72,4 @@ Main Server/_pycache_
 Filter
 /////////
 /Viewer/node_modules/
+Sub Server/config.json

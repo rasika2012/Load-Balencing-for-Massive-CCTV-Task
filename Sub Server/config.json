@@ -1,6 +1,6 @@
 {
     "configs": {
-        "name": "server0",
+        "name": "server6",
         "ip":"http://35.229.166.153:9000",
         "gpus": ["gpu1", "gpu2"]
     }
